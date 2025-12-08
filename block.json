@@ -1,0 +1,9 @@
+{
+	"name": "evt/event",
+	"title": "Events",
+	"description": "Let everyone stay informed about upcoming events. Whether you're hosting or attending, the events block highlights your event with its time and location.",
+	"category": "widgets",
+	"editorScript": "file:./build/index.js",
+	"editorStyle": "file:./editor.css",
+	"style": "file:./style.css"
+}
