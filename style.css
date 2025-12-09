@@ -28,6 +28,11 @@
     font-weight: 800;
     line-height: 40px;
     clear: none; }
+  .wp-block-evt-event .event__title.has-text-color,
+  .wp-block-evt-event h3.event__title.has-text-color,
+  .wp-block-evt-event[class*="has-"] .event__title,
+  .wp-block-evt-event[class*="has-"] h3.event__title {
+    color: inherit !important; }
   .wp-block-evt-event .event__title,
   .wp-block-evt-event .event__time,
   .wp-block-evt-event .event__location {
@@ -50,3 +55,6 @@
     margin-left: 18px; }
   .wp-block-evt-event .event__image--save {
     float: right; }
+  .wp-block-evt-event .event__image.event__link{
+    text-wrap: wrap;
+  }

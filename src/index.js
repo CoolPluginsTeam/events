@@ -427,7 +427,7 @@
                                 ),
                             (0, e.createElement)(c.RichText.Content, {
                                 tagName: "h3",
-                                className: "event__title",
+                                className: l()("event__title", (0, c.getColorClassName)("color", n.textColor)),
                                 value: n.eventTitle,
                             }),
                             n.eventStart &&
