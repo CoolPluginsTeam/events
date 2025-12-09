@@ -56,5 +56,5 @@
   .wp-block-evt-event .event__image--save {
     float: right; }
   .wp-block-evt-event .event__image.event__link{
-    text-wrap: wrap;
+    overflow: hidden;
   }
