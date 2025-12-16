@@ -170,6 +170,7 @@
                                             onChange: function (e) {
                                                 return r({ focalPoint: e });
                                             },
+                                            __nextHasNoMarginBottom: !0,
                                         }),
                                     (0, e.createElement)(
                                         o.PanelRow,
@@ -177,8 +178,8 @@
                                         (0, e.createElement)(
                                             o.Button,
                                             {
-                                                isSecondary: !0,
-                                                isSmall: !0,
+                                                variant: "secondary",
+                                                size: "small",
                                                 onClick: function () {
                                                     return r({
                                                         eventImageURL: void 0,
@@ -205,6 +206,8 @@
                                             return r({ whenLabel: e || "" });
                                         },
                                         help: (0, a.__)("Change the label text for 'When' field", "event"),
+                                        __nextHasNoMarginBottom: !0,
+                                        __next40pxDefaultSize: !0,
                                     })
                                 ),
                                 (0, e.createElement)(
@@ -217,6 +220,8 @@
                                             return r({ whereLabel: e || "" });
                                         },
                                         help: (0, a.__)("Change the label text for 'Where' field", "event"),
+                                        __nextHasNoMarginBottom: !0,
+                                        __next40pxDefaultSize: !0,
                                     })
                                 )
                             ),
