@@ -353,7 +353,7 @@
                 });
             (0, t.registerBlockType)("evt/event", {
                 title: (0, a.__)("Event", "event"),
-                description: (0, a.__)("Show the time and location of an event.", "event"),
+                description: (0, a.__)("Display the event time and location.", "event"),
                 icon: (0, e.createElement)(function () {
                     return (0, e.createElement)(
                         o.SVG,
