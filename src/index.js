@@ -266,79 +266,87 @@ registerBlockType('evt/event-item', {
                     </PanelBody>
                 </InspectorControls>
 
-                <div {...blockProps}>
-                    {/* Event Card */}
-                    <div className="evt-event-card">
-                        {/* Event Image */}
-                        <div className="evt-event-image">
-                            {eventImageURL ? (
-                                <img src={eventImageURL} alt={eventImageAlt || eventTitle} />
-                            ) : (
-                                <div className="evt-event-image-placeholder">
-                                    <MediaUploadCheck>
-                                        <MediaUpload
-                                            onSelect={(media) => {
-                                                setAttributes({
-                                                    eventImageURL: media.url,
-                                                    eventImageID: media.id,
-                                                    eventImageAlt: media.alt
-                                                });
-                                            }}
-                                            allowedTypes={['image']}
-                                            value={eventImageID}
-                                            render={({ open }) => (
-                                                <Button onClick={open} variant="primary">
-                                                    {__('Add Image', 'event')}
-                                                </Button>
+            
+                    <div {...blockProps}>
+                        {/* Event Card */}
+                        <div className="evt-event-card">
+                            {/* Event Image */}
+                            <div className="evt-event-image">
+                                {eventImageURL ? (
+                                    <img src={eventImageURL} alt={eventImageAlt || eventTitle} />
+                                ) : (
+                                    <div className="evt-event-image-placeholder">
+                                        <MediaUploadCheck>
+                                            <MediaUpload
+                                                onSelect={(media) => {
+                                                    setAttributes({
+                                                        eventImageURL: media.url,
+                                                        eventImageID: media.id,
+                                                        eventImageAlt: media.alt
+                                                    });
+                                                }}
+                                                allowedTypes={['image']}
+                                                value={eventImageID}
+                                                render={({ open }) => (
+                                                    <Button onClick={open} variant="primary">
+                                                        {__('Add Image', 'event')}
+                                                    </Button>
+                                                )}
+                                            />
+                                        </MediaUploadCheck>
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Event Details */}
+                            <div className="evt-event-details">
+                                    <div className="evt-event-date-badge-container">
+                                            {/* Date Badge Overlay */}
+                                            {eventDate && (
+                                                <>
+                                                <div className="evt-border-badge">
+                                                    <div className="evt-event-date-badge">
+                                                        <span className="evt-date-day">{dateParts.day}</span>
+                                                        <span className="evt-date-month">{dateParts.month}</span>
+                                                    </div>
+                                                </div>
+                                                <span className="evt-date-weekday">{eventDay || dateParts.dayName}</span>
+                                                </>
                                             )}
-                                        />
-                                    </MediaUploadCheck>
-                                </div>
-                            )}
+                                    </div>
+                                <div className="evt-event-details-inner">
+                                            <RichText
+                                                tagName="h3"
+                                                className="evt-event-title"
+                                                value={eventTitle}
+                                                onChange={(value) => setAttributes({ eventTitle: value })}
+                                                placeholder={__('Event Title', 'event')}
+                                            />
 
-                            {/* Date Badge Overlay */}
-                            {eventDate && (
-                                <div className="evt-event-date-badge">
-                                    <span className="evt-date-day">{dateParts.day}</span>
-                                    <span className="evt-date-month">{dateParts.month}</span>
-                                    <span className="evt-date-weekday">{eventDay || dateParts.dayName}</span>
-                                </div>
-                            )}
-                        </div>
+                                            {eventDate && (
+                                                <div className="evt-event-time">
+                                                    <span className="evt-time-icon">🕐</span>
+                                                    <span>{dateParts.time}</span>
+                                                </div>
+                                            )}
 
-                        {/* Event Details */}
-                        <div className="evt-event-details">
-                            <RichText
-                                tagName="h3"
-                                className="evt-event-title"
-                                value={eventTitle}
-                                onChange={(value) => setAttributes({ eventTitle: value })}
-                                placeholder={__('Event Title', 'event')}
-                            />
+                                            <RichText
+                                                tagName="div"
+                                                className="evt-event-location"
+                                                value={eventLocation}
+                                                onChange={(value) => setAttributes({ eventLocation: value })}
+                                                placeholder={__('Event Location', 'event')}
+                                            />
 
-                            {eventDate && (
-                                <div className="evt-event-time">
-                                    <span className="evt-time-icon">🕐</span>
-                                    <span>{dateParts.time}</span>
-                                </div>
-                            )}
-
-                            <RichText
-                                tagName="div"
-                                className="evt-event-location"
-                                value={eventLocation}
-                                onChange={(value) => setAttributes({ eventLocation: value })}
-                                placeholder={__('Event Location', 'event')}
-                            />
-
-                            {eventPrice && (
-                                <div className="evt-event-price">
-                                    {eventPrice}
-                                </div>
-                            )}
+                                            {eventPrice && (
+                                                <div className="evt-event-price">
+                                                    {eventPrice}
+                                                </div>
+                                            )}
+                                    </div>
+                            </div>
                         </div>
                     </div>
-                </div>
             </>
         );
     },
@@ -383,48 +391,55 @@ registerBlockType('evt/event-item', {
                     {eventImageURL && (
                         <div className="evt-event-image">
                             <img src={eventImageURL} alt={eventImageAlt || eventTitle} />
-                            
-                            {/* Date Badge Overlay */}
-                            {eventDate && (
-                                <div className="evt-event-date-badge">
-                                    <span className="evt-date-day">{dateParts.day}</span>
-                                    <span className="evt-date-month">{dateParts.month}</span>
-                                    <span className="evt-date-weekday">{eventDay || dateParts.dayName}</span>
-                                </div>
-                            )}
                         </div>
                     )}
 
                     {/* Event Details */}
                     <div className="evt-event-details">
-                        {eventTitle && (
-                            <RichText.Content
-                                tagName="h3"
-                                className="evt-event-title"
-                                value={eventTitle}
-                            />
-                        )}
+                        <div className="evt-event-date-badge-container">
+                            {/* Date Badge Overlay */}
+                            {eventDate && (
+                                     <>
+                                     <div className="evt-border-badge">
+                                        <div className="evt-event-date-badge">
+                                            <span className="evt-date-day">{dateParts.day}</span>
+                                            <span className="evt-date-month">{dateParts.month}</span>
+                                        </div>
+                                    </div>
+                                     <span className="evt-date-weekday">{eventDay || dateParts.dayName}</span>
+                                     </>
+                                )}
+                        </div>
+                        <div className="evt-event-details-inner">
+                            {eventTitle && (
+                                <RichText.Content
+                                    tagName="h3"
+                                    className="evt-event-title"
+                                    value={eventTitle}
+                                />
+                            )}
 
-                        {eventDate && (
-                            <div className="evt-event-time">
-                                <span className="evt-time-icon">🕐</span>
-                                <span>{dateParts.time}</span>
-                            </div>
-                        )}
+                            {eventDate && (
+                                <div className="evt-event-time">
+                                    <span className="evt-time-icon">🕐</span>
+                                    <span>{dateParts.time}</span>
+                                </div>
+                            )}
 
-                        {eventLocation && (
-                            <RichText.Content
-                                tagName="div"
-                                className="evt-event-location"
-                                value={eventLocation}
-                            />
-                        )}
+                            {eventLocation && (
+                                <RichText.Content
+                                    tagName="div"
+                                    className="evt-event-location"
+                                    value={eventLocation}
+                                />
+                            )}
 
-                        {eventPrice && (
-                            <div className="evt-event-price">
-                                {eventPrice}
-                            </div>
-                        )}
+                            {eventPrice && (
+                                <div className="evt-event-price">
+                                    {eventPrice}
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>

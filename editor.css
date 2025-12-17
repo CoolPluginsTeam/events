@@ -3,7 +3,7 @@
    ============================================ */
 
 /* Grid Container in Editor */
-.editor-styles-wrapper .evt-events-grid-container {
+.editor-styles-wrapper .evt-events-grid-container .block-editor-block-list__layout {
     display: grid;
     grid-template-columns: repeat(var(--columns, 3), 1fr);
     gap: 30px;
@@ -78,39 +78,47 @@
 }
 
 /* Date Badge in Editor */
-.editor-styles-wrapper .evt-event-date-badge {
-    position: absolute;
-    bottom: 16px;
-    left: 16px;
-    background: linear-gradient(135deg, #4169E1 0%, #5B7FFF 100%);
-    color: white;
-    padding: 12px 16px;
-    border-radius: 6px;
-    box-shadow: 0 4px 12px rgba(65, 105, 225, 0.3);
+.editor-styles-wrapper .evt-event-details .evt-date-weekday{
+    font-size: 14px;
+    font-weight: 500;
+}
+.editor-styles-wrapper .evt-event-details .evt-event-date-badge-container{
+    align-items: center;
     display: flex;
     flex-direction: column;
+}
+.editor-styles-wrapper .evt-event-details{
+    display: flex;
+    align-items: start;
+    justify-content: start;
+    gap: 10px;
+    padding: 10px;
+}
+.editor-styles-wrapper .evt-event-details .evt-event-date-badge-container .evt-event-date-badge {
+    background: #5B7FFF;
+    color: white;
+    padding: 7px 14px;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    min-width: 70px;
-    z-index: 10;
-    pointer-events: none;
 }
 
-.editor-styles-wrapper .evt-event-date-badge .evt-date-day {
-    font-size: 32px;
+.editor-styles-wrapper .evt-event-details .evt-event-date-badge-container .evt-event-date-badge .evt-date-day {
+    font-size: 25px;
     font-weight: 700;
     line-height: 1;
-    margin-bottom: 2px;
 }
 
-.editor-styles-wrapper .evt-event-date-badge .evt-date-month {
-    font-size: 14px;
+.editor-styles-wrapper .evt-event-details .evt-event-date-badge-container .evt-event-date-badge .evt-date-month {
+    font-size: 12px;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    margin-bottom: 4px;
 }
 
-.editor-styles-wrapper .evt-event-date-badge .evt-date-weekday {
+.editor-styles-wrapper .evt-event-details .evt-event-date-badge-container .evt-event-date-badge .evt-date-weekday {
     font-size: 11px;
     font-weight: 500;
     text-transform: uppercase;
@@ -125,9 +133,7 @@
    EVENT DETAILS IN EDITOR
    ============================================ */
 
-.editor-styles-wrapper .evt-event-details {
-    padding: 24px;
-}
+
 
 /* Editable Title */
 .editor-styles-wrapper .evt-event-title {
@@ -188,7 +194,6 @@
     color: #1a1a1a;
     margin-top: 12px;
     padding-top: 12px;
-    border-top: 1px solid #f0f0f0;
 }
 
 /* ============================================
@@ -287,20 +292,20 @@
    ============================================ */
 
 @media (max-width: 600px) {
-    .editor-styles-wrapper .evt-event-date-badge {
+    .editor-styles-wrapper .evt-event-details .evt-event-date-badge-container .evt-event-date-badge {
         padding: 8px 12px;
         min-width: 60px;
     }
     
-    .editor-styles-wrapper .evt-event-date-badge .evt-date-day {
+    .editor-styles-wrapper .evt-event-details .evt-event-date-badge-container .evt-event-date-badge .evt-date-day {
         font-size: 24px;
     }
     
-    .editor-styles-wrapper .evt-event-date-badge .evt-date-month {
+    .editor-styles-wrapper .evt-event-details .evt-event-date-badge-container .evt-event-date-badge .evt-date-month {
         font-size: 12px;
     }
     
-    .editor-styles-wrapper .evt-event-details {
+    .editor-styles-wrapper .evt-event-details .evt-event-details-inner {
         padding: 16px;
     }
     

@@ -86,39 +86,47 @@
 }
 
 /* Date Badge - Bottom Left Overlay */
-.evt-event-date-badge {
-    position: absolute;
-    bottom: 16px;
-    left: 16px;
-    background: #4169E1;
-    background: linear-gradient(135deg, #4169E1 0%, #5B7FFF 100%);
-    color: white;
-    padding: 12px 16px;
-    border-radius: 6px;
-    box-shadow: 0 4px 12px rgba(65, 105, 225, 0.3);
+.evt-event-details .evt-date-weekday{
+    font-size: 14px;
+    font-weight: 500;
+}
+.evt-event-details .evt-event-date-badge-container{
+    align-items: center;
     display: flex;
     flex-direction: column;
+}
+.evt-event-details{
+        display: flex;
+        align-items: start;
+        justify-content: start;
+        gap: 10px;
+        padding: 10px;
+}
+.evt-event-details .evt-event-date-badge-container .evt-event-date-badge {
+    background: #5B7FFF;
+    color: white;
+    padding: 7px 14px;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    min-width: 70px;
-    z-index: 10;
 }
 
-.evt-event-date-badge .evt-date-day {
-    font-size: 32px;
+.evt-event-details .evt-event-date-badge-container .evt-event-date-badge .evt-date-day {
+    font-size: 25px;
     font-weight: 700;
     line-height: 1;
-    margin-bottom: 2px;
 }
 
-.evt-event-date-badge .evt-date-month {
-    font-size: 14px;
+.evt-event-details .evt-event-date-badge-container .evt-event-date-badge .evt-date-month {
+    font-size: 12px;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    margin-bottom: 4px;
 }
 
-.evt-event-date-badge .evt-date-weekday {
+.evt-event-details .evt-event-date-badge-container .evt-event-date-badge .evt-date-weekday {
     font-size: 11px;
     font-weight: 500;
     text-transform: uppercase;
@@ -133,12 +141,7 @@
    EVENT DETAILS SECTION
    ============================================ */
 
-.evt-event-details {
-    padding: 24px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
+
 
 /* Event Title */
 .evt-event-title {
@@ -189,7 +192,6 @@
     color: #1a1a1a;
     margin-top: auto;
     padding-top: 12px;
-    border-top: 1px solid #f0f0f0;
 }
 
 /* ============================================
