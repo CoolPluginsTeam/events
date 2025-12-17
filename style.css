@@ -104,7 +104,7 @@
 }
 .evt-event-details .evt-event-date-badge-container .evt-event-date-badge {
     background: #2667FF;
-    color: white;
+    color: inherit;
     padding: 7px 14px;
     border-radius: 4px;
     display: flex;

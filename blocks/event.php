@@ -38,6 +38,10 @@ add_action( 'init', function() {
 				'type' => 'string',
 				'default' => ''
 			],
+			'eventEndDate' => [
+				'type' => 'string',
+				'default' => ''
+			],
 			'eventPrice' => [
 				'type' => 'string',
 				'default' => ''
@@ -56,6 +60,26 @@ add_action( 'init', function() {
 			'eventImageAlt' => [
 				'type' => 'string',
 				'default' => ''
+			],
+			'detailsBackgroundColor' => [
+				'type' => 'string',
+				'default' => '#ffffff'
+			],
+			'borderBadgeColor' => [
+				'type' => 'string',
+				'default' => '#00000040'
+			],
+			'dateBadgeBackgroundColor' => [
+				'type' => 'string',
+				'default' => '#2667FF'
+			],
+			'dateBadgeTextColor' => [
+				'type' => 'string',
+				'default' => '#ffffff'
+			],
+			'detailsTextColor' => [
+				'type' => 'string',
+				'default' => '#1a1a1a'
 			]
 		],
 	] );

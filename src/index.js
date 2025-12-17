@@ -1,6 +1,6 @@
 import { registerBlockType } from '@wordpress/blocks';
-import { InnerBlocks, InspectorControls, MediaUpload, MediaUploadCheck, RichText, useBlockProps } from '@wordpress/block-editor';
-import { PanelBody, Button, TextControl, DateTimePicker } from '@wordpress/components';
+import { InnerBlocks, InspectorControls, MediaUpload, MediaUploadCheck, RichText, useBlockProps, ColorPalette } from '@wordpress/block-editor';
+import { PanelBody, Button, TextControl, DateTimePicker, PanelRow } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { dateI18n, format, getSettings } from '@wordpress/date';
 
@@ -135,6 +135,10 @@ registerBlockType('evt/event-item', {
             type: 'string',
             default: ''
         },
+        eventEndDate: {
+            type: 'string',
+            default: ''
+        },
         eventPrice: {
             type: 'string',
             default: ''
@@ -153,6 +157,27 @@ registerBlockType('evt/event-item', {
         eventImageAlt: {
             type: 'string',
             default: ''
+        },
+        // Color Settings
+        detailsBackgroundColor: {
+            type: 'string',
+            default: '#ffffff'
+        },
+        borderBadgeColor: {
+            type: 'string',
+            default: '#00000040'
+        },
+        dateBadgeBackgroundColor: {
+            type: 'string',
+            default: '#2667FF'
+        },
+        dateBadgeTextColor: {
+            type: 'string',
+            default: '#ffffff'
+        },
+        detailsTextColor: {
+            type: 'string',
+            default: '#1a1a1a'
         }
     },
 
@@ -165,11 +190,17 @@ registerBlockType('evt/event-item', {
             eventTitle,
             eventLocation,
             eventDate,
+            eventEndDate,
             eventPrice,
             eventDay,
             eventImageURL,
             eventImageID,
-            eventImageAlt
+            eventImageAlt,
+            detailsBackgroundColor,
+            borderBadgeColor,
+            dateBadgeBackgroundColor,
+            dateBadgeTextColor,
+            detailsTextColor
         } = attributes;
 
         // Get formatted date parts
@@ -197,7 +228,7 @@ registerBlockType('evt/event-item', {
                     <PanelBody title={__('Event Details', 'event')}>
                         <div style={{ marginBottom: '16px' }}>
                             <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
-                                {__('Event Date & Time', 'event')}
+                                {__('Start Date & Time', 'event')}
                             </label>
                             <DateTimePicker
                                 currentDate={eventDate || new Date().toISOString()}
@@ -207,6 +238,16 @@ registerBlockType('evt/event-item', {
                                     const dayName = dateI18n('D', newDate).toUpperCase();
                                     setAttributes({ eventDay: dayName });
                                 }}
+                            />
+                        </div>
+
+                        <div style={{ marginBottom: '16px' }}>
+                            <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
+                                {__('End Date & Time', 'event')}
+                            </label>
+                            <DateTimePicker
+                                currentDate={eventEndDate || eventDate || new Date().toISOString()}
+                                onChange={(newDate) => setAttributes({ eventEndDate: newDate })}
                             />
                         </div>
 
@@ -223,6 +264,68 @@ registerBlockType('evt/event-item', {
                             onChange={(value) => setAttributes({ eventDay: value })}
                             help={__('e.g., MON, TUE, FRI', 'event')}
                         />
+                    </PanelBody>
+
+                    <PanelBody title={__('Color Settings', 'event')} initialOpen={false}>
+                        <PanelRow>
+                            <div style={{ width: '100%' }}>
+                                <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
+                                    {__('Container Background Color', 'event')}
+                                </label>
+                                <ColorPalette
+                                    value={detailsBackgroundColor}
+                                    onChange={(color) => setAttributes({ detailsBackgroundColor: color || '#ffffff' })}
+                                />
+                            </div>
+                        </PanelRow>
+
+                        <PanelRow>
+                            <div style={{ width: '100%', marginTop: '16px' }}>
+                                <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
+                                    {__('Date Border Color', 'event')}
+                                </label>
+                                <ColorPalette
+                                    value={borderBadgeColor}
+                                    onChange={(color) => setAttributes({ borderBadgeColor: color || '#00000040' })}
+                                />
+                            </div>
+                        </PanelRow>
+
+                        <PanelRow>
+                            <div style={{ width: '100%', marginTop: '16px' }}>
+                                <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
+                                    {__('Date Background Color', 'event')}
+                                </label>
+                                <ColorPalette
+                                    value={dateBadgeBackgroundColor}
+                                    onChange={(color) => setAttributes({ dateBadgeBackgroundColor: color || '#2667FF' })}
+                                />
+                            </div>
+                        </PanelRow>
+
+                        <PanelRow>
+                            <div style={{ width: '100%', marginTop: '16px' }}>
+                                <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
+                                    {__('Date Text Color', 'event')}
+                                </label>
+                                <ColorPalette
+                                    value={dateBadgeTextColor}
+                                    onChange={(color) => setAttributes({ dateBadgeTextColor: color || '#ffffff' })}
+                                />
+                            </div>
+                        </PanelRow>
+
+                        <PanelRow>
+                            <div style={{ width: '100%', marginTop: '16px' }}>
+                                <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
+                                    {__('Details Text Color', 'event')}
+                                </label>
+                                <ColorPalette
+                                    value={detailsTextColor}
+                                    onChange={(color) => setAttributes({ detailsTextColor: color || '#1a1a1a' })}
+                                />
+                            </div>
+                        </PanelRow>
                     </PanelBody>
 
                     <PanelBody title={__('Image Settings', 'event')} initialOpen={false}>
@@ -299,13 +402,13 @@ registerBlockType('evt/event-item', {
                             </div>
 
                             {/* Event Details */}
-                            <div className="evt-event-details">
-                                    <div className="evt-event-date-badge-container">
+                            <div className="evt-event-details" style={{ backgroundColor: detailsBackgroundColor }}>
+                                    <div className="evt-event-date-badge-container" style={{ color: dateBadgeTextColor }}>
                                             {/* Date Badge Overlay */}
                                             {eventDate && (
                                                 <>
-                                                <div className="evt-border-badge">
-                                                    <div className="evt-event-date-badge">
+                                                <div className="evt-border-badge" style={{ borderColor: borderBadgeColor }}>
+                                                    <div className="evt-event-date-badge" style={{ backgroundColor: dateBadgeBackgroundColor }}>
                                                         <span className="evt-date-day">{dateParts.day}</span>
                                                         <span className="evt-date-month">{dateParts.month}</span>
                                                     </div>
@@ -315,20 +418,23 @@ registerBlockType('evt/event-item', {
                                             )}
                                     </div>
                                 <div className="evt-event-details-inner">
+                                            {eventDate && (
+                                                <div className="evt-event-time" style={{ color: detailsTextColor }}>
+                                                    <span className="evt-time-icon">🕐</span>
+                                                    <span>
+                                                        {dateParts.time}
+                                                        {eventEndDate && ` - ${dateI18n('g:i a', eventEndDate)}`}
+                                                    </span>
+                                                </div>
+                                            )}
                                             <RichText
-                                                tagName="h3"
+                                                tagName="h4"
                                                 className="evt-event-title"
                                                 value={eventTitle}
                                                 onChange={(value) => setAttributes({ eventTitle: value })}
                                                 placeholder={__('Event Title', 'event')}
+                                                style={{ color: detailsTextColor }}
                                             />
-
-                                            {eventDate && (
-                                                <div className="evt-event-time">
-                                                    <span className="evt-time-icon">🕐</span>
-                                                    <span>{dateParts.time}</span>
-                                                </div>
-                                            )}
 
                                             <RichText
                                                 tagName="div"
@@ -336,10 +442,11 @@ registerBlockType('evt/event-item', {
                                                 value={eventLocation}
                                                 onChange={(value) => setAttributes({ eventLocation: value })}
                                                 placeholder={__('Event Location', 'event')}
+                                                style={{ color: detailsTextColor }}
                                             />
 
                                             {eventPrice && (
-                                                <div className="evt-event-price">
+                                                <div className="evt-event-price" style={{ color: detailsTextColor }}>
                                                     {eventPrice}
                                                 </div>
                                             )}
@@ -360,10 +467,16 @@ registerBlockType('evt/event-item', {
             eventTitle,
             eventLocation,
             eventDate,
+            eventEndDate,
             eventPrice,
             eventDay,
             eventImageURL,
-            eventImageAlt
+            eventImageAlt,
+            detailsBackgroundColor,
+            borderBadgeColor,
+            dateBadgeBackgroundColor,
+            dateBadgeTextColor,
+            detailsTextColor
         } = attributes;
 
         // Get formatted date parts
@@ -374,7 +487,7 @@ registerBlockType('evt/event-item', {
                 return {
                     month: dateI18n('M', dateString),
                     day: dateI18n('d', dateString), // 'd' for leading zero (01-31)
-                    time: dateI18n('g:i a', dateString) + ' - ' + dateI18n('g:i a', new Date(new Date(dateString).getTime() + 2 * 60 * 60 * 1000).toISOString()),
+                    time: dateI18n('g:i a', dateString),
                     dayName: dateI18n('D', dateString).toUpperCase()
                 };
             } catch (e) {
@@ -383,6 +496,7 @@ registerBlockType('evt/event-item', {
         };
 
         const dateParts = getDateParts(eventDate);
+        const endTime = eventEndDate ? dateI18n('g:i a', eventEndDate) : '';
 
         return (
             <div {...blockProps}>
@@ -395,35 +509,39 @@ registerBlockType('evt/event-item', {
                     )}
 
                     {/* Event Details */}
-                    <div className="evt-event-details">
-                        <div className="evt-event-date-badge-container">
+                    <div className="evt-event-details" style={{ backgroundColor: detailsBackgroundColor }}>
+                        <div className="evt-event-date-badge-container" style={{ color: dateBadgeTextColor }}>
                             {/* Date Badge Overlay */}
                             {eventDate && (
                                      <>
-                                     <div className="evt-border-badge">
-                                        <div className="evt-event-date-badge">
+                                     <div className="evt-border-badge" style={{ borderColor: borderBadgeColor }}>
+                                        <div className="evt-event-date-badge" style={{ backgroundColor: dateBadgeBackgroundColor }}>
                                             <span className="evt-date-day">{dateParts.day}</span>
                                             <span className="evt-date-month">{dateParts.month}</span>
                                         </div>
                                     </div>
                                      <span className="evt-date-weekday">{eventDay || dateParts.dayName}</span>
                                      </>
-                                )}
+                            )}
                         </div>
                         <div className="evt-event-details-inner">
+                                    {eventDate && (
+                                        <div className="evt-event-time" style={{ color: detailsTextColor }}>
+                                            <span className="evt-time-icon">🕐</span>
+                                            <span>
+                                                {dateParts.time}
+                                                {endTime && ` - ${endTime}`}
+                                            </span>
+                                        </div>
+                                    )}
+
                             {eventTitle && (
                                 <RichText.Content
-                                    tagName="h3"
+                                    tagName="h4"
                                     className="evt-event-title"
                                     value={eventTitle}
+                                    style={{ color: detailsTextColor }}
                                 />
-                            )}
-
-                            {eventDate && (
-                                <div className="evt-event-time">
-                                    <span className="evt-time-icon">🕐</span>
-                                    <span>{dateParts.time}</span>
-                                </div>
                             )}
 
                             {eventLocation && (
@@ -431,11 +549,12 @@ registerBlockType('evt/event-item', {
                                     tagName="div"
                                     className="evt-event-location"
                                     value={eventLocation}
+                                    style={{ color: detailsTextColor }}
                                 />
                             )}
 
                             {eventPrice && (
-                                <div className="evt-event-price">
+                                <div className="evt-event-price" style={{ color: detailsTextColor }}>
                                     {eventPrice}
                                 </div>
                             )}
