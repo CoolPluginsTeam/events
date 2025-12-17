@@ -175,6 +175,10 @@ registerBlockType('evt/event-item', {
             type: 'string',
             default: '#ffffff'
         },
+        weekdayTextColor: {
+            type: 'string',
+            default: '#000000'
+        },
         detailsTextColor: {
             type: 'string',
             default: '#1a1a1a'
@@ -200,6 +204,7 @@ registerBlockType('evt/event-item', {
             borderBadgeColor,
             dateBadgeBackgroundColor,
             dateBadgeTextColor,
+            weekdayTextColor,
             detailsTextColor
         } = attributes;
 
@@ -318,6 +323,18 @@ registerBlockType('evt/event-item', {
                         <PanelRow>
                             <div style={{ width: '100%', marginTop: '16px' }}>
                                 <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
+                                    {__('Weekday Text Color', 'event')}
+                                </label>
+                                <ColorPalette
+                                    value={weekdayTextColor}
+                                    onChange={(color) => setAttributes({ weekdayTextColor: color || '#000000' })}
+                                />
+                            </div>
+                        </PanelRow>
+
+                        <PanelRow>
+                            <div style={{ width: '100%', marginTop: '16px' }}>
+                                <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
                                     {__('Details Text Color', 'event')}
                                 </label>
                                 <ColorPalette
@@ -403,17 +420,17 @@ registerBlockType('evt/event-item', {
 
                             {/* Event Details */}
                             <div className="evt-event-details" style={{ backgroundColor: detailsBackgroundColor }}>
-                                    <div className="evt-event-date-badge-container" style={{ color: dateBadgeTextColor }}>
+                                    <div className="evt-event-date-badge-container">
                                             {/* Date Badge Overlay */}
                                             {eventDate && (
                                                 <>
                                                 <div className="evt-border-badge" style={{ borderColor: borderBadgeColor }}>
-                                                    <div className="evt-event-date-badge" style={{ backgroundColor: dateBadgeBackgroundColor }}>
+                                                    <div className="evt-event-date-badge" style={{ backgroundColor: dateBadgeBackgroundColor, color: dateBadgeTextColor }}>
                                                         <span className="evt-date-day">{dateParts.day}</span>
                                                         <span className="evt-date-month">{dateParts.month}</span>
                                                     </div>
                                                 </div>
-                                                <span className="evt-date-weekday">{eventDay || dateParts.dayName}</span>
+                                                <span className="evt-date-weekday" style={{ color: weekdayTextColor }}>{eventDay || dateParts.dayName}</span>
                                                 </>
                                             )}
                                     </div>
@@ -476,6 +493,7 @@ registerBlockType('evt/event-item', {
             borderBadgeColor,
             dateBadgeBackgroundColor,
             dateBadgeTextColor,
+            weekdayTextColor,
             detailsTextColor
         } = attributes;
 
@@ -510,17 +528,17 @@ registerBlockType('evt/event-item', {
 
                     {/* Event Details */}
                     <div className="evt-event-details" style={{ backgroundColor: detailsBackgroundColor }}>
-                        <div className="evt-event-date-badge-container" style={{ color: dateBadgeTextColor }}>
+                        <div className="evt-event-date-badge-container">
                             {/* Date Badge Overlay */}
                             {eventDate && (
                                      <>
                                      <div className="evt-border-badge" style={{ borderColor: borderBadgeColor }}>
-                                        <div className="evt-event-date-badge" style={{ backgroundColor: dateBadgeBackgroundColor }}>
+                                        <div className="evt-event-date-badge" style={{ backgroundColor: dateBadgeBackgroundColor, color: dateBadgeTextColor }}>
                                             <span className="evt-date-day">{dateParts.day}</span>
                                             <span className="evt-date-month">{dateParts.month}</span>
                                         </div>
                                     </div>
-                                     <span className="evt-date-weekday">{eventDay || dateParts.dayName}</span>
+                                     <span className="evt-date-weekday" style={{ color: weekdayTextColor }}>{eventDay || dateParts.dayName}</span>
                                      </>
                             )}
                         </div>

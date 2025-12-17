@@ -77,6 +77,10 @@ add_action( 'init', function() {
 				'type' => 'string',
 				'default' => '#ffffff'
 			],
+			'weekdayTextColor' => [
+				'type' => 'string',
+				'default' => '#000000'
+			],
 			'detailsTextColor' => [
 				'type' => 'string',
 				'default' => '#1a1a1a'
