@@ -180,7 +180,7 @@ registerBlockType('evt/event-item', {
                 const date = new Date(dateString);
                 return {
                     month: dateI18n('M', dateString),
-                    day: dateI18n('j', dateString),
+                    day: dateI18n('d', dateString), // 'd' for leading zero (01-31)
                     time: dateI18n('g:i a', dateString),
                     dayName: dateI18n('D', dateString).toUpperCase()
                 };
@@ -373,7 +373,7 @@ registerBlockType('evt/event-item', {
             try {
                 return {
                     month: dateI18n('M', dateString),
-                    day: dateI18n('j', dateString),
+                    day: dateI18n('d', dateString), // 'd' for leading zero (01-31)
                     time: dateI18n('g:i a', dateString) + ' - ' + dateI18n('g:i a', new Date(new Date(dateString).getTime() + 2 * 60 * 60 * 1000).toISOString()),
                     dayName: dateI18n('D', dateString).toUpperCase()
                 };
