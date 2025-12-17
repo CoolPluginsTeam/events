@@ -8,54 +8,83 @@ Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Create a dedicated Event card directly inside Gutenberg.
+Create and display multiple events in a beautiful modern grid layout inside Gutenberg.
 
 == Description ==
 
-The **Events** is a powerful plugin that allows you to easily add and display events on your WordPress site using the Gutenberg editor. 
-The plugin adds a dedicated Events Block inside the Gutenberg editor, so you can insert an event card anywhere on your page or post and customize it instantly.
+The **Events** is a powerful plugin that allows you to easily add and display multiple events on your WordPress site using the Gutenberg editor. 
+The plugin adds a modern Events Grid Block inside the Gutenberg editor, so you can showcase multiple events in a stunning grid layout with beautiful event cards.
 
 ### Key Features
-* **Dedicated Events Block:** Provides a ready-to-use event block inside the block editor. Just add it to your page and enter event details.
-* **Add Event Title:** Enter a title for the event to tell users what your event is about.
-* **Event Date Selection:** Select the event date from a simple calendar pop-up.
-* **Event Location:** Add the location or venue of your event in a dedicated field.
-* **Event Description:** Write a short or detailed description of your event to explain what it is about.
-* **Integrate Image:** Make your event card more attractive by uploading an image related to your event.
-* **Labels (When & Where):** Change the "When" and "Where" labels to any text you want.
-* **Customization:** Easily customize the background and text color of your event card according to the website theme.
-* Lightweight & Easy to Use.
-* Fully Responsive.
+* **Modern Grid Layout:** Display multiple events in a responsive 1-4 column grid layout (default 3 columns)
+* **Multiple Events Support:** Add unlimited event cards within a single events grid block
+* **Beautiful Event Cards:** Each event card features a large image with an overlaid date badge
+* **Event Date Badge:** Automatic date formatting with day, month, and weekday display in a stylish blue badge
+* **Event Date & Time Picker:** Select event date and time from an intuitive calendar picker
+* **Event Pricing:** Add event pricing information (e.g., "Free - $25.00" or "$15.00")
+* **Event Location:** Display venue or location information for each event
+* **Featured Images:** Upload beautiful images for each event with automatic responsive sizing
+* **Default Content:** Comes with 3 pre-filled sample events to get started quickly
+* **Fully Responsive:** Grid automatically adapts to 2 columns on tablets and 1 column on mobile devices
+* **Hover Effects:** Smooth animations and shadows on hover for better user experience
+* **Card Design:** Modern card-based design with rounded corners and elegant shadows
+* **Easy Customization:** Adjust columns, dates, images, and all event details easily
+* **Block Inserter:** Add new events easily with the built-in block appender button
+* Lightweight & Fast Loading
+* No Coding Required
+* SEO Friendly
 
 == Installation ==
 - Go to **Plugins > Add New** in your WordPress admin area.
-- Search for **"Events"**.
+- Search for **"Events Grid"**.
 - Install & Activate plugin.
-- Next, create or edit a **page/post** where you want to show an event.
-- Click the **+ Add Block** button and search for **"Event"**.
-- Add the block and enter your event details.
+- Next, create or edit a **page/post** where you want to show events.
+- Click the **+ Add Block** button and search for **"Events Grid"**.
+- Add the block - it comes with 3 sample events pre-filled.
+- Click on any event card to edit its details (title, date, location, price, image).
+- Add more events using the **+** button at the bottom of the grid.
+- Adjust grid columns (1-4) from the block settings panel on the right.
+- Publish or Update your page to see the beautiful events grid in action!
 
 == Frequently Asked Questions ==
 
 = Does the plugin work with all Gutenberg themes? =
 Yes, the plugin is fully compatible with all themes that support the WordPress block editor (Gutenberg).
 
-= Can I customize the colors of the event block? =
-Yes, you can change the background color and text color directly from the block's color settings.
+= How many events can I add? =
+You can add unlimited events within a single Events Grid block. Just click the + button to add more event cards.
+
+= Can I change the number of columns? =
+Yes! You can set 1-4 columns from the block settings panel. Default is 3 columns. The grid is responsive and automatically adjusts on mobile/tablet devices.
+
+= Does it come with default content? =
+Yes, when you first add the Events Grid block, it comes with 3 beautifully pre-filled sample events so you can see how it looks right away.
+
+= Can I customize event images? =
+Yes, you can upload custom images for each event. Click on any event card, then use the sidebar settings to upload or change the image.
 
 = Do I need coding knowledge to use this plugin? =
-No coding is required. The plugin is built for beginners. Just insert the block and start entering your event information.
+No coding is required. The plugin is built for beginners. Just insert the block and the default events appear. Edit them or add new ones easily.
 
-= Where can I display the event block? =
-You can add it to any page or post inside the Gutenberg editor.
+= Where can I display the events grid? =
+You can add it to any page or post inside the Gutenberg editor. You can also use Wide or Full width alignment.
 
-= Can I change the labels "When" and "Where"? =
-Yes. From the block settings on the right side, you can edit the text for both **"When"** and **"Where"** labels as per requirements.
+= Is the design mobile responsive? =
+Yes! The grid automatically adapts: 3 columns on desktop, 2 columns on tablets, and 1 column on mobile phones.
 
 = How can I report security bugs? =
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities [Report a security vulnerability](https://patchstack.com/database/vdp/template-events-calendar).
 
 == Changelog ==
 
-= 1.0 - 16 December 2025 =
-* Initial release
+= 1.0 - 17 December 2025 =
+* Initial release with modern grid layout
+* Multiple events support with parent-child block structure
+* Beautiful event cards with image and date badge overlay
+* Responsive grid (1-4 columns, auto-adjusts for mobile)
+* Default content with 3 pre-filled sample events
+* Event date & time picker
+* Event pricing display
+* Featured image support for each event
+* Hover effects and modern animations
+* Fully responsive and mobile-friendly

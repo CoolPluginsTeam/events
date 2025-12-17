@@ -1,60 +1,233 @@
-/* Front end styles */
-.wp-block-evt-event {
-  display: flex;
-  flex-direction: row;
-  padding: 18px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
-  box-shadow: inset 0 0 0 4px rgba(0, 0, 0, 0.1); }
-  .wp-block-evt-event.aligncenter {
-    display: flex;
-    text-align: left; }
-  .wp-block-evt-event .event__datebox {
-    float: left;
-    width: 40px;
-    height: 40px;
-    background: black;
-    color: white;
-    margin: 0 18px 18px 0;
-    padding: 4px;
-    text-align: center; }
-    .wp-block-evt-event .event__datebox > span {
-      display: block;
-      margin: 0;
-      line-height: 16px; }
-    .wp-block-evt-event .event__datebox span:first-child {
-      font-weight: bold;
-      font-size: 12px; }
-  .wp-block-evt-event .event__title {
-    font-weight: 800;
-    line-height: 40px;
-    clear: none; }
-  .wp-block-evt-event .event__title.has-text-color,
-  .wp-block-evt-event h3.event__title.has-text-color,
-  .wp-block-evt-event[class*="has-"] .event__title,
-  .wp-block-evt-event[class*="has-"] h3.event__title {
-    color: inherit !important; }
-  .wp-block-evt-event .event__title,
-  .wp-block-evt-event .event__time,
-  .wp-block-evt-event .event__location {
-    margin-top: 0;
-    margin-bottom: 18px;
-    hyphens: auto;
-    overflow-wrap: break-word; }
-  .wp-block-evt-event .event__description {
-    margin-top: 18px; }
-  .wp-block-evt-event .event__label {
-    display: inline-block;
-    min-width: 80px;
-    opacity: 0.5; }
-  .wp-block-evt-event .event__location {
-    display: flex; }
-  .wp-block-evt-event .event__details {
-    flex: 2; }
-  .wp-block-evt-event .event__image {
-    flex: 1;
-    margin-left: 18px; }
-  .wp-block-evt-event .event__image--save {
-    float: right; }
-  .wp-block-evt-event .event__image.event__link{
+/* ============================================
+   EVENTS GRID - Modern Layout Styles
+   ============================================ */
+
+/* Grid Container */
+.events-grid-container {
+    display: grid;
+    grid-template-columns: repeat(var(--columns, 3), 1fr);
+    gap: 30px;
+    padding: 20px 0;
+    margin: 0 auto;
+    max-width: 100%;
+}
+
+/* Responsive Grid */
+@media (max-width: 1024px) {
+    .events-grid-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .events-grid-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
+
+/* ============================================
+   EVENT CARD STYLES
+   ============================================ */
+
+.event-item {
+    width: 100%;
+    height: 100%;
+}
+
+.event-card {
+    background: #ffffff;
+    border-radius: 8px;
     overflow: hidden;
-  }
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.event-card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    transform: translateY(-4px);
+}
+
+/* ============================================
+   EVENT IMAGE WITH DATE BADGE
+   ============================================ */
+
+.event-image {
+    position: relative;
+    width: 100%;
+    height: 280px;
+    overflow: hidden;
+    background: #f5f5f5;
+}
+
+.event-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.event-card:hover .event-image img {
+    transform: scale(1.05);
+}
+
+.event-image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-size: 16px;
+}
+
+/* Date Badge - Bottom Left Overlay */
+.event-date-badge {
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    background: #4169E1;
+    background: linear-gradient(135deg, #4169E1 0%, #5B7FFF 100%);
+    color: white;
+    padding: 12px 16px;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(65, 105, 225, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 70px;
+    z-index: 10;
+}
+
+.event-date-badge .date-day {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 2px;
+}
+
+.event-date-badge .date-month {
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.event-date-badge .date-weekday {
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.9;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    padding-top: 4px;
+    margin-top: 2px;
+}
+
+/* ============================================
+   EVENT DETAILS SECTION
+   ============================================ */
+
+.event-details {
+    padding: 24px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Event Title */
+.event-title {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.4;
+    margin: 0 0 12px 0;
+    color: #1a1a1a;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+}
+
+.event-title:hover {
+    color: #4169E1;
+}
+
+/* Event Time */
+.event-time {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.event-time .time-icon {
+    font-size: 16px;
+    opacity: 0.8;
+}
+
+/* Event Location */
+.event-location {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.5;
+    margin-bottom: 12px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Event Price */
+.event-price {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid #f0f0f0;
+}
+
+/* ============================================
+   ALIGNMENT SUPPORT
+   ============================================ */
+
+.alignwide .events-grid-container {
+    max-width: 1200px;
+}
+
+.alignfull .events-grid-container {
+    max-width: 100%;
+    padding: 20px;
+}
+
+/* ============================================
+   ACCESSIBILITY & INTERACTIONS
+   ============================================ */
+
+.event-card:focus-within {
+    outline: 2px solid #4169E1;
+    outline-offset: 2px;
+}
+
+/* Smooth transitions */
+* {
+    box-sizing: border-box;
+}
+
+/* Print styles */
+@media print {
+    .event-card {
+        break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+    
+    .event-card:hover {
+        transform: none;
+    }
+}

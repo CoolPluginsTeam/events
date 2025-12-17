@@ -1,18 +1,329 @@
-/* Editor styles */
-.wp-block-evt-event .event__date-select {
-  display: inline; }
-  .wp-block-evt-event .event__date-select .components-button {
-    height: auto;
-    background: white; }
+/* ============================================
+   EDITOR STYLES FOR EVENTS GRID
+   ============================================ */
 
-.editor-styles-wrapper .wp-block-evt-event,
-.editor-styles-wrapper .wp-block[data-align="center"] > .wp-block-evt-event {
-  text-align: left; }
-  .editor-styles-wrapper .wp-block-evt-event p,
-  .editor-styles-wrapper .wp-block[data-align="center"] > .wp-block-evt-event p {
-    font-family: inherit; }
-  .editor-styles-wrapper .wp-block-evt-event .event__title,
-  .editor-styles-wrapper .wp-block[data-align="center"] > .wp-block-evt-event .event__title {
-    margin: 0 0 18px;
-    font-weight: 800;
-    line-height: 40px; }
+/* Grid Container in Editor */
+.editor-styles-wrapper .events-grid-container {
+    display: grid;
+    grid-template-columns: repeat(var(--columns, 3), 1fr);
+    gap: 30px;
+    padding: 20px 0;
+    margin: 0;
+}
+
+/* Editor responsive */
+@media (max-width: 1200px) {
+    .editor-styles-wrapper .events-grid-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 782px) {
+    .editor-styles-wrapper .events-grid-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
+
+/* ============================================
+   EVENT ITEM IN EDITOR
+   ============================================ */
+
+.editor-styles-wrapper .event-item {
+    width: 100%;
+}
+
+.editor-styles-wrapper .event-card {
+    background: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+}
+
+/* Selected state */
+.editor-styles-wrapper .event-item.is-selected .event-card,
+.editor-styles-wrapper .event-item.has-child-selected .event-card {
+    border-color: #4169E1;
+    box-shadow: 0 4px 12px rgba(65, 105, 225, 0.2);
+}
+
+/* ============================================
+   IMAGE SECTION IN EDITOR
+   ============================================ */
+
+.editor-styles-wrapper .event-image {
+    position: relative;
+    width: 100%;
+    height: 280px;
+    overflow: hidden;
+    background: #f5f5f5;
+}
+
+.editor-styles-wrapper .event-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.editor-styles-wrapper .event-image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+/* Date Badge in Editor */
+.editor-styles-wrapper .event-date-badge {
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    background: linear-gradient(135deg, #4169E1 0%, #5B7FFF 100%);
+    color: white;
+    padding: 12px 16px;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(65, 105, 225, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 70px;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.editor-styles-wrapper .event-date-badge .date-day {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 2px;
+}
+
+.editor-styles-wrapper .event-date-badge .date-month {
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.editor-styles-wrapper .event-date-badge .date-weekday {
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.9;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    padding-top: 4px;
+    margin-top: 2px;
+}
+
+/* ============================================
+   EVENT DETAILS IN EDITOR
+   ============================================ */
+
+.editor-styles-wrapper .event-details {
+    padding: 24px;
+}
+
+/* Editable Title */
+.editor-styles-wrapper .event-title {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.4;
+    margin: 0 0 12px 0;
+    color: #1a1a1a;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+}
+
+.editor-styles-wrapper .event-title[contenteditable="true"]:focus {
+    outline: none;
+    color: #4169E1;
+}
+
+.editor-styles-wrapper .event-title[data-is-placeholder-visible="true"] {
+    color: #999;
+}
+
+/* Event Time */
+.editor-styles-wrapper .event-time {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.editor-styles-wrapper .event-time .time-icon {
+    font-size: 16px;
+    opacity: 0.8;
+}
+
+/* Editable Location */
+.editor-styles-wrapper .event-location {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.5;
+    margin-bottom: 12px;
+}
+
+.editor-styles-wrapper .event-location[contenteditable="true"]:focus {
+    outline: none;
+    color: #333;
+}
+
+.editor-styles-wrapper .event-location[data-is-placeholder-visible="true"] {
+    color: #999;
+}
+
+/* Event Price */
+.editor-styles-wrapper .event-price {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #f0f0f0;
+}
+
+/* ============================================
+   BLOCK APPENDER & INSERTER
+   ============================================ */
+
+.editor-styles-wrapper .events-grid-container .block-list-appender {
+    grid-column: 1 / -1;
+    margin: 20px 0;
+}
+
+.editor-styles-wrapper .events-grid-container .block-editor-button-block-appender {
+    background: #f0f0f0;
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    padding: 40px;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+.editor-styles-wrapper .events-grid-container .block-editor-button-block-appender:hover {
+    background: #e8e8e8;
+    border-color: #4169E1;
+}
+
+/* ============================================
+   RICH TEXT EDITOR IMPROVEMENTS
+   ============================================ */
+
+.editor-styles-wrapper .event-item .block-editor-rich-text__editable {
+    padding: 0;
+    background: transparent;
+}
+
+.editor-styles-wrapper .event-item .block-editor-rich-text__editable:focus {
+    box-shadow: none;
+}
+
+/* ============================================
+   INSPECTOR CONTROLS IMPROVEMENTS
+   ============================================ */
+
+.components-panel__body .event-inspector-field {
+    margin-bottom: 16px;
+}
+
+/* DateTime Picker in Inspector */
+.components-datetime__time,
+.components-datetime__date {
+    width: 100%;
+}
+
+/* ============================================
+   MEDIA UPLOAD BUTTON STYLING
+   ============================================ */
+
+.event-image-placeholder .components-button {
+    background: white;
+    color: #667eea;
+    font-weight: 600;
+    padding: 12px 24px;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.event-image-placeholder .components-button:hover {
+    background: #f8f8f8;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* ============================================
+   ALIGNMENT SUPPORT IN EDITOR
+   ============================================ */
+
+.editor-styles-wrapper .alignwide .events-grid-container {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.editor-styles-wrapper .alignfull .events-grid-container {
+    max-width: 100%;
+}
+
+/* ============================================
+   BLOCK TOOLBAR POSITIONING
+   ============================================ */
+
+.editor-styles-wrapper .event-item .block-editor-block-list__block-edit {
+    margin: 0;
+}
+
+/* ============================================
+   RESPONSIVE EDITING EXPERIENCE
+   ============================================ */
+
+@media (max-width: 600px) {
+    .editor-styles-wrapper .event-date-badge {
+        padding: 8px 12px;
+        min-width: 60px;
+    }
+    
+    .editor-styles-wrapper .event-date-badge .date-day {
+        font-size: 24px;
+    }
+    
+    .editor-styles-wrapper .event-date-badge .date-month {
+        font-size: 12px;
+    }
+    
+    .editor-styles-wrapper .event-details {
+        padding: 16px;
+    }
+    
+    .editor-styles-wrapper .event-title {
+        font-size: 18px;
+    }
+}
+
+/* ============================================
+   HELP TEXT & PLACEHOLDERS
+   ============================================ */
+
+.editor-styles-wrapper .event-item [data-rich-text-placeholder]::before {
+    color: #999;
+    opacity: 0.8;
+}
+
+/* ============================================
+   SMOOTH TRANSITIONS
+   ============================================ */
+
+.editor-styles-wrapper .event-card,
+.editor-styles-wrapper .event-image img,
+.editor-styles-wrapper .components-button {
+    transition: all 0.2s ease;
+}
