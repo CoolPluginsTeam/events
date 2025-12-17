@@ -75,18 +75,28 @@
                         c = t.className;
                     return (0, e.createElement)(o.Dropdown, {
                         className: c,
-                        popoverProps: { placement: "bottom-start" },
+                        popoverProps: { 
+                            placement: "bottom-start" 
+                        },
                         renderToggle: function (t) {
                             var l = t.onToggle,
                                 c = t.isOpen;
                             return (0, e.createElement)(
                                 o.Button,
-                                { className: "button", onClick: l, "aria-expanded": c, "aria-live": "polite" },
+                                { 
+                                    className: "button", 
+                                    onClick: l, 
+                                    "aria-expanded": c, 
+                                    "aria-live": "polite" 
+                                },
                                 a ? (0, i.dateI18n)(r, a) : n
                             );
                         },
                         renderContent: function () {
-                            return (0, e.createElement)(o.DateTimePicker, { currentDate: a, onChange: l });
+                            return (0, e.createElement)(o.DateTimePicker, { 
+                                currentDate: a, 
+                                onChange: l 
+                            });
                         },
                     });
                 };
@@ -98,7 +108,10 @@
                     n &&
                     (0, e.createElement)(
                         "time",
-                        { className: o, dateTime: (0, i.dateI18n)("c", n) },
+                        { 
+                            className: o, 
+                            dateTime: (0, i.dateI18n)("c", n) 
+                        },
                         (0, i.dateI18n)(a, n)
                     )
                 );
@@ -126,15 +139,21 @@
                         _ = t.isSelected,
                         f = (0, i.getSettings)(),
                         E = [s.class, g.class],
-                        C = { color: s.color, backgroundColor: g.color },
+                        C = { 
+                            color: s.color, 
+                            backgroundColor: g.color 
+                        },
                         b = {
                             backgroundImage: n.eventImageURL && "url(".concat(n.eventImageURL, ")"),
-                            backgroundPosition:
-                                n.focalPoint && "".concat(100 * n.focalPoint.x, "% ").concat(100 * n.focalPoint.y, "%"),
+                            backgroundPosition: n.focalPoint && "".concat(100 * n.focalPoint.x, "% ").concat(100 * n.focalPoint.y, "%"),
                             backgroundSize: "cover",
                         },
                         h = function (e) {
-                            r({ eventImageId: e.id, eventImageURL: e.url, eventImageAlt: e.alt });
+                            r({ 
+                                eventImageId: e.id, 
+                                eventImageURL: e.url, 
+                                eventImageAlt: e.alt 
+                            });
                         },
                         I = function (e) {
                             r({ eventImageURL: e });
@@ -231,8 +250,16 @@
                                     title: (0, a.__)("Color Settings", "event"),
                                     initialOpen: !0,
                                     colorSettings: [
-                                        { value: g.color, onChange: p, label: (0, a.__)("Background Color", "event") },
-                                        { value: s.color, onChange: d, label: (0, a.__)("Text Color", "event") },
+                                        { 
+                                            value: g.color, 
+                                            onChange: p, 
+                                            label: (0, a.__)("Background Color", "event") 
+                                        },
+                                        { 
+                                            value: s.color, 
+                                            onChange: d, 
+                                            label: (0, a.__)("Text Color", "event") 
+                                        },
                                     ],
                                 },
                                 (0, e.createElement)(c.ContrastChecker, {
@@ -267,7 +294,12 @@
                                     { className: "event__time" },
                                     (0, e.createElement)(
                                         "span",
-                                        { className: "event__label", style: { color: "inherit" } },
+                                        { 
+                                            className: "event__label", 
+                                            style: { 
+                                                color: "inherit" 
+                                            } 
+                                        },
                                         n.whenLabel || (0, a.__)("When:", "event")
                                     ),
                                     n.eventStart && !_
@@ -309,7 +341,9 @@
                                         template: [
                                             [
                                                 "core/paragraph",
-                                                { placeholder: (0, a.__)("Event Description", "event") },
+                                                { 
+                                                    placeholder: (0, a.__)("Event Description", "event") 
+                                                },
                                             ],
                                         ],
                                     })
@@ -325,7 +359,9 @@
                                       })
                                     : (0, e.createElement)(
                                           "div",
-                                          { className: "event__image event__link" },
+                                          { 
+                                              className: "event__image event__link" 
+                                          },
                                           (0, e.createElement)(
                                               "a",
                                               {
@@ -341,7 +377,9 @@
                                       "div",
                                       { className: "event__image" },
                                       (0, e.createElement)(c.MediaPlaceholder, {
-                                          labels: { title: (0, a.__)("Event Image", "event") },
+                                          labels: { 
+                                              title: (0, a.__)("Event Image", "event") 
+                                          },
                                           allowedTypes: m,
                                           accept: u,
                                           onSelect: h,
@@ -352,49 +390,104 @@
                     );
                 });
             (0, t.registerBlockType)("evt/event", {
+                // Block title
                 title: (0, a.__)("Event", "event"),
+                
+                // Block description
                 description: (0, a.__)("Display the event time and location.", "event"),
+                
+                // Block icon
                 icon: (0, e.createElement)(function () {
                     return (0, e.createElement)(
                         o.SVG,
-                        { xmlns: "http://www.w3.org/2000/svg", width: "24", height: "24", viewBox: "0 0 24 24" },
+                        { 
+                            xmlns: "http://www.w3.org/2000/svg", 
+                            width: "24", 
+                            height: "24", 
+                            viewBox: "0 0 24 24" 
+                        },
                         (0, e.createElement)(o.Path, {
                             d: "M19,3H5C3.9,3,3,3.9,3,5v14c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V5C21,3.9,20.1,3,19,3z M19.5,19c0,0.3-0.2,0.5-0.5,0.5H5 c-0.3,0-0.5-0.2-0.5-0.5V7h15V19z M17,13h-4v4h4V13z",
                         })
                     );
                 }, null),
+                
+                // Block category
                 category: "widgets",
-                supports: { align: ["center", "wide"] },
+                
+                // Block supports
+                supports: { 
+                    align: ["center", "wide"] 
+                },
+                
+                // Example preview
                 example: {
                     attributes: {
                         eventTitle: "Digging for Treasure",
                         eventLocation: "Treasure Island",
                         eventStart: "1783-11-14T12:00:00",
                         eventImageId: 1,
-                        eventImageURL:
-                            "https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/TI-treasure.jpg/366px-TI-treasure.jpg",
+                        eventImageURL: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/TI-treasure.jpg/366px-TI-treasure.jpg",
                         eventImageAlt: "Treasure",
-                        focalPoint: { x: "0.30", y: "0.40" },
+                        focalPoint: { 
+                            x: "0.30", 
+                            y: "0.40" 
+                        },
                         customBackgroundColor: "#d4c5af",
                         align: "wide",
                     },
                 },
+                
+                // Block attributes schema
                 attributes: {
-                    eventTitle: { type: "string" },
-                    eventLocation: { type: "string" },
-                    eventStart: { type: "string" },
-                    eventImageId: { type: "number" },
-                    eventImageURL: { type: "string" },
-                    eventImageAlt: { type: "string", default: "" },
-                    focalPoint: { type: "object" },
-                    backgroundColor: { type: "string" },
-                    customBackgroundColor: { type: "string" },
-                    textColor: { type: "string" },
-                    customTextColor: { type: "string" },
-                    whenLabel: { type: "string", default: "When:" },
-                    whereLabel: { type: "string", default: "Where:" },
+                    eventTitle: { 
+                        type: "string" 
+                    },
+                    eventLocation: { 
+                        type: "string" 
+                    },
+                    eventStart: { 
+                        type: "string" 
+                    },
+                    eventImageId: { 
+                        type: "number" 
+                    },
+                    eventImageURL: { 
+                        type: "string" 
+                    },
+                    eventImageAlt: { 
+                        type: "string", 
+                        default: "" 
+                    },
+                    focalPoint: { 
+                        type: "object" 
+                    },
+                    backgroundColor: { 
+                        type: "string" 
+                    },
+                    customBackgroundColor: { 
+                        type: "string" 
+                    },
+                    textColor: { 
+                        type: "string" 
+                    },
+                    customTextColor: { 
+                        type: "string" 
+                    },
+                    whenLabel: { 
+                        type: "string", 
+                        default: "When:" 
+                    },
+                    whereLabel: { 
+                        type: "string", 
+                        default: "Where:" 
+                    },
                 },
+                
+                // Edit function
                 edit: d,
+                
+                // Save function
                 save: function (t) {
                     var n = t.attributes,
                         o = (0, i.getSettings)(),
@@ -402,11 +495,13 @@
                             (0, c.getColorClassName)("color", n.textColor),
                             (0, c.getColorClassName)("background-color", n.backgroundColor),
                         ],
-                        s = { color: n.customTextColor, backgroundColor: n.customBackgroundColor },
+                        s = { 
+                            color: n.customTextColor, 
+                            backgroundColor: n.customBackgroundColor 
+                        },
                         m = {
                             backgroundImage: n.eventImageURL && "url(".concat(n.eventImageURL, ")"),
-                            backgroundPosition:
-                                n.focalPoint && "".concat(100 * n.focalPoint.x, "% ").concat(100 * n.focalPoint.y, "%"),
+                            backgroundPosition: n.focalPoint && "".concat(100 * n.focalPoint.x, "% ").concat(100 * n.focalPoint.y, "%"),
                             backgroundSize: "cover",
                         },
                         x = function (e) {
@@ -477,7 +572,9 @@
                                   })
                                 : (0, e.createElement)(
                                       "div",
-                                      { className: "event__image event__link" },
+                                      { 
+                                          className: "event__image event__link" 
+                                      },
                                       (0, e.createElement)(
                                           "a",
                                           {
