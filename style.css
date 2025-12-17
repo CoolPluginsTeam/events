@@ -3,7 +3,7 @@
    ============================================ */
 
 /* Grid Container */
-.events-grid-container {
+.evt-events-grid-container {
     display: grid;
     grid-template-columns: repeat(var(--columns, 3), 1fr);
     gap: 30px;
@@ -14,13 +14,13 @@
 
 /* Responsive Grid */
 @media (max-width: 1024px) {
-    .events-grid-container {
+    .evt-events-grid-container {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
 @media (max-width: 768px) {
-    .events-grid-container {
+    .evt-events-grid-container {
         grid-template-columns: 1fr;
         gap: 20px;
     }
@@ -30,12 +30,12 @@
    EVENT CARD STYLES
    ============================================ */
 
-.event-item {
+.evt-event-item {
     width: 100%;
     height: 100%;
 }
 
-.event-card {
+.evt-event-card {
     background: #ffffff;
     border-radius: 8px;
     overflow: hidden;
@@ -46,7 +46,7 @@
     flex-direction: column;
 }
 
-.event-card:hover {
+.evt-event-card:hover {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
     transform: translateY(-4px);
 }
@@ -55,7 +55,7 @@
    EVENT IMAGE WITH DATE BADGE
    ============================================ */
 
-.event-image {
+.evt-event-image {
     position: relative;
     width: 100%;
     height: 280px;
@@ -63,18 +63,18 @@
     background: #f5f5f5;
 }
 
-.event-image img {
+.evt-event-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: transform 0.3s ease;
 }
 
-.event-card:hover .event-image img {
+.evt-event-card:hover .evt-event-image img {
     transform: scale(1.05);
 }
 
-.event-image-placeholder {
+.evt-event-image-placeholder {
     width: 100%;
     height: 100%;
     display: flex;
@@ -86,7 +86,7 @@
 }
 
 /* Date Badge - Bottom Left Overlay */
-.event-date-badge {
+.evt-event-date-badge {
     position: absolute;
     bottom: 16px;
     left: 16px;
@@ -103,14 +103,14 @@
     z-index: 10;
 }
 
-.event-date-badge .date-day {
+.evt-event-date-badge .evt-date-day {
     font-size: 32px;
     font-weight: 700;
     line-height: 1;
     margin-bottom: 2px;
 }
 
-.event-date-badge .date-month {
+.evt-event-date-badge .evt-date-month {
     font-size: 14px;
     font-weight: 600;
     text-transform: uppercase;
@@ -118,7 +118,7 @@
     margin-bottom: 4px;
 }
 
-.event-date-badge .date-weekday {
+.evt-event-date-badge .evt-date-weekday {
     font-size: 11px;
     font-weight: 500;
     text-transform: uppercase;
@@ -133,7 +133,7 @@
    EVENT DETAILS SECTION
    ============================================ */
 
-.event-details {
+.evt-event-details {
     padding: 24px;
     flex: 1;
     display: flex;
@@ -141,7 +141,7 @@
 }
 
 /* Event Title */
-.event-title {
+.evt-event-title {
     font-size: 20px;
     font-weight: 700;
     line-height: 1.4;
@@ -150,12 +150,12 @@
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
 }
 
-.event-title:hover {
+.evt-event-title:hover {
     color: #4169E1;
 }
 
 /* Event Time */
-.event-time {
+.evt-event-time {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -165,13 +165,13 @@
     font-weight: 500;
 }
 
-.event-time .time-icon {
+.evt-event-time .evt-time-icon {
     font-size: 16px;
     opacity: 0.8;
 }
 
 /* Event Location */
-.event-location {
+.evt-event-location {
     font-size: 14px;
     color: #666;
     line-height: 1.5;
@@ -183,7 +183,7 @@
 }
 
 /* Event Price */
-.event-price {
+.evt-event-price {
     font-size: 16px;
     font-weight: 700;
     color: #1a1a1a;
@@ -196,11 +196,11 @@
    ALIGNMENT SUPPORT
    ============================================ */
 
-.alignwide .events-grid-container {
+.alignwide .evt-events-grid-container {
     max-width: 1200px;
 }
 
-.alignfull .events-grid-container {
+.alignfull .evt-events-grid-container {
     max-width: 100%;
     padding: 20px;
 }
@@ -209,7 +209,7 @@
    ACCESSIBILITY & INTERACTIONS
    ============================================ */
 
-.event-card:focus-within {
+.evt-event-card:focus-within {
     outline: 2px solid #4169E1;
     outline-offset: 2px;
 }
@@ -221,13 +221,13 @@
 
 /* Print styles */
 @media print {
-    .event-card {
+    .evt-event-card {
         break-inside: avoid;
         box-shadow: none;
         border: 1px solid #ddd;
     }
     
-    .event-card:hover {
+    .evt-event-card:hover {
         transform: none;
     }
 }

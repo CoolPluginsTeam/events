@@ -33,7 +33,7 @@ registerBlockType('evt/events-grid', {
 
     edit: ({ attributes, setAttributes }) => {
         const blockProps = useBlockProps({
-            className: 'events-grid-container'
+            className: 'evt-events-grid-container'
         });
 
         const ALLOWED_BLOCKS = ['evt/event-item'];
@@ -95,7 +95,7 @@ registerBlockType('evt/events-grid', {
 
     save: ({ attributes }) => {
         const blockProps = useBlockProps.save({
-            className: 'events-grid-container',
+            className: 'evt-events-grid-container',
             style: { '--columns': attributes.columns }
         });
 
@@ -158,7 +158,7 @@ registerBlockType('evt/event-item', {
 
     edit: ({ attributes, setAttributes }) => {
         const blockProps = useBlockProps({
-            className: 'event-item'
+            className: 'evt-event-item'
         });
 
         const {
@@ -268,13 +268,13 @@ registerBlockType('evt/event-item', {
 
                 <div {...blockProps}>
                     {/* Event Card */}
-                    <div className="event-card">
+                    <div className="evt-event-card">
                         {/* Event Image */}
-                        <div className="event-image">
+                        <div className="evt-event-image">
                             {eventImageURL ? (
                                 <img src={eventImageURL} alt={eventImageAlt || eventTitle} />
                             ) : (
-                                <div className="event-image-placeholder">
+                                <div className="evt-event-image-placeholder">
                                     <MediaUploadCheck>
                                         <MediaUpload
                                             onSelect={(media) => {
@@ -298,41 +298,41 @@ registerBlockType('evt/event-item', {
 
                             {/* Date Badge Overlay */}
                             {eventDate && (
-                                <div className="event-date-badge">
-                                    <span className="date-day">{dateParts.day}</span>
-                                    <span className="date-month">{dateParts.month}</span>
-                                    <span className="date-weekday">{eventDay || dateParts.dayName}</span>
+                                <div className="evt-event-date-badge">
+                                    <span className="evt-date-day">{dateParts.day}</span>
+                                    <span className="evt-date-month">{dateParts.month}</span>
+                                    <span className="evt-date-weekday">{eventDay || dateParts.dayName}</span>
                                 </div>
                             )}
                         </div>
 
                         {/* Event Details */}
-                        <div className="event-details">
+                        <div className="evt-event-details">
                             <RichText
                                 tagName="h3"
-                                className="event-title"
+                                className="evt-event-title"
                                 value={eventTitle}
                                 onChange={(value) => setAttributes({ eventTitle: value })}
                                 placeholder={__('Event Title', 'event')}
                             />
 
                             {eventDate && (
-                                <div className="event-time">
-                                    <span className="time-icon">🕐</span>
+                                <div className="evt-event-time">
+                                    <span className="evt-time-icon">🕐</span>
                                     <span>{dateParts.time}</span>
                                 </div>
                             )}
 
                             <RichText
                                 tagName="div"
-                                className="event-location"
+                                className="evt-event-location"
                                 value={eventLocation}
                                 onChange={(value) => setAttributes({ eventLocation: value })}
                                 placeholder={__('Event Location', 'event')}
                             />
 
                             {eventPrice && (
-                                <div className="event-price">
+                                <div className="evt-event-price">
                                     {eventPrice}
                                 </div>
                             )}
@@ -345,7 +345,7 @@ registerBlockType('evt/event-item', {
 
     save: ({ attributes }) => {
         const blockProps = useBlockProps.save({
-            className: 'event-item'
+            className: 'evt-event-item'
         });
 
         const {
@@ -378,36 +378,36 @@ registerBlockType('evt/event-item', {
 
         return (
             <div {...blockProps}>
-                <div className="event-card">
+                <div className="evt-event-card">
                     {/* Event Image */}
                     {eventImageURL && (
-                        <div className="event-image">
+                        <div className="evt-event-image">
                             <img src={eventImageURL} alt={eventImageAlt || eventTitle} />
                             
                             {/* Date Badge Overlay */}
                             {eventDate && (
-                                <div className="event-date-badge">
-                                    <span className="date-day">{dateParts.day}</span>
-                                    <span className="date-month">{dateParts.month}</span>
-                                    <span className="date-weekday">{eventDay || dateParts.dayName}</span>
+                                <div className="evt-event-date-badge">
+                                    <span className="evt-date-day">{dateParts.day}</span>
+                                    <span className="evt-date-month">{dateParts.month}</span>
+                                    <span className="evt-date-weekday">{eventDay || dateParts.dayName}</span>
                                 </div>
                             )}
                         </div>
                     )}
 
                     {/* Event Details */}
-                    <div className="event-details">
+                    <div className="evt-event-details">
                         {eventTitle && (
                             <RichText.Content
                                 tagName="h3"
-                                className="event-title"
+                                className="evt-event-title"
                                 value={eventTitle}
                             />
                         )}
 
                         {eventDate && (
-                            <div className="event-time">
-                                <span className="time-icon">🕐</span>
+                            <div className="evt-event-time">
+                                <span className="evt-time-icon">🕐</span>
                                 <span>{dateParts.time}</span>
                             </div>
                         )}
@@ -415,13 +415,13 @@ registerBlockType('evt/event-item', {
                         {eventLocation && (
                             <RichText.Content
                                 tagName="div"
-                                className="event-location"
+                                className="evt-event-location"
                                 value={eventLocation}
                             />
                         )}
 
                         {eventPrice && (
-                            <div className="event-price">
+                            <div className="evt-event-price">
                                 {eventPrice}
                             </div>
                         )}
