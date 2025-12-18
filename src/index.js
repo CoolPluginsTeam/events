@@ -39,6 +39,13 @@ registerBlockType('evt/events-grid', {
         const ALLOWED_BLOCKS = ['evt/event-item'];
         
         // Template with 3 default events
+        // Get image URLs from PHP (passed via wp_localize_script)
+        const pluginImages = (typeof evtPluginData !== 'undefined' && evtPluginData.images) ? evtPluginData.images : {
+            crazyDJ: '',
+            rockBand: '',
+            foodDistribution: ''
+        };
+
         const TEMPLATE = [
             ['evt/event-item', {
                 eventTitle: 'Crazy DJ Experience Santa Cruz',
@@ -46,7 +53,7 @@ registerBlockType('evt/events-grid', {
                 eventDate: '2026-01-06T16:00:00',
                 eventPrice: '$25.00',
                 eventDay: 'TUE',
-                eventImageURL: 'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=800'
+                eventImageURL: pluginImages.crazyDJ
             }],
             ['evt/event-item', {
                 eventTitle: 'Cute Girls Rock Band Performance',
@@ -54,7 +61,7 @@ registerBlockType('evt/events-grid', {
                 eventDate: '2026-04-04T18:30:00',
                 eventPrice: '$20.00',
                 eventDay: 'SAT',
-                eventImageURL: 'https://images.unsplash.com/photo-1511735111819-9a3f7709049c?w=800'
+                eventImageURL: pluginImages.rockBand
             }],
             ['evt/event-item', {
                 eventTitle: 'Free Food Distribution At Mumbai',
@@ -62,7 +69,7 @@ registerBlockType('evt/events-grid', {
                 eventDate: '2026-06-08T19:00:00',
                 eventPrice: '$15.00',
                 eventDay: 'MON',
-                eventImageURL: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800'
+                eventImageURL: pluginImages.foodDistribution
             }]
         ];
 

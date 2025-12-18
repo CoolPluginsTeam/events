@@ -30,6 +30,16 @@ add_action( 'init', function() {
 		true
 	);
 
+	// Pass plugin assets URLs to JavaScript
+	wp_localize_script( 'evt-event', 'evtPluginData', [
+		'pluginUrl' => plugins_url( '', __FILE__ ),
+		'images' => [
+			'crazyDJ' => plugins_url( 'assets/images/crazy-DJ-experience-santa-cruz.webp', __FILE__ ),
+			'rockBand' => plugins_url( 'assets/images/cute-girls-rock-band-performance.webp', __FILE__ ),
+			'foodDistribution' => plugins_url( 'assets/images/free-food-distribution-at-mumbai.webp', __FILE__ ),
+		]
+	] );
+
 	// Block front end style
 	wp_register_style(
 		'evt-event',
