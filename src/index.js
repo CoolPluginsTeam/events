@@ -45,7 +45,6 @@ registerBlockType('evt/events-grid', {
                 eventLocation: 'JW Marriott, Sector 35',
                 eventDate: '2026-01-06T16:00:00',
                 eventPrice: '$25.00',
-                eventDay: 'FRI',
                 eventDay: 'TUE',
                 eventImageURL: 'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=800'
             }],
