@@ -84,6 +84,14 @@ add_action( 'init', function() {
 			'detailsTextColor' => [
 				'type' => 'string',
 				'default' => '#1a1a1a'
+			],
+			'readMoreURL' => [
+				'type' => 'string',
+				'default' => ''
+			],
+			'readMoreText' => [
+				'type' => 'string',
+				'default' => 'Read More'
 			]
 		],
 	] );

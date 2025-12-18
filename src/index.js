@@ -184,6 +184,14 @@ registerBlockType('evt/event-item', {
         detailsTextColor: {
             type: 'string',
             default: '#1a1a1a'
+        },
+        readMoreURL: {
+            type: 'string',
+            default: ''
+        },
+        readMoreText: {
+            type: 'string',
+            default: 'Read More'
         }
     },
 
@@ -203,7 +211,9 @@ registerBlockType('evt/event-item', {
             dateBadgeBackgroundColor,
             dateBadgeTextColor,
             detailsTextColor,
-            weekdayTextColor
+            weekdayTextColor,
+            readMoreURL,
+            readMoreText
         } = attributes;
 
         const blockProps = useBlockProps({
@@ -359,6 +369,26 @@ registerBlockType('evt/event-item', {
                         </PanelRow>
                     </PanelBody>
 
+                    {/* Read More Settings - Only show if content exists */}
+                    {(eventTitle || eventLocation || readMoreURL) && (
+                        <PanelBody title={__('Read More Button', 'event')} initialOpen={false}>
+                            <TextControl
+                                label={__('Button URL', 'event')}
+                                value={readMoreURL}
+                                onChange={(value) => setAttributes({ readMoreURL: value })}
+                                placeholder="https://example.com/event"
+                                help={__('Enter the URL for the Read More button', 'event')}
+                            />
+                            <TextControl
+                                label={__('Button Text', 'event')}
+                                value={readMoreText}
+                                onChange={(value) => setAttributes({ readMoreText: value || 'Read More' })}
+                                placeholder="Read More"
+                                help={__('Customize the button text', 'event')}
+                            />
+                        </PanelBody>
+                    )}
+
                     <PanelBody title={__('Image Settings', 'event')} initialOpen={false}>
                         <MediaUploadCheck>
                             <MediaUpload
@@ -474,11 +504,22 @@ registerBlockType('evt/event-item', {
                                                 placeholder={__('Event Location', 'event')}
                                             />
 
+                                        <div className="evt-price-read-more">
                                             {eventPrice && (
                                                 <div className="evt-event-price">
                                                     {eventPrice}
                                                 </div>
                                             )}
+
+                                            {/* Read More Button - Only show if URL is set */}
+                                            {readMoreURL && (
+                                                <div className="evt-event-read-more">
+                                                    <a href={readMoreURL} target="_blank">
+                                                        {readMoreText || __('Read More', 'event')}
+                                                    </a>
+                                                </div>
+                                            )}
+                                        </div>
                                     </div>
                             </div>
                         </div>
@@ -502,7 +543,9 @@ registerBlockType('evt/event-item', {
             dateBadgeBackgroundColor,
             dateBadgeTextColor,
             weekdayTextColor,
-            detailsTextColor
+            detailsTextColor,
+            readMoreURL,
+            readMoreText
         } = attributes;
 
         const blockProps = useBlockProps.save({
@@ -588,12 +631,22 @@ registerBlockType('evt/event-item', {
                                     value={eventLocation}
                                 />
                             )}
+                            <div className="evt-price-read-more">
+                                {eventPrice && (
+                                    <div className="evt-event-price">
+                                        {eventPrice}
+                                    </div>
+                                )}
 
-                            {eventPrice && (
-                                <div className="evt-event-price">
-                                    {eventPrice}
-                                </div>
-                            )}
+                                {/* Read More Button - Only show if URL is set */}
+                                {readMoreURL && (
+                                    <div className="evt-event-read-more">
+                                        <a href={readMoreURL} target="_blank">
+                                            {readMoreText || __('Read More', 'event')}
+                                        </a>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>
