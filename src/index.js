@@ -46,22 +46,20 @@ registerBlockType('evt/events-grid', {
                 eventDate: '2026-01-06T16:00:00',
                 eventPrice: '$25.00',
                 eventDay: 'FRI',
-                eventImageURL: 'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=800'
                 eventDay: 'TUE',
+                eventImageURL: 'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=800'
             }],
             ['evt/event-item', {
                 eventTitle: 'Cute Girls Rock Band Performance',
                 eventLocation: 'Club XYZ, Sector 17',
                 eventDate: '2026-04-04T18:30:00',
                 eventPrice: '$20.00',
-                eventDay: 'THU',
-                eventImageURL: 'https://images.unsplash.com/photo-1511735111819-9a3f7709049c?w=800'
                 eventDay: 'SAT',
+                eventImageURL: 'https://images.unsplash.com/photo-1511735111819-9a3f7709049c?w=800'
             }],
             ['evt/event-item', {
                 eventTitle: 'Free Food Distribution At Mumbai',
                 eventLocation: 'Food Corp. Mumbai, Ft. Line',
-                eventDate: '2024-11-03T19:00:00',
                 eventDate: '2026-06-08T19:00:00',
                 eventPrice: '$15.00',
                 eventDay: 'MON',
