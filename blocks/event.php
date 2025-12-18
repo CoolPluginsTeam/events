@@ -30,6 +30,10 @@ add_action( 'init', function() {
 				'type' => 'string',
 				'default' => ''
 			],
+			'eventDescription' => [
+				'type' => 'string',
+				'default' => ''
+			],
 			'eventLocation' => [
 				'type' => 'string',
 				'default' => ''

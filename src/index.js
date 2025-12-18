@@ -43,23 +43,26 @@ registerBlockType('evt/events-grid', {
             ['evt/event-item', {
                 eventTitle: 'Crazy DJ Experience Santa Cruz',
                 eventLocation: 'JW Marriott, Sector 35',
-                eventDate: '2024-06-06T16:00:00',
+                eventDate: '2026-01-06T16:00:00',
                 eventPrice: '$25.00',
                 eventDay: 'FRI',
                 eventImageURL: 'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=800'
+                eventDay: 'TUE',
             }],
             ['evt/event-item', {
                 eventTitle: 'Cute Girls Rock Band Performance',
                 eventLocation: 'Club XYZ, Sector 17',
-                eventDate: '2024-10-02T18:30:00',
+                eventDate: '2026-04-04T18:30:00',
                 eventPrice: '$20.00',
                 eventDay: 'THU',
                 eventImageURL: 'https://images.unsplash.com/photo-1511735111819-9a3f7709049c?w=800'
+                eventDay: 'SAT',
             }],
             ['evt/event-item', {
                 eventTitle: 'Free Food Distribution At Mumbai',
                 eventLocation: 'Food Corp. Mumbai, Ft. Line',
                 eventDate: '2024-11-03T19:00:00',
+                eventDate: '2026-06-08T19:00:00',
                 eventPrice: '$15.00',
                 eventDay: 'MON',
                 eventImageURL: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800'
@@ -126,6 +129,10 @@ registerBlockType('evt/event-item', {
 
     attributes: {
         eventTitle: {
+            type: 'string',
+            default: ''
+        },
+        eventDescription: {
             type: 'string',
             default: ''
         },
@@ -214,6 +221,7 @@ registerBlockType('evt/event-item', {
     edit: ({ attributes, setAttributes }) => {
         const {
             eventTitle,
+            eventDescription,
             eventLocation,
             eventDate,
             eventEndDate,
@@ -443,7 +451,7 @@ registerBlockType('evt/event-item', {
                     </PanelBody>
 
                     {/* Read More Settings - Only show if content exists */}
-                    {(eventTitle || eventLocation || readMoreURL) && (
+                    {(eventTitle || eventLocation || eventDescription || readMoreURL) && (
                         <PanelBody title={__('Read More Button', 'event')} initialOpen={false}>
                             <TextControl
                                 label={__('Button URL', 'event')}
@@ -571,6 +579,14 @@ registerBlockType('evt/event-item', {
 
                                             <RichText
                                                 tagName="div"
+                                                className="evt-event-description"
+                                                value={eventDescription}
+                                                onChange={(value) => setAttributes({ eventDescription: value })}
+                                                placeholder={__('Event Description', 'event')}
+                                            />
+
+                                            <RichText
+                                                tagName="div"
                                                 className="evt-event-location"
                                                 value={eventLocation}
                                                 onChange={(value) => setAttributes({ eventLocation: value })}
@@ -604,6 +620,7 @@ registerBlockType('evt/event-item', {
     save: ({ attributes }) => {
         const {
             eventTitle,
+            eventDescription,
             eventLocation,
             eventDate,
             eventEndDate,
@@ -702,6 +719,14 @@ registerBlockType('evt/event-item', {
                                     tagName="h4"
                                     className="evt-event-title"
                                     value={eventTitle}
+                                />
+                            )}
+
+                            {eventDescription && (
+                                <RichText.Content
+                                    tagName="div"
+                                    className="evt-event-description"
+                                    value={eventDescription}
                                 />
                             )}
 
