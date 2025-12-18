@@ -78,6 +78,8 @@ registerBlockType('evt/events-grid', {
                             min={1}
                             max={4}
                             help={__('Number of columns in the grid (1-4)', 'event')}
+                            __nextHasNoMarginBottom={true}
+                            __next40pxDefaultSize={true}
                         />
                     </PanelBody>
                 </InspectorControls>
@@ -261,6 +263,8 @@ registerBlockType('evt/event-item', {
                             value={eventPrice}
                             onChange={(value) => setAttributes({ eventPrice: value })}
                             placeholder="$25.00"
+                            __nextHasNoMarginBottom={true}
+                            __next40pxDefaultSize={true}
                         />
 
                         <TextControl
@@ -268,6 +272,8 @@ registerBlockType('evt/event-item', {
                             value={eventDay || dateParts.dayName}
                             onChange={(value) => setAttributes({ eventDay: value })}
                             help={__('e.g., MON, TUE, FRI', 'event')}
+                            __nextHasNoMarginBottom={true}
+                            __next40pxDefaultSize={true}
                         />
                     </PanelBody>
 
