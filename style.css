@@ -36,7 +36,7 @@
 }
 
 .evt-event-card {
-    background: #ffffff;
+    background-color: var(--evt-details-bg, #ffffff);
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
@@ -102,7 +102,6 @@
         justify-content: start;
         gap: 10px;
         padding: 12px;
-        background-color: var(--evt-details-bg, #ffffff);
 }
 .evt-event-details .evt-event-date-badge-container .evt-event-date-badge {
     background: var(--evt-date-badge-bg, #2667FF);
