@@ -92,6 +92,22 @@ add_action( 'init', function() {
 			'readMoreText' => [
 				'type' => 'string',
 				'default' => 'Read More'
+			],
+			'readMoreButtonColor' => [
+				'type' => 'string',
+				'default' => '#2667FF'
+			],
+			'readMoreButtonTextColor' => [
+				'type' => 'string',
+				'default' => '#ffffff'
+			],
+			'readMoreButtonHoverColor' => [
+				'type' => 'string',
+				'default' => '#2667FF'
+			],
+			'readMoreButtonHoverTextColor' => [
+				'type' => 'string',
+				'default' => '#ffffff'
 			]
 		],
 	] );

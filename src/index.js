@@ -192,6 +192,22 @@ registerBlockType('evt/event-item', {
         readMoreText: {
             type: 'string',
             default: 'Read More'
+        },
+        readMoreButtonColor: {
+            type: 'string',
+            default: '#2667FF'
+        },
+        readMoreButtonTextColor: {
+            type: 'string',
+            default: '#ffffff'
+        },
+        readMoreButtonHoverColor: {
+            type: 'string',
+            default: '#2667FF'
+        },
+        readMoreButtonHoverTextColor: {
+            type: 'string',
+            default: '#ffffff'
         }
     },
 
@@ -213,7 +229,11 @@ registerBlockType('evt/event-item', {
             detailsTextColor,
             weekdayTextColor,
             readMoreURL,
-            readMoreText
+            readMoreText,
+            readMoreButtonColor,
+            readMoreButtonTextColor,
+            readMoreButtonHoverColor,
+            readMoreButtonHoverTextColor
         } = attributes;
 
         const blockProps = useBlockProps({
@@ -224,7 +244,11 @@ registerBlockType('evt/event-item', {
                 '--evt-date-badge-bg': dateBadgeBackgroundColor || '#2667FF',
                 '--evt-date-badge-text': dateBadgeTextColor || '#ffffff',
                 '--evt-details-text': detailsTextColor || '#1a1a1a',
-                '--evt-weekday-text': weekdayTextColor || '#000000'
+                '--evt-weekday-text': weekdayTextColor || '#000000',
+                '--evt-read-more-button-color': readMoreButtonColor || '#4169E1',
+                '--evt-read-more-button-text-color': readMoreButtonTextColor || '#ffffff',
+                '--evt-read-more-button-hover-color': readMoreButtonHoverColor || '#2667FF',
+                '--evt-read-more-button-hover-text-color': readMoreButtonHoverTextColor || '#ffffff'
             }
         });
 
@@ -367,6 +391,55 @@ registerBlockType('evt/event-item', {
                                 />
                             </div>
                         </PanelRow>
+
+                        <PanelRow>
+                            <div style={{ width: '100%', marginTop: '16px' }}>
+                                <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
+                                    {__('Read More Button Color', 'event')}
+                                </label>
+                                <ColorPalette
+                                    value={readMoreButtonColor}
+                                    onChange={(color) => setAttributes({ readMoreButtonColor: color || '#4169E1' })}
+                                />
+                            </div>
+                        </PanelRow>
+
+                        <PanelRow>
+                            <div style={{ width: '100%', marginTop: '16px' }}>
+                                <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
+                                    {__('Read More Button Text Color', 'event')}
+                                </label>
+                                <ColorPalette
+                                    value={readMoreButtonTextColor}
+                                    onChange={(color) => setAttributes({ readMoreButtonTextColor: color || '#ffffff' })}
+                                />
+                            </div>
+                        </PanelRow>
+
+                        <PanelRow>
+                            <div style={{ width: '100%', marginTop: '16px' }}>
+                                <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
+                                    {__('Read More Button Hover Color', 'event')}
+                                </label>
+                                <ColorPalette
+                                    value={readMoreButtonHoverColor}
+                                    onChange={(color) => setAttributes({ readMoreButtonHoverColor: color || '#2667FF' })}
+                                />
+                            </div>
+                        </PanelRow>
+
+                        <PanelRow>
+                            <div style={{ width: '100%', marginTop: '16px' }}>
+                                <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
+                                    {__('Read More Button Hover Text Color', 'event')}
+                                </label>
+                                <ColorPalette
+                                    value={readMoreButtonHoverTextColor}
+                                    onChange={(color) => setAttributes({ readMoreButtonHoverTextColor: color || '#ffffff' })}
+                                />
+                            </div>
+                        </PanelRow>
+
                     </PanelBody>
 
                     {/* Read More Settings - Only show if content exists */}
@@ -545,7 +618,11 @@ registerBlockType('evt/event-item', {
             weekdayTextColor,
             detailsTextColor,
             readMoreURL,
-            readMoreText
+            readMoreText,
+            readMoreButtonColor,
+            readMoreButtonTextColor,
+            readMoreButtonHoverColor,
+            readMoreButtonHoverTextColor
         } = attributes;
 
         const blockProps = useBlockProps.save({
@@ -556,7 +633,11 @@ registerBlockType('evt/event-item', {
                 '--evt-date-badge-bg': dateBadgeBackgroundColor || '#2667FF',
                 '--evt-date-badge-text': dateBadgeTextColor || '#ffffff',
                 '--evt-details-text': detailsTextColor || '#1a1a1a',
-                '--evt-weekday-text': weekdayTextColor || '#000000'
+                '--evt-weekday-text': weekdayTextColor || '#000000',
+                '--evt-read-more-button-color': readMoreButtonColor || '#4169E1',
+                '--evt-read-more-button-text-color': readMoreButtonTextColor || '#ffffff',
+                '--evt-read-more-button-hover-color': readMoreButtonHoverColor || '#2667FF',
+                '--evt-read-more-button-hover-text-color': readMoreButtonHoverTextColor || '#ffffff'
             }
         });
 

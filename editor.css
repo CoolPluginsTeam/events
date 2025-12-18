@@ -215,8 +215,8 @@
 .editor-styles-wrapper .evt-event-read-more a {
     display: inline-block;
     padding: 6px 11px 6px 11px;
-    background-color: #4169E1;
-    color: #ffffff;
+    background-color: var(--evt-read-more-button-color, #2667FF);
+    color: var(--evt-read-more-button-text-color, #ffffff);
     text-decoration: none !IMPORTANT;
     border-radius: 4px;
     font-weight: 500;
@@ -224,9 +224,8 @@
 }
 
 .editor-styles-wrapper .evt-event-read-more a:hover {
-    background-color: #2667FF;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(65, 105, 225, 0.3);
+    background-color: var(--evt-read-more-button-hover-color, #2667FF);
+    color: var(--evt-read-more-button-hover-text-color, #ffffff);
 }
 
 /* ============================================
