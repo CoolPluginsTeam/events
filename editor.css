@@ -2,9 +2,10 @@
    EDITOR STYLES FOR EVENTS GRID
    ============================================ */
 
-   .editor-styles-wrapper .evt-events-grid-container{
-    display: block;
-   }
+.editor-styles-wrapper .evt-events-grid-container{
+  display: block;
+}
+
 /* Grid Container in Editor */
 .editor-styles-wrapper .evt-events-grid-container .block-editor-block-list__layout {
     display: grid;
@@ -121,9 +122,6 @@
     border-radius: 6px;
     padding: 3px;
 }
-.editor-styles-wrapper .evt-event-details .evt-event-date-badge-container .evt-date-weekday {
-    color: var(--evt-weekday-text, #000000);
-}
 
 .editor-styles-wrapper .evt-event-details .evt-event-date-badge-container .evt-event-date-badge .evt-date-day {
     font-size: 21px;
@@ -152,20 +150,14 @@
    EVENT DETAILS IN EDITOR
    ============================================ */
 
-
-/* Event Details Inner - Text Colors */
-.editor-styles-wrapper .evt-event-details-inner {
-    color: var(--evt-details-text, #1a1a1a);
-}
-
 /* Editable Title */
 .editor-styles-wrapper .evt-event-title {
-    font-size: 18px;
-    font-weight: 600;
-    line-height: 1.3;
-    margin: 4px 0px 6px 0px;
-    color: var(--evt-details-text, #1a1a1a);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+    font-size: var(--evt-title-font-size, 18px);
+    font-weight: var(--evt-title-font-weight, 600);
+    line-height: var(--evt-title-line-height, 1.3);
+    margin: var(--evt-title-margin, 4px 0px 6px 0px);
+    color: var(--evt-title-color, #1a1a1a);
+    font-family: var(--evt-title-font-family, 'Inter');
 }
 
 .editor-styles-wrapper .evt-event-title[contenteditable="true"]:focus {
@@ -177,14 +169,47 @@
     color: #999;
 }
 
+/* Event Description */
+.editor-styles-wrapper .evt-event-description {
+    font-size: var(--evt-description-font-size, 14px);
+    font-weight: var(--evt-description-font-weight, 400);
+    line-height: var(--evt-description-line-height, 1.5);
+    margin: var(--evt-description-margin, 0 0 12px 0);
+    color: var(--evt-description-color, #1a1a1a);
+    font-family: var(--evt-description-font-family, 'Inter');
+}
+
+/* Event Date */
+.editor-styles-wrapper .evt-event-details .evt-event-date-badge-container .evt-event-date-badge .evt-date-day {
+    font-size: var(--evt-date-font-size, 21px);
+    font-weight: var(--evt-date-font-weight, 700);
+    line-height: var(--evt-date-line-height, 1);
+    margin: var(--evt-date-margin, 0);
+    color: var(--evt-date-badge-text, #ffffff);
+    font-family: var(--evt-date-font-family, 'Inter');
+}
+
+/* Event Weekday */
+.editor-styles-wrapper .evt-event-details .evt-event-date-badge-container .evt-date-weekday {
+    font-size: var(--evt-weekday-font-size, 12px);
+    font-weight: var(--evt-weekday-font-weight, 500);
+    line-height: var(--evt-weekday-line-height, 1.2);
+    margin: var(--evt-weekday-margin, 0);
+    color: var(--evt-weekday-color, #000000);
+    font-family: var(--evt-weekday-font-family, 'Inter');
+}
+
 /* Event Time */
 .editor-styles-wrapper .evt-event-time {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 14px;
-    color: var(--evt-details-text, #1a1a1a);
-    font-weight: 500;
+    font-size: var(--evt-time-font-size, 14px);
+    font-weight: var(--evt-time-font-weight, 500);
+    line-height: var(--evt-time-line-height, 1.4);
+    margin: var(--evt-time-margin, 0 0 8px 0);
+    color: var(--evt-time-color, #1a1a1a);
+    font-family: var(--evt-time-font-family, 'Inter');
 }
 
 .editor-styles-wrapper .evt-event-time .evt-time-icon {
@@ -194,15 +219,17 @@
 
 /* Editable Location */
 .editor-styles-wrapper .evt-event-location {
-    font-size: 14px;
-    color: var(--evt-details-text, #1a1a1a);
-    line-height: 1.5;
-    margin-bottom: 12px;
+    font-size: var(--evt-location-font-size, 14px);
+    font-weight: var(--evt-location-font-weight, 400);
+    line-height: var(--evt-location-line-height, 1.5);
+    margin: var(--evt-location-margin, 0 0 12px 0);
+    color: var(--evt-location-color, #1a1a1a);
+    font-family: var(--evt-location-font-family, 'Inter');
 }
 
 .editor-styles-wrapper .evt-event-location[contenteditable="true"]:focus {
     outline: none;
-    color: var(--evt-details-text, #1a1a1a);
+    color: var(--evt-location-color, #1a1a1a);
 }
 
 .editor-styles-wrapper .evt-event-location[data-is-placeholder-visible="true"] {
@@ -211,9 +238,12 @@
 
 /* Event Price */
 .editor-styles-wrapper .evt-event-price {
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--evt-details-text, #1a1a1a);
+    font-size: var(--evt-price-font-size, 16px);
+    font-weight: var(--evt-price-font-weight, 700);
+    line-height: var(--evt-price-line-height, 1.4);
+    margin: var(--evt-price-margin, 0);
+    color: var(--evt-price-color, #1a1a1a);
+    font-family: var(--evt-price-font-family, 'Inter');
 }
 
 /* Read More Button */
@@ -226,11 +256,14 @@
     display: inline-block;
     padding: 6px 11px 6px 11px;
     background-color: var(--evt-read-more-button-color, #2667FF);
-    color: var(--evt-read-more-button-text-color, #ffffff);
+    color: var(--evt-readmore-color, #ffffff);
     text-decoration: none !IMPORTANT;
     border-radius: 4px;
-    font-weight: 500;
-    font-size: 13px;
+    font-size: var(--evt-readmore-font-size, 13px);
+    font-weight: var(--evt-readmore-font-weight, 500);
+    line-height: var(--evt-readmore-line-height, 1.4);
+    margin: var(--evt-readmore-margin, 0);
+    font-family: var(--evt-readmore-font-family, 'Inter');
 }
 
 .editor-styles-wrapper .evt-event-read-more a:hover {
