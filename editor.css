@@ -2,6 +2,9 @@
    EDITOR STYLES FOR EVENTS GRID
    ============================================ */
 
+   .editor-styles-wrapper .evt-events-grid-container{
+    display: block;
+   }
 /* Grid Container in Editor */
 .editor-styles-wrapper .evt-events-grid-container .block-editor-block-list__layout {
     display: grid;
@@ -9,6 +12,14 @@
     gap: 30px;
     padding: 20px 0;
     margin: 0;
+    align-items: stretch;
+}
+
+/* Ensure appender participates in grid */
+.editor-styles-wrapper .evt-events-grid-container .block-editor-block-list__layout > .block-list-appender {
+    display: grid;
+    grid-column: auto;
+    position: relative !important;
 }
 
 /* Editor responsive */
@@ -231,23 +242,88 @@
    BLOCK APPENDER & INSERTER
    ============================================ */
 
-.editor-styles-wrapper .evt-events-grid-container .block-list-appender {
-    grid-column: 1 / -1;
-    margin: 20px 0;
-}
+/* Grid Layout me Appender ko properly position karna */
 
 .editor-styles-wrapper .evt-events-grid-container .block-editor-button-block-appender {
-    background: #f0f0f0;
-    border: 2px dashed #ccc;
+    width: 100%;
+    height: 100%;
+    border: 2px dashed #cdceff;
+    box-shadow: none;
     border-radius: 8px;
-    padding: 40px;
-    text-align: center;
-    transition: all 0.2s ease;
 }
 
+/* Hide default button text */
+.editor-styles-wrapper .evt-events-grid-container .block-editor-button-block-appender > *:not(svg) {
+    display: none;
+}
+
+.editor-styles-wrapper .evt-events-grid-container .block-editor-button-block-appender::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(65, 105, 225, 0.05) 0%, rgba(38, 103, 255, 0.05) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
 .editor-styles-wrapper .evt-events-grid-container .block-editor-button-block-appender:hover {
-    background: #e8e8e8;
-    border-color: #4169E1;
+    border: 2px dashed #b1b3ff;
+}
+
+.editor-styles-wrapper .evt-events-grid-container .block-editor-button-block-appender:hover::before {
+    opacity: 1;
+}
+
+/* Plus Icon Styling */
+.editor-styles-wrapper .evt-events-grid-container .block-editor-button-block-appender svg {
+    width: 45px;
+    height: 45px;
+    fill: #abaff5;
+}
+
+.editor-styles-wrapper .evt-events-grid-container .block-editor-button-block-appender:hover svg {
+    fill: #b1b3ff;
+}
+
+/* Button Text (if any) */
+.editor-styles-wrapper .evt-events-grid-container .block-editor-button-block-appender::after {
+    content: 'Add Event';
+    color: #abaff5;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.editor-styles-wrapper .evt-events-grid-container .block-editor-button-block-appender:hover::after {
+    color: #b1b3ff;
+}
+
+/* Remove default button styles */
+.editor-styles-wrapper .evt-events-grid-container .block-editor-button-block-appender:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(65, 105, 225, 0.2);
+}
+
+.editor-styles-wrapper .evt-events-grid-container .block-editor-button-block-appender:active {
+    transform: translateY(0);
+}
+
+/* Responsive Appender Button */
+@media (max-width: 782px) {
+    .editor-styles-wrapper .evt-events-grid-container .block-editor-button-block-appender {
+        min-height: 300px;
+    }
+    
+    .editor-styles-wrapper .evt-events-grid-container .block-editor-button-block-appender svg {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .editor-styles-wrapper .evt-events-grid-container .block-editor-button-block-appender::after {
+        font-size: 13px;
+    }
 }
 
 /* ============================================
