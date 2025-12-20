@@ -192,7 +192,7 @@ add_action( 'init', function() {
 			],
 			'timeMargin' => [
 				'type' => 'string',
-				'default' => '0 0 8px 0'
+				'default' => '0'
 			],
 			'timeColor' => [
 				'type' => 'string',

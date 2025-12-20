@@ -78,13 +78,4 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 == Changelog ==
 
 = 1.0 - 17 December 2025 =
-* Initial release with modern grid layout
-* Multiple events support with parent-child block structure
-* Beautiful event cards with image and date badge overlay
-* Responsive grid (1-4 columns, auto-adjusts for mobile)
-* Default content with 3 pre-filled sample events
-* Event date & time picker
-* Event pricing display
-* Featured image support for each event
-* Hover effects and modern animations
-* Fully responsive and mobile-friendly
+* Initial release

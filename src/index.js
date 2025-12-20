@@ -4,7 +4,7 @@ import { PanelBody, Button, TextControl, DateTimePicker, PanelRow, SelectControl
 import { __ } from '@wordpress/i18n';
 import { dateI18n, format, getSettings } from '@wordpress/date';
 
-// Font Families List (100 fonts) - Alphabetically Sorted
+// Font Families List (100 fonts)
 const FONT_FAMILIES = [
     { label: 'Almarai', value: 'Almarai, sans-serif' },
     { label: 'Amiri', value: 'Amiri, serif' },
@@ -174,9 +174,7 @@ const eventIcon = (
     </svg>
 );
 
-// ============================================
 // PARENT BLOCK: Events Grid Container
-// ============================================
 registerBlockType('evt/events-grid', {
     title: __('Events Grid', 'event'),
     description: __('Display multiple events in a modern grid layout', 'event'),
@@ -202,7 +200,6 @@ registerBlockType('evt/events-grid', {
         const ALLOWED_BLOCKS = ['evt/event-item'];
         
         // Template with 3 default events
-        // Get image URLs from PHP (passed via wp_localize_script)
         const pluginImages = (typeof evtPluginData !== 'undefined' && evtPluginData.images) ? evtPluginData.images : {
             crazyDJ: '',
             rockBand: '',
@@ -279,15 +276,13 @@ registerBlockType('evt/events-grid', {
     }
 });
 
-// ============================================
 // CHILD BLOCK: Individual Event Item
-// ============================================
 registerBlockType('evt/event-item', {
     title: __('Event Item', 'event'),
     description: __('Single event card with image, date, and details', 'event'),
     icon: eventIcon,
     category: 'widgets',
-    parent: ['evt/events-grid'], // Can only be added inside events-grid
+    parent: ['evt/events-grid'],
     
     supports: {
         reusable: false,
@@ -463,7 +458,7 @@ registerBlockType('evt/event-item', {
         },
         timeMargin: {
             type: 'string',
-            default: '0 0 8px 0'
+            default: '0'
         },
         timeColor: {
             type: 'string',
@@ -682,7 +677,7 @@ registerBlockType('evt/event-item', {
                 '--evt-time-font-size': timeFontSize || '14px',
                 '--evt-time-font-weight': timeFontWeight || '500',
                 '--evt-time-line-height': timeLineHeight || '1.4',
-                '--evt-time-margin': timeMargin || '0 0 8px 0',
+                '--evt-time-margin': timeMargin || '0',
                 '--evt-time-color': timeColor || '#1a1a1a',
                 '--evt-time-font-family': timeFontFamily || 'Inter',
                 '--evt-location-font-size': locationFontSize || '14px',
@@ -1132,7 +1127,7 @@ registerBlockType('evt/event-item', {
                             label={__('Margin', 'event')}
                             value={timeMargin || '0 0 8px 0'}
                             onChange={(value) => setAttributes({ timeMargin: value })}
-                            placeholder="0 0 8px 0"
+                            placeholder="0"
                         />
                         <PanelRow>
                             <div style={{ width: '100%', marginTop: '16px' }}>
@@ -1564,7 +1559,7 @@ registerBlockType('evt/event-item', {
                 '--evt-time-font-size': timeFontSize || '14px',
                 '--evt-time-font-weight': timeFontWeight || '500',
                 '--evt-time-line-height': timeLineHeight || '1.4',
-                '--evt-time-margin': timeMargin || '0 0 8px 0',
+                '--evt-time-margin': timeMargin || '0',
                 '--evt-time-color': timeColor || '#1a1a1a',
                 '--evt-time-font-family': timeFontFamily || 'Inter',
                 '--evt-location-font-size': locationFontSize || '14px',
