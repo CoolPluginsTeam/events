@@ -34,6 +34,13 @@
         gap: 20px;
     }
 }
+@media (max-width: 768px) {
+    .editor-styles-wrapper .evt-events-grid-container .block-editor-block-list__layout {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 10px;
+    }
+}
 /* EVENT ITEM IN EDITOR */
 .editor-styles-wrapper .evt-event-item {
     width: 100%;

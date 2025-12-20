@@ -174,6 +174,125 @@ const eventIcon = (
     </svg>
 );
 
+// Helper function to generate CSS variables from attributes
+const getEventItemStyles = (attributes) => {
+    const {
+        detailsBackgroundColor,
+        borderBadgeColor,
+        dateBadgeBackgroundColor,
+        dateBadgeTextColor,
+        titleFontSize,
+        titleFontWeight,
+        titleLineHeight,
+        titleMargin,
+        titleColor,
+        titleFontFamily,
+        descriptionFontSize,
+        descriptionFontWeight,
+        descriptionLineHeight,
+        descriptionMargin,
+        descriptionColor,
+        descriptionFontFamily,
+        dateFontSize,
+        dateFontWeight,
+        dateLineHeight,
+        dateMargin,
+        dateColor,
+        dateFontFamily,
+        weekdayFontSize,
+        weekdayFontWeight,
+        weekdayLineHeight,
+        weekdayMargin,
+        weekdayColor,
+        weekdayFontFamily,
+        timeFontSize,
+        timeFontWeight,
+        timeLineHeight,
+        timeMargin,
+        timeColor,
+        timeFontFamily,
+        locationFontSize,
+        locationFontWeight,
+        locationLineHeight,
+        locationMargin,
+        locationColor,
+        locationFontFamily,
+        priceFontSize,
+        priceFontWeight,
+        priceLineHeight,
+        priceMargin,
+        priceColor,
+        priceFontFamily,
+        readMoreButtonColor,
+        readMoreButtonHoverColor,
+        readMoreButtonHoverTextColor,
+        readMoreFontSize,
+        readMoreFontWeight,
+        readMoreLineHeight,
+        readMoreMargin,
+        readMoreColor,
+        readMoreFontFamily
+    } = attributes;
+
+    return {
+        '--evt-details-bg': detailsBackgroundColor || '#ffffff',
+        '--evt-border-color': borderBadgeColor || '#00000040',
+        '--evt-date-badge-bg': dateBadgeBackgroundColor || '#2667FF',
+        '--evt-date-badge-text': dateBadgeTextColor || '#ffffff',
+        '--evt-title-font-size': titleFontSize || '18px',
+        '--evt-title-font-weight': titleFontWeight || '600',
+        '--evt-title-line-height': titleLineHeight || '1.3',
+        '--evt-title-margin': titleMargin || '4px 0px 6px 0px',
+        '--evt-title-color': titleColor || '#1a1a1a',
+        '--evt-title-font-family': titleFontFamily || 'Inter',
+        '--evt-description-font-size': descriptionFontSize || '14px',
+        '--evt-description-font-weight': descriptionFontWeight || '400',
+        '--evt-description-line-height': descriptionLineHeight || '1.5',
+        '--evt-description-margin': descriptionMargin || '0 0 12px 0',
+        '--evt-description-color': descriptionColor || '#1a1a1a',
+        '--evt-description-font-family': descriptionFontFamily || 'Inter',
+        '--evt-date-font-size': dateFontSize || '21px',
+        '--evt-date-font-weight': dateFontWeight || '700',
+        '--evt-date-line-height': dateLineHeight || '1',
+        '--evt-date-margin': dateMargin || '0',
+        '--evt-date-color': dateColor || '#ffffff',
+        '--evt-date-font-family': dateFontFamily || 'Inter',
+        '--evt-weekday-font-size': weekdayFontSize || '12px',
+        '--evt-weekday-font-weight': weekdayFontWeight || '500',
+        '--evt-weekday-line-height': weekdayLineHeight || '1.2',
+        '--evt-weekday-margin': weekdayMargin || '0',
+        '--evt-weekday-color': weekdayColor || '#000000',
+        '--evt-weekday-font-family': weekdayFontFamily || 'Inter',
+        '--evt-time-font-size': timeFontSize || '14px',
+        '--evt-time-font-weight': timeFontWeight || '500',
+        '--evt-time-line-height': timeLineHeight || '1.4',
+        '--evt-time-margin': timeMargin || '0',
+        '--evt-time-color': timeColor || '#1a1a1a',
+        '--evt-time-font-family': timeFontFamily || 'Inter',
+        '--evt-location-font-size': locationFontSize || '14px',
+        '--evt-location-font-weight': locationFontWeight || '400',
+        '--evt-location-line-height': locationLineHeight || '1.5',
+        '--evt-location-margin': locationMargin || '0 0 12px 0',
+        '--evt-location-color': locationColor || '#1a1a1a',
+        '--evt-location-font-family': locationFontFamily || 'Inter',
+        '--evt-price-font-size': priceFontSize || '16px',
+        '--evt-price-font-weight': priceFontWeight || '700',
+        '--evt-price-line-height': priceLineHeight || '1.4',
+        '--evt-price-margin': priceMargin || '0',
+        '--evt-price-color': priceColor || '#1a1a1a',
+        '--evt-price-font-family': priceFontFamily || 'Inter',
+        '--evt-read-more-button-color': readMoreButtonColor || '#4169E1',
+        '--evt-read-more-button-hover-color': readMoreButtonHoverColor || '#2667FF',
+        '--evt-read-more-button-hover-text-color': readMoreButtonHoverTextColor || '#ffffff',
+        '--evt-readmore-font-size': readMoreFontSize || '13px',
+        '--evt-readmore-font-weight': readMoreFontWeight || '500',
+        '--evt-readmore-line-height': readMoreLineHeight || '1.4',
+        '--evt-readmore-margin': readMoreMargin || '0',
+        '--evt-readmore-color': readMoreColor || '#ffffff',
+        '--evt-readmore-font-family': readMoreFontFamily || 'Inter'
+    };
+};
+
 // PARENT BLOCK: Events Grid Container
 registerBlockType('evt/events-grid', {
     title: __('Events Grid', 'event'),
@@ -578,130 +697,13 @@ registerBlockType('evt/event-item', {
             eventImageID,
             eventImageAlt,
             detailsBackgroundColor,
-            // Typography - Title
-            titleFontSize,
-            titleFontWeight,
-            titleLineHeight,
-            titleMargin,
-            titleColor,
-            titleFontFamily,
-            // Typography - Description
-            descriptionFontSize,
-            descriptionFontWeight,
-            descriptionLineHeight,
-            descriptionMargin,
-            descriptionColor,
-            descriptionFontFamily,
-            // Typography - Date
-            borderBadgeColor,
-            dateBadgeBackgroundColor,
-            dateBadgeTextColor,
-            dateFontSize,
-            dateFontWeight,
-            dateLineHeight,
-            dateMargin,
-            dateFontFamily,
-            // Typography - Weekday
-            weekdayFontSize,
-            weekdayFontWeight,
-            weekdayLineHeight,
-            weekdayMargin,
-            weekdayColor,
-            weekdayFontFamily,
-            // Typography - Time
-            timeFontSize,
-            timeFontWeight,
-            timeLineHeight,
-            timeMargin,
-            timeColor,
-            timeFontFamily,
-            // Typography - Location
-            locationFontSize,
-            locationFontWeight,
-            locationLineHeight,
-            locationMargin,
-            locationColor,
-            locationFontFamily,
-            // Typography - Price
-            priceFontSize,
-            priceFontWeight,
-            priceLineHeight,
-            priceMargin,
-            priceColor,
-            priceFontFamily,
-            // Typography - Read More
             readMoreURL,
-            readMoreText,
-            readMoreButtonColor,
-            readMoreButtonHoverColor,
-            readMoreButtonHoverTextColor,
-            readMoreFontSize,
-            readMoreFontWeight,
-            readMoreLineHeight,
-            readMoreMargin,
-            readMoreColor,
-            readMoreFontFamily
+            readMoreText
         } = attributes;
 
         const blockProps = useBlockProps({
             className: 'evt-event-item',
-            style: {
-                '--evt-details-bg': detailsBackgroundColor || '#ffffff',
-                // Typography CSS Variables
-                '--evt-title-font-size': titleFontSize || '18px',
-                '--evt-title-font-weight': titleFontWeight || '600',
-                '--evt-title-line-height': titleLineHeight || '1.3',
-                '--evt-title-margin': titleMargin || '4px 0px 6px 0px',
-                '--evt-title-color': titleColor || '#1a1a1a',
-                '--evt-title-font-family': titleFontFamily || 'Inter',
-                '--evt-description-font-size': descriptionFontSize || '14px',
-                '--evt-description-font-weight': descriptionFontWeight || '400',
-                '--evt-description-line-height': descriptionLineHeight || '1.5',
-                '--evt-description-margin': descriptionMargin || '0 0 12px 0',
-                '--evt-description-color': descriptionColor || '#1a1a1a',
-                '--evt-description-font-family': descriptionFontFamily || 'Inter',
-                '--evt-border-color': borderBadgeColor || '#00000040',
-                '--evt-date-badge-bg': dateBadgeBackgroundColor || '#2667FF',
-                '--evt-date-badge-text': dateBadgeTextColor || '#ffffff',
-                '--evt-date-font-size': dateFontSize || '21px',
-                '--evt-date-font-weight': dateFontWeight || '700',
-                '--evt-date-line-height': dateLineHeight || '1',
-                '--evt-date-margin': dateMargin || '0',
-                '--evt-date-font-family': dateFontFamily || 'Inter',
-                '--evt-weekday-font-size': weekdayFontSize || '12px',
-                '--evt-weekday-font-weight': weekdayFontWeight || '500',
-                '--evt-weekday-line-height': weekdayLineHeight || '1.2',
-                '--evt-weekday-margin': weekdayMargin || '0',
-                '--evt-weekday-color': weekdayColor || '#000000',
-                '--evt-weekday-font-family': weekdayFontFamily || 'Inter',
-                '--evt-time-font-size': timeFontSize || '14px',
-                '--evt-time-font-weight': timeFontWeight || '500',
-                '--evt-time-line-height': timeLineHeight || '1.4',
-                '--evt-time-margin': timeMargin || '0',
-                '--evt-time-color': timeColor || '#1a1a1a',
-                '--evt-time-font-family': timeFontFamily || 'Inter',
-                '--evt-location-font-size': locationFontSize || '14px',
-                '--evt-location-font-weight': locationFontWeight || '400',
-                '--evt-location-line-height': locationLineHeight || '1.5',
-                '--evt-location-margin': locationMargin || '0 0 12px 0',
-                '--evt-location-color': locationColor || '#1a1a1a',
-                '--evt-location-font-family': locationFontFamily || 'Inter',
-                '--evt-price-font-size': priceFontSize || '16px',
-                '--evt-price-font-weight': priceFontWeight || '700',
-                '--evt-price-line-height': priceLineHeight || '1.4',
-                '--evt-price-margin': priceMargin || '0',
-                '--evt-price-color': priceColor || '#1a1a1a',
-                '--evt-price-font-family': priceFontFamily || 'Inter',
-                '--evt-read-more-button-color': readMoreButtonColor || '#4169E1',
-                '--evt-read-more-button-hover-color': readMoreButtonHoverColor || '#2667FF',
-                '--evt-read-more-button-hover-text-color': readMoreButtonHoverTextColor || '#ffffff',
-                '--evt-readmore-font-size': readMoreFontSize || '13px',
-                '--evt-readmore-font-weight': readMoreFontWeight || '500',
-                '--evt-readmore-line-height': readMoreLineHeight || '1.4',
-                '--evt-readmore-margin': readMoreMargin || '0',
-                '--evt-readmore-color': readMoreColor || '#ffffff',
-                '--evt-readmore-font-family': readMoreFontFamily || 'Inter'
-            }
+            style: getEventItemStyles(attributes)
         });
 
         // Get formatted date parts
@@ -833,6 +835,8 @@ registerBlockType('evt/event-item', {
                                 onChange={(value) => setAttributes({ readMoreURL: value })}
                                 placeholder="https://example.com/event"
                                 help={__('Enter the URL for the Read More button', 'event')}
+                                __next40pxDefaultSize={true}
+                                __nextHasNoMarginBottom={true}
                             />
                             <TextControl
                                 label={__('Button Text', 'event')}
@@ -840,6 +844,8 @@ registerBlockType('evt/event-item', {
                                 onChange={(value) => setAttributes({ readMoreText: value || 'Read More' })}
                                 placeholder="Read More"
                                 help={__('Customize the button text', 'event')}
+                                __next40pxDefaultSize={true}
+                                __nextHasNoMarginBottom={true}
                             />
                         </PanelBody>
                     )}
@@ -848,19 +854,23 @@ registerBlockType('evt/event-item', {
                     <PanelBody title={__('Title Typography', 'event')} initialOpen={false}>
                         <SelectControl
                             label={__('Font Family', 'event')}
-                            value={titleFontFamily || 'Inter'}
+                            value={attributes.titleFontFamily || 'Inter'}
                             options={FONT_FAMILIES}
                             onChange={(value) => setAttributes({ titleFontFamily: value })}
+                            __next40pxDefaultSize={true}
+                            __nextHasNoMarginBottom={true}
                         />
                         <TextControl
                             label={__('Font Size', 'event')}
-                            value={titleFontSize || '18px'}
+                            value={attributes.titleFontSize || '18px'}
                             onChange={(value) => setAttributes({ titleFontSize: value })}
                             placeholder="18px"
+                            __next40pxDefaultSize={true}
+                            __nextHasNoMarginBottom={true}
                         />
                         <SelectControl
                             label={__('Font Weight', 'event')}
-                            value={titleFontWeight || '600'}
+                            value={attributes.titleFontWeight || '600'}
                             options={[
                                 { label: '100 - Thin', value: '100' },
                                 { label: '200 - Extra Light', value: '200' },
@@ -873,19 +883,25 @@ registerBlockType('evt/event-item', {
                                 { label: '900 - Black', value: '900' }
                             ]}
                             onChange={(value) => setAttributes({ titleFontWeight: value })}
+                            __next40pxDefaultSize={true}
+                            __nextHasNoMarginBottom={true}
                         />
                         <TextControl
                             label={__('Line Height', 'event')}
-                            value={titleLineHeight || '1.3'}
+                            value={attributes.titleLineHeight || '1.3'}
                             onChange={(value) => setAttributes({ titleLineHeight: value })}
                             placeholder="1.3"
+                            __next40pxDefaultSize={true}
+                            __nextHasNoMarginBottom={true}
                         />
                         <TextControl
                             label={__('Margin', 'event')}
-                            value={titleMargin || '4px 0px 6px 0px'}
+                            value={attributes.titleMargin || '4px 0px 6px 0px'}
                             onChange={(value) => setAttributes({ titleMargin: value })}
                             placeholder="4px 0px 6px 0px"
                             help={__('Format: top right bottom left', 'event')}
+                            __next40pxDefaultSize={true}
+                            __nextHasNoMarginBottom={true}
                         />
                         <PanelRow>
                             <div style={{ width: '100%', marginTop: '16px' }}>
@@ -893,7 +909,7 @@ registerBlockType('evt/event-item', {
                                     {__('Text Color', 'event')}
                                 </label>
                                 <ColorPalette
-                                    value={titleColor}
+                                    value={attributes.titleColor}
                                     onChange={(color) => setAttributes({ titleColor: color || '#1a1a1a' })}
                                 />
                             </div>
@@ -904,19 +920,23 @@ registerBlockType('evt/event-item', {
                     <PanelBody title={__('Description Typography', 'event')} initialOpen={false}>
                         <SelectControl
                             label={__('Font Family', 'event')}
-                            value={descriptionFontFamily || 'Inter'}
+                            value={attributes.descriptionFontFamily || 'Inter'}
                             options={FONT_FAMILIES}
                             onChange={(value) => setAttributes({ descriptionFontFamily: value })}
+                            __next40pxDefaultSize={true}
+                            __nextHasNoMarginBottom={true}
                         />
                         <TextControl
                             label={__('Font Size', 'event')}
-                            value={descriptionFontSize || '14px'}
+                            value={attributes.descriptionFontSize || '14px'}
                             onChange={(value) => setAttributes({ descriptionFontSize: value })}
                             placeholder="14px"
+                            __next40pxDefaultSize={true}
+                            __nextHasNoMarginBottom={true}
                         />
                         <SelectControl
                             label={__('Font Weight', 'event')}
-                            value={descriptionFontWeight || '400'}
+                            value={attributes.descriptionFontWeight || '400'}
                             options={[
                                 { label: '100 - Thin', value: '100' },
                                 { label: '200 - Extra Light', value: '200' },
@@ -929,18 +949,24 @@ registerBlockType('evt/event-item', {
                                 { label: '900 - Black', value: '900' }
                             ]}
                             onChange={(value) => setAttributes({ descriptionFontWeight: value })}
+                            __next40pxDefaultSize={true}
+                            __nextHasNoMarginBottom={true}
                         />
                         <TextControl
                             label={__('Line Height', 'event')}
-                            value={descriptionLineHeight || '1.5'}
+                            value={attributes.descriptionLineHeight || '1.5'}
                             onChange={(value) => setAttributes({ descriptionLineHeight: value })}
                             placeholder="1.5"
+                            __next40pxDefaultSize={true}
+                            __nextHasNoMarginBottom={true}
                         />
                         <TextControl
                             label={__('Margin', 'event')}
-                            value={descriptionMargin || '0 0 12px 0'}
+                            value={attributes.descriptionMargin || '0 0 12px 0'}
                             onChange={(value) => setAttributes({ descriptionMargin: value })}
                             placeholder="0 0 12px 0"
+                            __next40pxDefaultSize={true}
+                            __nextHasNoMarginBottom={true}
                         />
                         <PanelRow>
                             <div style={{ width: '100%', marginTop: '16px' }}>
@@ -948,7 +974,7 @@ registerBlockType('evt/event-item', {
                                     {__('Text Color', 'event')}
                                 </label>
                                 <ColorPalette
-                                    value={descriptionColor}
+                                    value={attributes.descriptionColor}
                                     onChange={(color) => setAttributes({ descriptionColor: color || '#1a1a1a' })}
                                 />
                             </div>
@@ -959,19 +985,23 @@ registerBlockType('evt/event-item', {
                     <PanelBody title={__('Date Typography', 'event')} initialOpen={false}>
                         <SelectControl
                             label={__('Font Family', 'event')}
-                            value={dateFontFamily || 'Inter'}
+                            value={attributes.dateFontFamily || 'Inter'}
                             options={FONT_FAMILIES}
                             onChange={(value) => setAttributes({ dateFontFamily: value })}
+                            __next40pxDefaultSize={true}
+                            __nextHasNoMarginBottom={true}
                         />
                         <TextControl
                             label={__('Font Size', 'event')}
-                            value={dateFontSize || '21px'}
+                            value={attributes.dateFontSize || '21px'}
                             onChange={(value) => setAttributes({ dateFontSize: value })}
                             placeholder="21px"
+                            __next40pxDefaultSize={true}
+                            __nextHasNoMarginBottom={true}
                         />
                         <SelectControl
                             label={__('Font Weight', 'event')}
-                            value={dateFontWeight || '700'}
+                            value={attributes.dateFontWeight || '700'}
                             options={[
                                 { label: '100 - Thin', value: '100' },
                                 { label: '200 - Extra Light', value: '200' },
@@ -984,18 +1014,24 @@ registerBlockType('evt/event-item', {
                                 { label: '900 - Black', value: '900' }
                             ]}
                             onChange={(value) => setAttributes({ dateFontWeight: value })}
+                            __next40pxDefaultSize={true}
+                            __nextHasNoMarginBottom={true}
                         />
                         <TextControl
                             label={__('Line Height', 'event')}
-                            value={dateLineHeight || '1'}
+                            value={attributes.dateLineHeight || '1'}
                             onChange={(value) => setAttributes({ dateLineHeight: value })}
                             placeholder="1"
+                            __next40pxDefaultSize={true}
+                            __nextHasNoMarginBottom={true}
                         />
                         <TextControl
                             label={__('Margin', 'event')}
-                            value={dateMargin || '0'}
+                            value={attributes.dateMargin || '0'}
                             onChange={(value) => setAttributes({ dateMargin: value })}
                             placeholder="0"
+                            __next40pxDefaultSize={true}
+                            __nextHasNoMarginBottom={true}
                         />
                         <PanelRow>
                             <div style={{ width: '100%', marginTop: '16px' }}>
@@ -1003,7 +1039,7 @@ registerBlockType('evt/event-item', {
                                     {__('Date Border Color', 'event')}
                                 </label>
                                 <ColorPalette
-                                    value={borderBadgeColor}
+                                    value={attributes.borderBadgeColor}
                                     onChange={(color) => setAttributes({ borderBadgeColor: color || '#00000040' })}
                                 />
                             </div>
@@ -1014,7 +1050,7 @@ registerBlockType('evt/event-item', {
                                     {__('Date Background Color', 'event')}
                                 </label>
                                 <ColorPalette
-                                    value={dateBadgeBackgroundColor}
+                                    value={attributes.dateBadgeBackgroundColor}
                                     onChange={(color) => setAttributes({ dateBadgeBackgroundColor: color || '#2667FF' })}
                                 />
                             </div>
@@ -1025,7 +1061,7 @@ registerBlockType('evt/event-item', {
                                     {__('Date Text Color', 'event')}
                                 </label>
                                 <ColorPalette
-                                    value={dateBadgeTextColor}
+                                    value={attributes.dateBadgeTextColor}
                                     onChange={(color) => setAttributes({ dateBadgeTextColor: color || '#ffffff' })}
                                 />
                             </div>
@@ -1036,19 +1072,23 @@ registerBlockType('evt/event-item', {
                     <PanelBody title={__('Weekday Typography', 'event')} initialOpen={false}>
                         <SelectControl
                             label={__('Font Family', 'event')}
-                            value={weekdayFontFamily || 'Inter'}
+                            value={attributes.weekdayFontFamily || 'Inter'}
                             options={FONT_FAMILIES}
                             onChange={(value) => setAttributes({ weekdayFontFamily: value })}
+                            __next40pxDefaultSize={true}
+                            __nextHasNoMarginBottom={true}
                         />
                         <TextControl
                             label={__('Font Size', 'event')}
-                            value={weekdayFontSize || '12px'}
+                            value={attributes.weekdayFontSize || '12px'}
                             onChange={(value) => setAttributes({ weekdayFontSize: value })}
                             placeholder="12px"
+                            __next40pxDefaultSize={true}
+                            __nextHasNoMarginBottom={true}
                         />
                         <SelectControl
                             label={__('Font Weight', 'event')}
-                            value={weekdayFontWeight || '500'}
+                            value={attributes.weekdayFontWeight || '500'}
                             options={[
                                 { label: '100 - Thin', value: '100' },
                                 { label: '200 - Extra Light', value: '200' },
@@ -1061,18 +1101,24 @@ registerBlockType('evt/event-item', {
                                 { label: '900 - Black', value: '900' }
                             ]}
                             onChange={(value) => setAttributes({ weekdayFontWeight: value })}
+                            __next40pxDefaultSize={true}
+                            __nextHasNoMarginBottom={true}
                         />
                         <TextControl
                             label={__('Line Height', 'event')}
-                            value={weekdayLineHeight || '1.2'}
+                            value={attributes.weekdayLineHeight || '1.2'}
                             onChange={(value) => setAttributes({ weekdayLineHeight: value })}
                             placeholder="1.2"
+                            __next40pxDefaultSize={true}
+                            __nextHasNoMarginBottom={true}
                         />
                         <TextControl
                             label={__('Margin', 'event')}
-                            value={weekdayMargin || '0'}
+                            value={attributes.weekdayMargin || '0'}
                             onChange={(value) => setAttributes({ weekdayMargin: value })}
                             placeholder="0"
+                            __next40pxDefaultSize={true}
+                            __nextHasNoMarginBottom={true}
                         />
                         <PanelRow>
                             <div style={{ width: '100%', marginTop: '16px' }}>
@@ -1080,7 +1126,7 @@ registerBlockType('evt/event-item', {
                                     {__('Text Color', 'event')}
                                 </label>
                                 <ColorPalette
-                                    value={weekdayColor}
+                                    value={attributes.weekdayColor}
                                     onChange={(color) => setAttributes({ weekdayColor: color || '#000000' })}
                                 />
                             </div>
@@ -1091,19 +1137,23 @@ registerBlockType('evt/event-item', {
                     <PanelBody title={__('Time Typography', 'event')} initialOpen={false}>
                         <SelectControl
                             label={__('Font Family', 'event')}
-                            value={timeFontFamily || 'Inter'}
+                            value={attributes.timeFontFamily || 'Inter'}
                             options={FONT_FAMILIES}
                             onChange={(value) => setAttributes({ timeFontFamily: value })}
+                            __next40pxDefaultSize={true}
+                            __nextHasNoMarginBottom={true}
                         />
                         <TextControl
                             label={__('Font Size', 'event')}
-                            value={timeFontSize || '14px'}
+                            value={attributes.timeFontSize || '14px'}
                             onChange={(value) => setAttributes({ timeFontSize: value })}
                             placeholder="14px"
+                            __next40pxDefaultSize={true}
+                            __nextHasNoMarginBottom={true}
                         />
                         <SelectControl
                             label={__('Font Weight', 'event')}
-                            value={timeFontWeight || '500'}
+                            value={attributes.timeFontWeight || '500'}
                             options={[
                                 { label: '100 - Thin', value: '100' },
                                 { label: '200 - Extra Light', value: '200' },
@@ -1116,18 +1166,24 @@ registerBlockType('evt/event-item', {
                                 { label: '900 - Black', value: '900' }
                             ]}
                             onChange={(value) => setAttributes({ timeFontWeight: value })}
+                            __next40pxDefaultSize={true}
+                            __nextHasNoMarginBottom={true}
                         />
                         <TextControl
                             label={__('Line Height', 'event')}
-                            value={timeLineHeight || '1.4'}
+                            value={attributes.timeLineHeight || '1.4'}
                             onChange={(value) => setAttributes({ timeLineHeight: value })}
                             placeholder="1.4"
+                            __next40pxDefaultSize={true}
+                            __nextHasNoMarginBottom={true}
                         />
                         <TextControl
                             label={__('Margin', 'event')}
-                            value={timeMargin || '0 0 8px 0'}
+                            value={attributes.timeMargin || '0 0 8px 0'}
                             onChange={(value) => setAttributes({ timeMargin: value })}
                             placeholder="0"
+                            __next40pxDefaultSize={true}
+                            __nextHasNoMarginBottom={true}
                         />
                         <PanelRow>
                             <div style={{ width: '100%', marginTop: '16px' }}>
@@ -1135,7 +1191,7 @@ registerBlockType('evt/event-item', {
                                     {__('Text Color', 'event')}
                                 </label>
                                 <ColorPalette
-                                    value={timeColor}
+                                    value={attributes.timeColor}
                                     onChange={(color) => setAttributes({ timeColor: color || '#1a1a1a' })}
                                 />
                             </div>
@@ -1146,19 +1202,23 @@ registerBlockType('evt/event-item', {
                     <PanelBody title={__('Location Typography', 'event')} initialOpen={false}>
                         <SelectControl
                             label={__('Font Family', 'event')}
-                            value={locationFontFamily || 'Inter'}
+                            value={attributes.locationFontFamily || 'Inter'}
                             options={FONT_FAMILIES}
                             onChange={(value) => setAttributes({ locationFontFamily: value })}
+                            __next40pxDefaultSize={true}
+                            __nextHasNoMarginBottom={true}
                         />
                         <TextControl
                             label={__('Font Size', 'event')}
-                            value={locationFontSize || '14px'}
+                            value={attributes.locationFontSize || '14px'}
                             onChange={(value) => setAttributes({ locationFontSize: value })}
                             placeholder="14px"
+                            __next40pxDefaultSize={true}
+                            __nextHasNoMarginBottom={true}
                         />
                         <SelectControl
                             label={__('Font Weight', 'event')}
-                            value={locationFontWeight || '400'}
+                            value={attributes.locationFontWeight || '400'}
                             options={[
                                 { label: '100 - Thin', value: '100' },
                                 { label: '200 - Extra Light', value: '200' },
@@ -1171,18 +1231,24 @@ registerBlockType('evt/event-item', {
                                 { label: '900 - Black', value: '900' }
                             ]}
                             onChange={(value) => setAttributes({ locationFontWeight: value })}
+                            __next40pxDefaultSize={true}
+                            __nextHasNoMarginBottom={true}
                         />
                         <TextControl
                             label={__('Line Height', 'event')}
-                            value={locationLineHeight || '1.5'}
+                            value={attributes.locationLineHeight || '1.5'}
                             onChange={(value) => setAttributes({ locationLineHeight: value })}
                             placeholder="1.5"
+                            __next40pxDefaultSize={true}
+                            __nextHasNoMarginBottom={true}
                         />
                         <TextControl
                             label={__('Margin', 'event')}
-                            value={locationMargin || '0 0 12px 0'}
+                            value={attributes.locationMargin || '0 0 12px 0'}
                             onChange={(value) => setAttributes({ locationMargin: value })}
                             placeholder="0 0 12px 0"
+                            __next40pxDefaultSize={true}
+                            __nextHasNoMarginBottom={true}
                         />
                         <PanelRow>
                             <div style={{ width: '100%', marginTop: '16px' }}>
@@ -1190,7 +1256,7 @@ registerBlockType('evt/event-item', {
                                     {__('Text Color', 'event')}
                                 </label>
                                 <ColorPalette
-                                    value={locationColor}
+                                    value={attributes.locationColor}
                                     onChange={(color) => setAttributes({ locationColor: color || '#1a1a1a' })}
                                 />
                             </div>
@@ -1201,19 +1267,23 @@ registerBlockType('evt/event-item', {
                     <PanelBody title={__('Price Typography', 'event')} initialOpen={false}>
                         <SelectControl
                             label={__('Font Family', 'event')}
-                            value={priceFontFamily || 'Inter'}
+                            value={attributes.priceFontFamily || 'Inter'}
                             options={FONT_FAMILIES}
                             onChange={(value) => setAttributes({ priceFontFamily: value })}
+                            __next40pxDefaultSize={true}
+                            __nextHasNoMarginBottom={true}
                         />
                         <TextControl
                             label={__('Font Size', 'event')}
-                            value={priceFontSize || '16px'}
+                            value={attributes.priceFontSize || '16px'}
                             onChange={(value) => setAttributes({ priceFontSize: value })}
                             placeholder="16px"
+                            __next40pxDefaultSize={true}
+                            __nextHasNoMarginBottom={true}
                         />
                         <SelectControl
                             label={__('Font Weight', 'event')}
-                            value={priceFontWeight || '700'}
+                            value={attributes.priceFontWeight || '700'}
                             options={[
                                 { label: '100 - Thin', value: '100' },
                                 { label: '200 - Extra Light', value: '200' },
@@ -1226,18 +1296,24 @@ registerBlockType('evt/event-item', {
                                 { label: '900 - Black', value: '900' }
                             ]}
                             onChange={(value) => setAttributes({ priceFontWeight: value })}
+                            __next40pxDefaultSize={true}
+                            __nextHasNoMarginBottom={true}
                         />
                         <TextControl
                             label={__('Line Height', 'event')}
-                            value={priceLineHeight || '1.4'}
+                            value={attributes.priceLineHeight || '1.4'}
                             onChange={(value) => setAttributes({ priceLineHeight: value })}
                             placeholder="1.4"
+                            __next40pxDefaultSize={true}
+                            __nextHasNoMarginBottom={true}
                         />
                         <TextControl
                             label={__('Margin', 'event')}
-                            value={priceMargin || '0'}
+                            value={attributes.priceMargin || '0'}
                             onChange={(value) => setAttributes({ priceMargin: value })}
                             placeholder="0"
+                            __next40pxDefaultSize={true}
+                            __nextHasNoMarginBottom={true}
                         />
                         <PanelRow>
                             <div style={{ width: '100%', marginTop: '16px' }}>
@@ -1245,7 +1321,7 @@ registerBlockType('evt/event-item', {
                                     {__('Text Color', 'event')}
                                 </label>
                                 <ColorPalette
-                                    value={priceColor}
+                                    value={attributes.priceColor}
                                     onChange={(color) => setAttributes({ priceColor: color || '#1a1a1a' })}
                                 />
                             </div>
@@ -1256,19 +1332,23 @@ registerBlockType('evt/event-item', {
                     <PanelBody title={__('Read More Typography', 'event')} initialOpen={false}>
                         <SelectControl
                             label={__('Font Family', 'event')}
-                            value={readMoreFontFamily || 'Inter'}
+                            value={attributes.readMoreFontFamily || 'Inter'}
                             options={FONT_FAMILIES}
                             onChange={(value) => setAttributes({ readMoreFontFamily: value })}
+                            __next40pxDefaultSize={true}
+                            __nextHasNoMarginBottom={true}
                         />
                         <TextControl
                             label={__('Font Size', 'event')}
-                            value={readMoreFontSize || '13px'}
+                            value={attributes.readMoreFontSize || '13px'}
                             onChange={(value) => setAttributes({ readMoreFontSize: value })}
                             placeholder="13px"
+                            __next40pxDefaultSize={true}
+                            __nextHasNoMarginBottom={true}
                         />
                         <SelectControl
                             label={__('Font Weight', 'event')}
-                            value={readMoreFontWeight || '500'}
+                            value={attributes.readMoreFontWeight || '500'}
                             options={[
                                 { label: '100 - Thin', value: '100' },
                                 { label: '200 - Extra Light', value: '200' },
@@ -1281,18 +1361,24 @@ registerBlockType('evt/event-item', {
                                 { label: '900 - Black', value: '900' }
                             ]}
                             onChange={(value) => setAttributes({ readMoreFontWeight: value })}
+                            __next40pxDefaultSize={true}
+                            __nextHasNoMarginBottom={true}
                         />
                         <TextControl
                             label={__('Line Height', 'event')}
-                            value={readMoreLineHeight || '1.4'}
+                            value={attributes.readMoreLineHeight || '1.4'}
                             onChange={(value) => setAttributes({ readMoreLineHeight: value })}
                             placeholder="1.4"
+                            __next40pxDefaultSize={true}
+                            __nextHasNoMarginBottom={true}
                         />
                         <TextControl
                             label={__('Margin', 'event')}
-                            value={readMoreMargin || '0'}
+                            value={attributes.readMoreMargin || '0'}
                             onChange={(value) => setAttributes({ readMoreMargin: value })}
                             placeholder="0"
+                            __next40pxDefaultSize={true}
+                            __nextHasNoMarginBottom={true}
                         />
                         <PanelRow>
                             <div style={{ width: '100%', marginTop: '16px' }}>
@@ -1300,7 +1386,7 @@ registerBlockType('evt/event-item', {
                                     {__('Background Color', 'event')}
                                 </label>
                                 <ColorPalette
-                                    value={readMoreButtonColor}
+                                    value={attributes.readMoreButtonColor}
                                     onChange={(color) => setAttributes({ readMoreButtonColor: color || '#4169E1' })}
                                 />
                             </div>
@@ -1311,7 +1397,7 @@ registerBlockType('evt/event-item', {
                                     {__('Text Color', 'event')}
                                 </label>
                                 <ColorPalette
-                                    value={readMoreColor}
+                                    value={attributes.readMoreColor}
                                     onChange={(color) => setAttributes({ readMoreColor: color || '#ffffff' })}
                                 />
                             </div>
@@ -1322,7 +1408,7 @@ registerBlockType('evt/event-item', {
                                     {__('Hover Background Color', 'event')}
                                 </label>
                                 <ColorPalette
-                                    value={readMoreButtonHoverColor}
+                                    value={attributes.readMoreButtonHoverColor}
                                     onChange={(color) => setAttributes({ readMoreButtonHoverColor: color || '#2667FF' })}
                                 />
                             </div>
@@ -1334,7 +1420,7 @@ registerBlockType('evt/event-item', {
                                     {__('Hover Text Color', 'event')}
                                 </label>
                                 <ColorPalette
-                                    value={readMoreButtonHoverTextColor}
+                                    value={attributes.readMoreButtonHoverTextColor}
                                     onChange={(color) => setAttributes({ readMoreButtonHoverTextColor: color || '#ffffff' })}
                                 />
                             </div>
@@ -1459,131 +1545,13 @@ registerBlockType('evt/event-item', {
             eventDay,
             eventImageURL,
             eventImageAlt,
-            detailsBackgroundColor,
-            // Typography - Title
-            titleFontSize,
-            titleFontWeight,
-            titleLineHeight,
-            titleMargin,
-            titleColor,
-            titleFontFamily,
-            // Typography - Description
-            descriptionFontSize,
-            descriptionFontWeight,
-            descriptionLineHeight,
-            descriptionMargin,
-            descriptionColor,
-            descriptionFontFamily,
-            // Typography - Date
-            borderBadgeColor,
-            dateBadgeBackgroundColor,
-            dateBadgeTextColor,
-            dateFontSize,
-            dateFontWeight,
-            dateLineHeight,
-            dateMargin,
-            dateFontFamily,
-            // Typography - Weekday
-            weekdayFontSize,
-            weekdayFontWeight,
-            weekdayLineHeight,
-            weekdayMargin,
-            weekdayColor,
-            weekdayFontFamily,
-            // Typography - Time
-            timeFontSize,
-            timeFontWeight,
-            timeLineHeight,
-            timeMargin,
-            timeColor,
-            timeFontFamily,
-            // Typography - Location
-            locationFontSize,
-            locationFontWeight,
-            locationLineHeight,
-            locationMargin,
-            locationColor,
-            locationFontFamily,
-            // Typography - Price
-            priceFontSize,
-            priceFontWeight,
-            priceLineHeight,
-            priceMargin,
-            priceColor,
-            priceFontFamily,
-            // Typography - Read More
             readMoreURL,
-            readMoreText,
-            readMoreButtonColor,
-            readMoreButtonHoverColor,
-            readMoreButtonHoverTextColor,
-            readMoreFontSize,
-            readMoreFontWeight,
-            readMoreLineHeight,
-            readMoreMargin,
-            readMoreColor,
-            readMoreFontFamily
+            readMoreText
         } = attributes;
 
         const blockProps = useBlockProps.save({
             className: 'evt-event-item',
-            style: {
-                '--evt-details-bg': detailsBackgroundColor || '#ffffff',
-                // Typography CSS Variables
-                '--evt-title-font-size': titleFontSize || '18px',
-                '--evt-title-font-weight': titleFontWeight || '600',
-                '--evt-title-line-height': titleLineHeight || '1.3',
-                '--evt-title-margin': titleMargin || '4px 0px 6px 0px',
-                '--evt-title-color': titleColor || '#1a1a1a',
-                '--evt-title-font-family': titleFontFamily || 'Inter',
-                '--evt-description-font-size': descriptionFontSize || '14px',
-                '--evt-description-font-weight': descriptionFontWeight || '400',
-                '--evt-description-line-height': descriptionLineHeight || '1.5',
-                '--evt-description-margin': descriptionMargin || '0 0 12px 0',
-                '--evt-description-color': descriptionColor || '#1a1a1a',
-                '--evt-description-font-family': descriptionFontFamily || 'Inter',
-                '--evt-border-color': borderBadgeColor || '#00000040',
-                '--evt-date-badge-bg': dateBadgeBackgroundColor || '#2667FF',
-                '--evt-date-badge-text': dateBadgeTextColor || '#ffffff',
-                '--evt-date-font-size': dateFontSize || '21px',
-                '--evt-date-font-weight': dateFontWeight || '700',
-                '--evt-date-line-height': dateLineHeight || '1',
-                '--evt-date-margin': dateMargin || '0',
-                '--evt-date-font-family': dateFontFamily || 'Inter',
-                '--evt-weekday-font-size': weekdayFontSize || '12px',
-                '--evt-weekday-font-weight': weekdayFontWeight || '500',
-                '--evt-weekday-line-height': weekdayLineHeight || '1.2',
-                '--evt-weekday-margin': weekdayMargin || '0',
-                '--evt-weekday-color': weekdayColor || '#000000',
-                '--evt-weekday-font-family': weekdayFontFamily || 'Inter',
-                '--evt-time-font-size': timeFontSize || '14px',
-                '--evt-time-font-weight': timeFontWeight || '500',
-                '--evt-time-line-height': timeLineHeight || '1.4',
-                '--evt-time-margin': timeMargin || '0',
-                '--evt-time-color': timeColor || '#1a1a1a',
-                '--evt-time-font-family': timeFontFamily || 'Inter',
-                '--evt-location-font-size': locationFontSize || '14px',
-                '--evt-location-font-weight': locationFontWeight || '400',
-                '--evt-location-line-height': locationLineHeight || '1.5',
-                '--evt-location-margin': locationMargin || '0 0 12px 0',
-                '--evt-location-color': locationColor || '#1a1a1a',
-                '--evt-location-font-family': locationFontFamily || 'Inter',
-                '--evt-price-font-size': priceFontSize || '16px',
-                '--evt-price-font-weight': priceFontWeight || '700',
-                '--evt-price-line-height': priceLineHeight || '1.4',
-                '--evt-price-margin': priceMargin || '0',
-                '--evt-price-color': priceColor || '#1a1a1a',
-                '--evt-price-font-family': priceFontFamily || 'Inter',
-                '--evt-read-more-button-color': readMoreButtonColor || '#4169E1',
-                '--evt-read-more-button-hover-color': readMoreButtonHoverColor || '#2667FF',
-                '--evt-read-more-button-hover-text-color': readMoreButtonHoverTextColor || '#ffffff',
-                '--evt-readmore-font-size': readMoreFontSize || '13px',
-                '--evt-readmore-font-weight': readMoreFontWeight || '500',
-                '--evt-readmore-line-height': readMoreLineHeight || '1.4',
-                '--evt-readmore-margin': readMoreMargin || '0',
-                '--evt-readmore-color': readMoreColor || '#ffffff',
-                '--evt-readmore-font-family': readMoreFontFamily || 'Inter'
-            }
+            style: getEventItemStyles(attributes)
         });
 
         // Get formatted date parts
