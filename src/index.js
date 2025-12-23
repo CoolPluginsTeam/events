@@ -181,48 +181,63 @@ const getEventItemStyles = (attributes) => {
         borderBadgeColor,
         dateBadgeBackgroundColor,
         dateBadgeTextColor,
+        // Typography - Title
         titleFontSize,
         titleFontWeight,
         titleLineHeight,
         titleMargin,
         titleColor,
         titleFontFamily,
+        // Typography - Description
         descriptionFontSize,
         descriptionFontWeight,
         descriptionLineHeight,
         descriptionMargin,
         descriptionColor,
         descriptionFontFamily,
+        // Typography - Date
         dateFontSize,
         dateFontWeight,
         dateLineHeight,
         dateMargin,
         dateColor,
         dateFontFamily,
+        // Typography - Month
+        monthFontSize,
+        monthFontWeight,
+        monthLineHeight,
+        monthMargin,
+        monthColor,
+        monthFontFamily,
+        // Typography - Weekday
         weekdayFontSize,
         weekdayFontWeight,
         weekdayLineHeight,
         weekdayMargin,
         weekdayColor,
         weekdayFontFamily,
+        // Typography - Time
         timeFontSize,
         timeFontWeight,
         timeLineHeight,
         timeMargin,
         timeColor,
         timeFontFamily,
+        // Typography - Location
         locationFontSize,
         locationFontWeight,
         locationLineHeight,
         locationMargin,
         locationColor,
         locationFontFamily,
+        // Typography - Price
         priceFontSize,
         priceFontWeight,
         priceLineHeight,
         priceMargin,
         priceColor,
         priceFontFamily,
+        // Typography - Read More Button
         readMoreButtonColor,
         readMoreButtonHoverColor,
         readMoreButtonHoverTextColor,
@@ -239,48 +254,63 @@ const getEventItemStyles = (attributes) => {
         '--evt-border-color': borderBadgeColor || '#00000040',
         '--evt-date-badge-bg': dateBadgeBackgroundColor || '#2667FF',
         '--evt-date-badge-text': dateBadgeTextColor || '#ffffff',
+        // Typography - Title
         '--evt-title-font-size': titleFontSize || '18px',
         '--evt-title-font-weight': titleFontWeight || '600',
         '--evt-title-line-height': titleLineHeight || '1.3',
         '--evt-title-margin': titleMargin || '4px 0px 6px 0px',
         '--evt-title-color': titleColor || '#1a1a1a',
         '--evt-title-font-family': titleFontFamily || 'Inter',
+        // Typography - Description
         '--evt-description-font-size': descriptionFontSize || '14px',
         '--evt-description-font-weight': descriptionFontWeight || '400',
         '--evt-description-line-height': descriptionLineHeight || '1.5',
         '--evt-description-margin': descriptionMargin || '0 0 12px 0',
         '--evt-description-color': descriptionColor || '#1a1a1a',
         '--evt-description-font-family': descriptionFontFamily || 'Inter',
+        // Typography - Date
         '--evt-date-font-size': dateFontSize || '21px',
         '--evt-date-font-weight': dateFontWeight || '700',
         '--evt-date-line-height': dateLineHeight || '1',
         '--evt-date-margin': dateMargin || '0',
         '--evt-date-color': dateColor || '#ffffff',
         '--evt-date-font-family': dateFontFamily || 'Inter',
+        // Typography - Month
+        '--evt-month-font-size': monthFontSize || '11px',
+        '--evt-month-font-weight': monthFontWeight || '600',
+        '--evt-month-line-height': monthLineHeight || '1.2',
+        '--evt-month-margin': monthMargin || '0',
+        '--evt-month-color': monthColor || '#ffffff',
+        '--evt-month-font-family': monthFontFamily || 'Inter',
+        // Typography - Weekday
         '--evt-weekday-font-size': weekdayFontSize || '12px',
         '--evt-weekday-font-weight': weekdayFontWeight || '500',
         '--evt-weekday-line-height': weekdayLineHeight || '1.2',
         '--evt-weekday-margin': weekdayMargin || '0',
         '--evt-weekday-color': weekdayColor || '#000000',
         '--evt-weekday-font-family': weekdayFontFamily || 'Inter',
+        // Typography - Time
         '--evt-time-font-size': timeFontSize || '14px',
         '--evt-time-font-weight': timeFontWeight || '500',
         '--evt-time-line-height': timeLineHeight || '1.4',
         '--evt-time-margin': timeMargin || '0',
         '--evt-time-color': timeColor || '#1a1a1a',
         '--evt-time-font-family': timeFontFamily || 'Inter',
+        // Typography - Location
         '--evt-location-font-size': locationFontSize || '14px',
         '--evt-location-font-weight': locationFontWeight || '400',
         '--evt-location-line-height': locationLineHeight || '1.5',
         '--evt-location-margin': locationMargin || '0 0 12px 0',
         '--evt-location-color': locationColor || '#1a1a1a',
         '--evt-location-font-family': locationFontFamily || 'Inter',
+        // Typography - Price
         '--evt-price-font-size': priceFontSize || '16px',
         '--evt-price-font-weight': priceFontWeight || '700',
         '--evt-price-line-height': priceLineHeight || '1.4',
         '--evt-price-margin': priceMargin || '0',
         '--evt-price-color': priceColor || '#1a1a1a',
         '--evt-price-font-family': priceFontFamily || 'Inter',
+        // Typography - Read More Button
         '--evt-read-more-button-color': readMoreButtonColor || '#4169E1',
         '--evt-read-more-button-hover-color': readMoreButtonHoverColor || '#2667FF',
         '--evt-read-more-button-hover-text-color': readMoreButtonHoverTextColor || '#ffffff',
@@ -982,7 +1012,7 @@ registerBlockType('evt/event-item', {
                     </PanelBody>
 
                     {/* Typography Settings - Date */}
-                    <PanelBody title={__('Date Typography', 'event')} initialOpen={false}>
+                    <PanelBody title={__('Day Typography', 'event')} initialOpen={false}>
                         <SelectControl
                             label={__('Font Family', 'event')}
                             value={attributes.dateFontFamily || 'Inter'}
@@ -1036,7 +1066,7 @@ registerBlockType('evt/event-item', {
                         <PanelRow>
                             <div style={{ width: '100%', marginTop: '16px' }}>
                                 <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
-                                    {__('Date Border Color', 'event')}
+                                    {__('Border Color', 'event')}
                                 </label>
                                 <ColorPalette
                                     value={attributes.borderBadgeColor}
@@ -1047,7 +1077,7 @@ registerBlockType('evt/event-item', {
                         <PanelRow>
                             <div style={{ width: '100%', marginTop: '16px' }}>
                                 <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
-                                    {__('Date Background Color', 'event')}
+                                    {__('Background Color', 'event')}
                                 </label>
                                 <ColorPalette
                                     value={attributes.dateBadgeBackgroundColor}
@@ -1058,11 +1088,76 @@ registerBlockType('evt/event-item', {
                         <PanelRow>
                             <div style={{ width: '100%', marginTop: '16px' }}>
                                 <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
-                                    {__('Date Text Color', 'event')}
+                                    {__('Text Color', 'event')}
                                 </label>
                                 <ColorPalette
                                     value={attributes.dateBadgeTextColor}
                                     onChange={(color) => setAttributes({ dateBadgeTextColor: color || '#ffffff' })}
+                                />
+                            </div>
+                        </PanelRow>
+                    </PanelBody>
+
+                     {/* Typography Settings - Month */}
+                     <PanelBody title={__('Month Typography', 'event')} initialOpen={false}>
+                        <SelectControl
+                            label={__('Font Family', 'event')}
+                            value={attributes.monthFontFamily || 'Inter'}
+                            options={FONT_FAMILIES}
+                            onChange={(value) => setAttributes({ monthFontFamily: value })}
+                            __next40pxDefaultSize={true}
+                            __nextHasNoMarginBottom={true}
+                        />
+                        <TextControl
+                            label={__('Font Size', 'event')}
+                            value={attributes.monthFontSize || '11px'}
+                            onChange={(value) => setAttributes({ monthFontSize: value })}
+                            placeholder="11px"
+                            __next40pxDefaultSize={true}
+                            __nextHasNoMarginBottom={true}
+                        />
+                        <SelectControl
+                            label={__('Font Weight', 'event')}
+                            value={attributes.monthFontWeight || '600'}
+                            options={[
+                                { label: '100 - Thin', value: '100' },
+                                { label: '200 - Extra Light', value: '200' },
+                                { label: '300 - Light', value: '300' },
+                                { label: '400 - Regular', value: '400' },
+                                { label: '500 - Medium', value: '500' },
+                                { label: '600 - Semi Bold', value: '600' },
+                                { label: '700 - Bold', value: '700' },
+                                { label: '800 - Extra Bold', value: '800' },
+                                { label: '900 - Black', value: '900' }
+                            ]}
+                            onChange={(value) => setAttributes({ monthFontWeight: value })}
+                            __next40pxDefaultSize={true}
+                            __nextHasNoMarginBottom={true}
+                        />
+                        <TextControl
+                            label={__('Line Height', 'event')}
+                            value={attributes.monthLineHeight || '1.2'}
+                            onChange={(value) => setAttributes({ monthLineHeight: value })}
+                            placeholder="1.2"
+                            __next40pxDefaultSize={true}
+                            __nextHasNoMarginBottom={true}
+                        />
+                        <TextControl
+                            label={__('Margin', 'event')}
+                            value={attributes.monthMargin || '0'}
+                            onChange={(value) => setAttributes({ monthMargin: value })}
+                            placeholder="0"
+                            __next40pxDefaultSize={true}
+                            __nextHasNoMarginBottom={true}
+                        />
+                        <PanelRow>
+                            <div style={{ width: '100%', marginTop: '16px' }}>
+                                <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
+                                    {__('Text Color', 'event')}
+                                </label>
+                                <ColorPalette
+                                    value={attributes.monthColor}
+                                    onChange={(color) => setAttributes({ monthColor: color || '#ffffff' })}
                                 />
                             </div>
                         </PanelRow>

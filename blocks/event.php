@@ -177,6 +177,31 @@ add_action( 'init', function() {
 				'type' => 'string',
 				'default' => 'Inter'
 			],
+			// Typography - Month
+			'monthFontSize' => [
+				'type' => 'string',
+				'default' => '11px'
+			],
+			'monthFontWeight' => [
+				'type' => 'string',
+				'default' => '600'
+			],
+			'monthLineHeight' => [
+				'type' => 'string',
+				'default' => '1.2'
+			],
+			'monthMargin' => [
+				'type' => 'string',
+				'default' => '0'
+			],
+			'monthColor' => [
+				'type' => 'string',
+				'default' => '#ffffff'
+			],
+			'monthFontFamily' => [
+				'type' => 'string',
+				'default' => 'Inter'
+			],
 			// Typography - Time
 			'timeFontSize' => [
 				'type' => 'string',
