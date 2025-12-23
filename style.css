@@ -5,7 +5,7 @@
 /* Grid Container */
 .evt-events-grid-container {
     display: grid;
-    grid-template-columns: repeat(var(--columns, 3), 1fr);
+    grid-template-columns: repeat(var(--columns, 2), 1fr);
     gap: 30px;
     margin: 0 auto;
     max-width: 100%;
@@ -165,6 +165,10 @@
 
 .evt-event-time .evt-time-icon {
     font-size: 16px;
+    opacity: 0.8;
+    display: inline-block;
+    width: 16px;
+    text-align: center;
 }
 
 /* Event Location */

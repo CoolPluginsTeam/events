@@ -307,7 +307,7 @@ registerBlockType('evt/events-grid', {
     attributes: {
         columns: {
             type: 'number',
-            default: 3
+            default: 2
         }
     },
 
@@ -1479,7 +1479,7 @@ registerBlockType('evt/event-item', {
                                 <div className="evt-event-details-inner">
                                             {eventDate && (
                                                 <div className="evt-event-time">
-                                                    <span className="evt-time-icon">🕐</span>
+                                                    <i className="clockicon-evt evt-time-icon"></i>
                                                     <span>
                                                         {dateParts.time}
                                                         {eventEndDate && ` - ${dateI18n('g:i a', eventEndDate)}`}
@@ -1602,7 +1602,7 @@ registerBlockType('evt/event-item', {
                         <div className="evt-event-details-inner">
                                     {eventDate && (
                                         <div className="evt-event-time">
-                                            <span className="evt-time-icon">🕐</span>
+                                                    <i className="clockicon-evt evt-time-icon"></i>
                                             <span>
                                                 {dateParts.time}
                                                 {endTime && ` - ${endTime}`}

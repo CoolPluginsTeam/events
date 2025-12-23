@@ -55,6 +55,14 @@ add_action( 'init', function() {
 		[],
 		filemtime( __DIR__ . '/editor.css' )
 	);
+	
+	// Fontello Icon Font
+	wp_register_style(
+		'evt-icons',
+		plugins_url( 'assets/CSS/evt-icons.css', __FILE__ ),
+		[],
+		filemtime( __DIR__ . '/assets/CSS/evt-icons.css' )
+	);
 } );
 
 // Enqueue Google Fonts (100 fonts including)
@@ -65,6 +73,9 @@ add_action( 'wp_enqueue_scripts', function() {
 		[],
 		null
 	);
+	
+	// Enqueue Icons Icon Font
+	wp_enqueue_style( 'evt-icons' );
 } );
 
 add_action( 'enqueue_block_editor_assets', function() {
@@ -74,6 +85,9 @@ add_action( 'enqueue_block_editor_assets', function() {
 		[],
 		null
 	);
+	
+	// Enqueue Icons Icon Font for Editor
+	wp_enqueue_style( 'evt-icons' );
 } );
 
 /**
