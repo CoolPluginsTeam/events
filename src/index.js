@@ -938,7 +938,7 @@ registerBlockType('evt/event-item', {
                     {/* Read More Settings - Only show if content exists */}
                     {(eventTitle || eventLocation || eventDescription || readMoreURL) && (
                         <PanelBody title={__('Read More Button', 'event')} initialOpen={false}>
-                            <p style={{ fontSize: '15px', color: '#FF0000', marginBottom: '10px' }}>{__('The “Read More” button will appear only if you provide a Read More URL.', 'event')}</p>
+                            <p style={{ fontSize: '13px', color: '#FF0000', marginBottom: '10px' }}>{__('The “Read More” button will appear only if you provide a Read More URL.', 'event')}</p>
                             <TextControl
                                 label={__('Button URL', 'event')}
                                 value={readMoreURL}
