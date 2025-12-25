@@ -19,6 +19,7 @@
     display: grid;
     grid-column: auto;
     position: relative !important;
+    width: 100%;
 }
 
 /* Editor responsive */
