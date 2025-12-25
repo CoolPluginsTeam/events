@@ -91,8 +91,6 @@
     padding: 12px;
 }
 .editor-styles-wrapper .evt-event-details .evt-event-date-badge-container .evt-event-date-badge {
-    background: var(--evt-date-badge-bg);
-    color: var(--evt-date-badge-text);
     padding: 7px 14px;
     border-radius: 4px;
     display: flex;
@@ -101,60 +99,18 @@
     align-items: center;
 }
 .editor-styles-wrapper .evt-border-badge{
-    border: 1px solid var(--evt-border-color);
     border-radius: 6px;
     padding: 3px;
 }
 
 .editor-styles-wrapper .evt-event-details .evt-event-date-badge-container .evt-event-date-badge .evt-date-month {
-    font-size: var(--evt-month-font-size);
-    font-weight: var(--evt-month-font-weight);
-    line-height: var(--evt-month-line-height);
-    margin: var(--evt-month-margin);
-    color: var(--evt-month-color);
-    font-family: var(--evt-month-font-family);
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 /* EVENT DETAILS IN EDITOR */
 
-/* Editable Title */
-.editor-styles-wrapper .evt-event-title {
-    font-size: var(--evt-title-font-size);
-    font-weight: var(--evt-title-font-weight);
-    line-height: var(--evt-title-line-height);
-    margin: var(--evt-title-margin);
-    color: var(--evt-title-color);
-    font-family: var(--evt-title-font-family);
-}
-
-/* Event Description */
-.editor-styles-wrapper .evt-event-description {
-    font-size: var(--evt-description-font-size);
-    font-weight: var(--evt-description-font-weight);
-    line-height: var(--evt-description-line-height);
-    margin: var(--evt-description-margin);
-    color: var(--evt-description-color);
-    font-family: var(--evt-description-font-family);
-}
-
-/* Event Date */
-.editor-styles-wrapper .evt-event-details .evt-event-date-badge-container .evt-event-date-badge .evt-date-day {
-    font-size: var(--evt-date-font-size);
-    font-weight: var(--evt-date-font-weight);
-    line-height: var(--evt-date-line-height);
-    margin: var(--evt-date-margin);
-    font-family: var(--evt-date-font-family);
-}
-
 /* Event Weekday */
 .editor-styles-wrapper .evt-event-details .evt-event-date-badge-container .evt-date-weekday {
-    font-size: var(--evt-weekday-font-size);
-    font-weight: var(--evt-weekday-font-weight);
-    line-height: var(--evt-weekday-line-height);
-    margin: var(--evt-weekday-margin);
-    color: var(--evt-weekday-color);
-    font-family: var(--evt-weekday-font-family);
     text-transform: uppercase;
     letter-spacing: 1px;
 }
@@ -164,37 +120,10 @@
     display: flex;
     align-items: center;
     gap: 5px;
-    font-size: var(--evt-time-font-size);
-    font-weight: var(--evt-time-font-weight);
-    line-height: var(--evt-time-line-height);
-    margin: var(--evt-time-margin);
-    color: var(--evt-time-color);
-    font-family: var(--evt-time-font-family);
 }
 
 .editor-styles-wrapper .evt-event-time .evt-time-icon {
     font-size: 16px;
-}
-
-/* Editable Location */
-.editor-styles-wrapper .evt-event-location {
-    font-size: var(--evt-location-font-size);
-    font-weight: var(--evt-location-font-weight);
-    line-height: var(--evt-location-line-height);
-    margin: var(--evt-location-margin);
-    color: var(--evt-location-color);
-    font-family: var(--evt-location-font-family);
-}
-
-/* Event Price */
-
-.editor-styles-wrapper .evt-event-price {
-    font-size: var(--evt-price-font-size);
-    font-weight: var(--evt-price-font-weight);
-    line-height: var(--evt-price-line-height);
-    margin: var(--evt-price-margin);
-    color: var(--evt-price-color);
-    font-family: var(--evt-price-font-family);
 }
 
 /* Read More Button */
@@ -205,23 +134,11 @@
 }
 .evt-event-read-more {
     padding: 6px 11px 6px 11px;
-    background-color: var(--evt-read-more-button-color);
-    color: var(--evt-readmore-color);
     text-decoration: none !IMPORTANT;
     border-radius: 4px;
-    font-size: var(--evt-readmore-font-size);
-    font-weight: var(--evt-readmore-font-weight);
-    line-height: var(--evt-readmore-line-height);
-    margin: var(--evt-readmore-margin);
-    font-family: var(--evt-readmore-font-family);
 }
 .editor-styles-wrapper .evt-event-read-more a {
-    color: var(--evt-readmore-color);
     text-decoration: none !IMPORTANT;
-}
-
-.editor-styles-wrapper .evt-event-read-more a:hover {
-    color: var(--evt-read-more-button-hover-text-color);
 }
 
 /* BLOCK APPENDER & INSERTER */

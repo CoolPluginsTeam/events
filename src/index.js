@@ -3,6 +3,180 @@ import { InnerBlocks, InspectorControls, MediaUpload, MediaUploadCheck, RichText
 import { PanelBody, Button, TextControl, DateTimePicker, PanelRow, SelectControl, RangeControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { dateI18n, format, getSettings } from '@wordpress/date';
+import { useEffect } from '@wordpress/element';
+
+// CSS Generation Helper Function
+const evtGenerateBlockCSS = (attributes, blockId) => {
+    const {
+        detailsBackgroundColor,
+        
+        // Title Settings
+        titleFontSize,
+        titleFontWeight,
+        titleLineHeight,
+        titleMargin,
+        titleColor,
+        titleFontFamily,
+        // Description Settings
+        descriptionFontSize,
+        descriptionFontWeight,
+        descriptionLineHeight,
+        descriptionMargin,
+        descriptionColor,
+        descriptionFontFamily,
+        // Date Settings
+        borderBadgeColor,
+        dateBadgeBackgroundColor,
+        dateBadgeTextColor,
+        dateFontSize,
+        dateFontWeight,
+        dateLineHeight,
+        dateMargin,
+        dateFontFamily,
+        // Weekday Settings
+        weekdayFontSize,
+        weekdayFontWeight,
+        weekdayLineHeight,
+        weekdayMargin,
+        weekdayColor,
+        weekdayFontFamily,
+        // Month Settings
+        monthFontSize,
+        monthFontWeight,
+        monthLineHeight,
+        monthMargin,
+        monthColor,
+        monthFontFamily,
+        // Time Settings
+        timeFontSize,
+        timeFontWeight,
+        timeLineHeight,
+        timeMargin,
+        timeColor,
+        timeFontFamily,
+        // Location Settings
+        locationFontSize,
+        locationFontWeight,
+        locationLineHeight,
+        locationMargin,
+        locationColor,
+        locationFontFamily,
+        // Price Settings
+        priceFontSize,
+        priceFontWeight,
+        priceLineHeight,
+        priceMargin,
+        priceColor,
+        priceFontFamily,
+        // Read More Settings
+        readMoreButtonColor,
+        readMoreButtonHoverColor,
+        readMoreButtonHoverTextColor,
+        readMoreFontSize,
+        readMoreFontWeight,
+        readMoreLineHeight,
+        readMoreMargin,
+        readMoreColor,
+        readMoreFontFamily
+    } = attributes;
+
+    const selector = `#block-${blockId}`;
+    
+    return `
+        ${selector} .evt-event-card {
+            background-color: ${detailsBackgroundColor || '#ffffff'};
+        }
+        ${selector} .evt-border-badge {
+            border: 1px solid ${borderBadgeColor || '#00000040'};
+        }
+        ${selector} .evt-event-date-badge {
+            background-color: ${dateBadgeBackgroundColor || '#2667FF'};
+        }
+        ${selector} .evt-event-title {
+            font-size: ${titleFontSize || '18px'};
+            font-weight: ${titleFontWeight || '600'};
+            line-height: ${titleLineHeight || '1.3'};
+            margin: ${titleMargin || '4px 0px 6px 0px'};
+            color: ${titleColor || '#1a1a1a'};
+            font-family: ${titleFontFamily || 'Inter'};
+        }
+        ${selector} .evt-event-description {
+            font-size: ${descriptionFontSize || '14px'};
+            font-weight: ${descriptionFontWeight || '400'};
+            line-height: ${descriptionLineHeight || '1.5'};
+            margin: ${descriptionMargin || '0 0 12px 0'};
+            color: ${descriptionColor || '#1a1a1a'};
+            font-family: ${descriptionFontFamily || 'Inter'};
+        }
+        ${selector} .evt-date-day {
+            font-size: ${dateFontSize || '21px'};
+            font-weight: ${dateFontWeight || '700'};
+            line-height: ${dateLineHeight || '1'};
+            margin: ${dateMargin || '0'};
+            color: ${dateBadgeTextColor || '#ffffff'};
+            font-family: ${dateFontFamily || 'Inter'};
+        }
+        ${selector} .evt-date-weekday {
+            font-size: ${weekdayFontSize || '12px'};
+            font-weight: ${weekdayFontWeight || '500'};
+            line-height: ${weekdayLineHeight || '1.2'};
+            margin: ${weekdayMargin || '0'};
+            color: ${weekdayColor || '#000000'};
+            font-family: ${weekdayFontFamily || 'Inter'};
+        }
+        ${selector} .evt-date-month {
+            font-size: ${monthFontSize || '11px'};
+            font-weight: ${monthFontWeight || '600'};
+            line-height: ${monthLineHeight || '1.2'};
+            margin: ${monthMargin || '0'};
+            color: ${monthColor || '#ffffff'};
+            font-family: ${monthFontFamily || 'Inter'};
+        }
+        ${selector} .evt-event-time,
+        ${selector} .evt-event-time i.evt-time-icon{
+            font-size: ${timeFontSize || '14px'};
+            font-weight: ${timeFontWeight || '500'};
+            line-height: ${timeLineHeight || '1.4'};
+            margin: ${timeMargin || '0'};
+            color: ${timeColor || '#1a1a1a'};
+            font-family: ${timeFontFamily || 'Inter'};
+        }
+        ${selector} .evt-event-location {
+            font-size: ${locationFontSize || '14px'};
+            font-weight: ${locationFontWeight || '400'};
+            line-height: ${locationLineHeight || '1.5'};
+            margin: ${locationMargin || '0 0 12px 0'};
+            color: ${locationColor || '#1a1a1a'};
+            font-family: ${locationFontFamily || 'Inter'};
+        }
+        ${selector} .evt-event-price {
+            font-size: ${priceFontSize || '16px'};
+            font-weight: ${priceFontWeight || '700'};
+            line-height: ${priceLineHeight || '1.4'};
+            margin: ${priceMargin || '0'};
+            color: ${priceColor || '#1a1a1a'};
+            font-family: ${priceFontFamily || 'Inter'};
+        }
+        ${selector} .evt-event-read-more {
+            background-color: ${readMoreButtonColor || '#2667FF'};
+            font-size: ${readMoreFontSize || '13px'};
+            font-weight: ${readMoreFontWeight || '500'};
+            line-height: ${readMoreLineHeight || '1.4'};
+            margin: ${readMoreMargin || '0'};
+            font-family: ${readMoreFontFamily || 'Inter'};
+        }
+        ${selector} .evt-event-read-more,
+        ${selector} .evt-event-read-more a {
+            color: ${readMoreColor || '#ffffff'};
+        }
+        ${selector} .evt-event-read-more:hover {
+            background-color: ${readMoreButtonHoverColor || '#2667FF'};
+        }
+        ${selector} .evt-event-read-more a:hover {
+            color: ${readMoreButtonHoverTextColor || '#ffffff'};
+        }
+    `.trim();
+};
 
 // Font Families List (100 fonts)
 const FONT_FAMILIES = [
@@ -173,155 +347,6 @@ const eventIcon = (
         <path d="M19,3H5C3.9,3,3,3.9,3,5v14c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V5C21,3.9,20.1,3,19,3z M19.5,19c0,0.3-0.2,0.5-0.5,0.5H5 c-0.3,0-0.5-0.2-0.5-0.5V7h15V19z M17,13h-4v4h4V13z" />
     </svg>
 );
-
-// Helper function to generate CSS variables from attributes
-const getEventItemStyles = (attributes) => {
-    const {
-        detailsBackgroundColor,
-        borderBadgeColor,
-        dateBadgeBackgroundColor,
-        dateBadgeTextColor,
-        // Typography - Title
-        titleFontSize,
-        titleFontWeight,
-        titleLineHeight,
-        titleMargin,
-        titleColor,
-        titleFontFamily,
-        // Typography - Description
-        descriptionFontSize,
-        descriptionFontWeight,
-        descriptionLineHeight,
-        descriptionMargin,
-        descriptionColor,
-        descriptionFontFamily,
-        // Typography - Date
-        dateFontSize,
-        dateFontWeight,
-        dateLineHeight,
-        dateMargin,
-        dateColor,
-        dateFontFamily,
-        // Typography - Month
-        monthFontSize,
-        monthFontWeight,
-        monthLineHeight,
-        monthMargin,
-        monthColor,
-        monthFontFamily,
-        // Typography - Weekday
-        weekdayFontSize,
-        weekdayFontWeight,
-        weekdayLineHeight,
-        weekdayMargin,
-        weekdayColor,
-        weekdayFontFamily,
-        // Typography - Time
-        timeFontSize,
-        timeFontWeight,
-        timeLineHeight,
-        timeMargin,
-        timeColor,
-        timeFontFamily,
-        // Typography - Location
-        locationFontSize,
-        locationFontWeight,
-        locationLineHeight,
-        locationMargin,
-        locationColor,
-        locationFontFamily,
-        // Typography - Price
-        priceFontSize,
-        priceFontWeight,
-        priceLineHeight,
-        priceMargin,
-        priceColor,
-        priceFontFamily,
-        // Typography - Read More Button
-        readMoreButtonColor,
-        readMoreButtonHoverColor,
-        readMoreButtonHoverTextColor,
-        readMoreFontSize,
-        readMoreFontWeight,
-        readMoreLineHeight,
-        readMoreMargin,
-        readMoreColor,
-        readMoreFontFamily
-    } = attributes;
-
-    return {
-        '--evt-details-bg': detailsBackgroundColor || '#ffffff',
-        '--evt-border-color': borderBadgeColor || '#00000040',
-        '--evt-date-badge-bg': dateBadgeBackgroundColor || '#2667FF',
-        '--evt-date-badge-text': dateBadgeTextColor || '#ffffff',
-        // Typography - Title
-        '--evt-title-font-size': titleFontSize || '18px',
-        '--evt-title-font-weight': titleFontWeight || '600',
-        '--evt-title-line-height': titleLineHeight || '1.3',
-        '--evt-title-margin': titleMargin || '4px 0px 6px 0px',
-        '--evt-title-color': titleColor || '#1a1a1a',
-        '--evt-title-font-family': titleFontFamily || 'Inter',
-        // Typography - Description
-        '--evt-description-font-size': descriptionFontSize || '14px',
-        '--evt-description-font-weight': descriptionFontWeight || '400',
-        '--evt-description-line-height': descriptionLineHeight || '1.5',
-        '--evt-description-margin': descriptionMargin || '0 0 12px 0',
-        '--evt-description-color': descriptionColor || '#1a1a1a',
-        '--evt-description-font-family': descriptionFontFamily || 'Inter',
-        // Typography - Date
-        '--evt-date-font-size': dateFontSize || '21px',
-        '--evt-date-font-weight': dateFontWeight || '700',
-        '--evt-date-line-height': dateLineHeight || '1',
-        '--evt-date-margin': dateMargin || '0',
-        '--evt-date-color': dateColor || '#ffffff',
-        '--evt-date-font-family': dateFontFamily || 'Inter',
-        // Typography - Month
-        '--evt-month-font-size': monthFontSize || '11px',
-        '--evt-month-font-weight': monthFontWeight || '600',
-        '--evt-month-line-height': monthLineHeight || '1.2',
-        '--evt-month-margin': monthMargin || '0',
-        '--evt-month-color': monthColor || '#ffffff',
-        '--evt-month-font-family': monthFontFamily || 'Inter',
-        // Typography - Weekday
-        '--evt-weekday-font-size': weekdayFontSize || '12px',
-        '--evt-weekday-font-weight': weekdayFontWeight || '500',
-        '--evt-weekday-line-height': weekdayLineHeight || '1.2',
-        '--evt-weekday-margin': weekdayMargin || '0',
-        '--evt-weekday-color': weekdayColor || '#000000',
-        '--evt-weekday-font-family': weekdayFontFamily || 'Inter',
-        // Typography - Time
-        '--evt-time-font-size': timeFontSize || '14px',
-        '--evt-time-font-weight': timeFontWeight || '500',
-        '--evt-time-line-height': timeLineHeight || '1.4',
-        '--evt-time-margin': timeMargin || '0',
-        '--evt-time-color': timeColor || '#1a1a1a',
-        '--evt-time-font-family': timeFontFamily || 'Inter',
-        // Typography - Location
-        '--evt-location-font-size': locationFontSize || '14px',
-        '--evt-location-font-weight': locationFontWeight || '400',
-        '--evt-location-line-height': locationLineHeight || '1.5',
-        '--evt-location-margin': locationMargin || '0 0 12px 0',
-        '--evt-location-color': locationColor || '#1a1a1a',
-        '--evt-location-font-family': locationFontFamily || 'Inter',
-        // Typography - Price
-        '--evt-price-font-size': priceFontSize || '16px',
-        '--evt-price-font-weight': priceFontWeight || '700',
-        '--evt-price-line-height': priceLineHeight || '1.4',
-        '--evt-price-margin': priceMargin || '0',
-        '--evt-price-color': priceColor || '#1a1a1a',
-        '--evt-price-font-family': priceFontFamily || 'Inter',
-        // Typography - Read More Button
-        '--evt-read-more-button-color': readMoreButtonColor || '#4169E1',
-        '--evt-read-more-button-hover-color': readMoreButtonHoverColor || '#2667FF',
-        '--evt-read-more-button-hover-text-color': readMoreButtonHoverTextColor || '#ffffff',
-        '--evt-readmore-font-size': readMoreFontSize || '13px',
-        '--evt-readmore-font-weight': readMoreFontWeight || '500',
-        '--evt-readmore-line-height': readMoreLineHeight || '1.4',
-        '--evt-readmore-margin': readMoreMargin || '0',
-        '--evt-readmore-color': readMoreColor || '#ffffff',
-        '--evt-readmore-font-family': readMoreFontFamily || 'Inter'
-    };
-};
 
 // PARENT BLOCK: Events Grid Container
 registerBlockType('evt/events-grid', {
@@ -567,6 +592,31 @@ registerBlockType('evt/event-item', {
             type: 'string',
             default: 'Inter'
         },
+        // Typography Settings - Month
+        monthFontSize: {
+            type: 'string',
+            default: '11px'
+        },
+        monthFontWeight: {
+            type: 'string',
+            default: '600'
+        },
+        monthLineHeight: {
+            type: 'string',
+            default: '1.2'
+        },
+        monthMargin: {
+            type: 'string',
+            default: '0'
+        },
+        monthColor: {
+            type: 'string',
+            default: '#ffffff'
+        },
+        monthFontFamily: {
+            type: 'string',
+            default: 'Inter'
+        },
         // Typography Settings - Weekday
         weekdayFontSize: {
             type: 'string',
@@ -714,7 +764,7 @@ registerBlockType('evt/event-item', {
         }
     },
 
-    edit: ({ attributes, setAttributes }) => {
+    edit: ({ attributes, setAttributes, clientId }) => {
         const {
             eventTitle,
             eventDescription,
@@ -733,8 +783,37 @@ registerBlockType('evt/event-item', {
 
         const blockProps = useBlockProps({
             className: 'evt-event-item',
-            style: getEventItemStyles(attributes)
+            id: `block-${clientId}`
         });
+
+        // Save clientId to attributes for PHP rendering
+        useEffect(() => {
+            if (!attributes.evtBlockId) {
+                setAttributes({ evtBlockId: clientId });
+            }
+        }, []);
+
+        // Inject scoped CSS for this block
+        useEffect(() => {
+            const styleId = `evt-block-style-${clientId}`;
+            let styleElement = document.getElementById(styleId);
+            
+            if (!styleElement) {
+                styleElement = document.createElement('style');
+                styleElement.id = styleId;
+                document.head.appendChild(styleElement);
+            }
+            
+            styleElement.innerHTML = evtGenerateBlockCSS(attributes, clientId);
+            
+            return () => {
+                // Cleanup on unmount
+                const el = document.getElementById(styleId);
+                if (el) {
+                    el.remove();
+                }
+            };
+        }, [attributes, clientId]);
 
         // Get formatted date parts
         const getDateParts = (dateString) => {
@@ -1641,12 +1720,12 @@ registerBlockType('evt/event-item', {
             eventImageURL,
             eventImageAlt,
             readMoreURL,
-            readMoreText
+            readMoreText,
+            evtBlockId
         } = attributes;
 
         const blockProps = useBlockProps.save({
-            className: 'evt-event-item',
-            style: getEventItemStyles(attributes)
+            className: `evt-event-item${evtBlockId ? ' evt-block-' + evtBlockId : ''}`
         });
 
         // Get formatted date parts

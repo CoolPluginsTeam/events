@@ -59,9 +59,9 @@ add_action( 'init', function() {
 	// Fontello Icon Font
 	wp_register_style(
 		'evt-icons',
-		plugins_url( 'assets/CSS/evt-icons.css', __FILE__ ),
+		plugins_url( 'assets/css/evt-icons.css', __FILE__ ),
 		[],
-		filemtime( __DIR__ . '/assets/CSS/evt-icons.css' )
+		filemtime( __DIR__ . '/assets/css/evt-icons.css' )
 	);
 } );
 
