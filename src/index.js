@@ -350,7 +350,7 @@ const eventIcon = (
 
 // PARENT BLOCK: Events Grid Container
 registerBlockType('evt/events-grid', {
-    title: __('Events Grid', 'event'),
+    title: __('Events', 'event'),
     description: __('Display multiple events in a modern grid layout', 'event'),
     icon: eventIcon,
     category: 'widgets',
