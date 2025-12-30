@@ -53,6 +53,14 @@ add_action( 'init', function() {
 			'borderBadgeColor' => [
 				'type' => 'string',
 				'default' => '#00000040'
+			],
+			'isDefault' => [
+				'type' => 'boolean',
+				'default' => false
+			],
+			'hasImage' => [
+				'type' => 'boolean',
+				'default' => false
 			]
 		],
 	] );

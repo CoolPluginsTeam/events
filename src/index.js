@@ -11,6 +11,18 @@ const getCurrentDate = () => {
 	return dateI18n('Y-m-d', now);
 };
 
+// Get default images from plugin data
+const getDefaultImages = () => {
+	if (window.evtPluginData && window.evtPluginData.images) {
+		return [
+			window.evtPluginData.images.crazyDJ || '',
+			window.evtPluginData.images.rockBand || '',
+			window.evtPluginData.images.foodDistribution || ''
+		];
+	}
+	return ['', '', ''];
+};
+
 // PARENT BLOCK: Events Grid Container
 registerBlockType('evt/events-grid', {
 	title: __('Events Grid', 'events'),
@@ -29,6 +41,8 @@ registerBlockType('evt/events-grid', {
 			style: { '--columns': columns }
 		});
 
+		const defaultImages = getDefaultImages();
+
 		return (
 			<>
 				<InspectorControls>
@@ -46,9 +60,27 @@ registerBlockType('evt/events-grid', {
 					<InnerBlocks
 						allowedBlocks={['evt/event-item']}
 						template={[
-							['evt/event-item', {}],
-							['evt/event-item', {}],
-							['evt/event-item', {}]
+							['evt/event-item', {
+								eventImage: defaultImages[0],
+								eventImageAlt: 'Crazy DJ Experience Santa Cruz',
+								eventDate: '2025-01-06',
+								isDefault: true,
+								hasImage: true
+							}],
+							['evt/event-item', {
+								eventImage: defaultImages[1],
+								eventImageAlt: 'Cute Girls Rock Band Performance',
+								eventDate: '2025-04-04',
+								isDefault: true,
+								hasImage: true
+							}],
+							['evt/event-item', {
+								eventImage: defaultImages[2],
+								eventImageAlt: 'Free Food Distribution At Mumbai',
+								eventDate: '2025-06-08',
+								isDefault: true,
+								hasImage: true
+							}]
 						]}
 						renderAppender={() => <InnerBlocks.ButtonBlockAppender />}
 					/>
@@ -105,6 +137,14 @@ registerBlockType('evt/event-item', {
 		borderBadgeColor: {
 			type: 'string',
 			default: '#00000040'
+		},
+		isDefault: {
+			type: 'boolean',
+			default: false
+		},
+		hasImage: {
+			type: 'boolean',
+			default: false
 		}
 	},
 	edit: ({ attributes, setAttributes, clientId }) => {
@@ -115,19 +155,17 @@ registerBlockType('evt/event-item', {
 			detailsBackgroundColor,
 			dateBadgeBackgroundColor,
 			dateBadgeTextColor,
-			borderBadgeColor
+			borderBadgeColor,
+			isDefault,
+			hasImage
 		} = attributes;
 
-		// Get default image if no image set
+		// Set hasImage based on eventImage
 		useEffect(() => {
-			if (!eventImage && window.evtPluginData && window.evtPluginData.images) {
-				const images = Object.values(window.evtPluginData.images);
-				if (images.length > 0) {
-					const randomImage = images[Math.floor(Math.random() * images.length)];
-					setAttributes({ eventImage: randomImage });
-				}
+			if (eventImage && !hasImage) {
+				setAttributes({ hasImage: true });
 			}
-		}, []);
+		}, [eventImage]);
 
 		const blockProps = useBlockProps({
 			className: 'evt-event-item'
@@ -151,33 +189,103 @@ registerBlockType('evt/event-item', {
 
 		const dateParts = parseDate(eventDate);
 
-		// Default blocks template
-		const TEMPLATE = [
+		// Default event data (for first 3 events)
+		const defaultEventData = [
+			{
+				title: 'Crazy DJ Experience Santa Cruz',
+				description: 'Experience an electrifying night of music and entertainment.',
+				time: '9:00 AM - 5:00 PM',
+				location: 'JW Marriott, Sector 35',
+				price: '$25.00'
+			},
+			{
+				title: 'Cute Girls Rock Band Performance',
+				description: 'Join us for an amazing rock music performance.',
+				time: '9:00 AM - 5:00 PM',
+				location: 'Club XYZ, Sector 17',
+				price: '$20.00'
+			},
+			{
+				title: 'Free Food Distribution At Mumbai',
+				description: 'Community service event for food distribution.',
+				time: '9:00 AM - 5:00 PM',
+				location: 'Food Corp. Mumbai, Ft. Line',
+				price: '$15.00'
+			}
+		];
+
+		// Get default data if this is a default event
+		const getDefaultContent = () => {
+			if (!isDefault) return null;
+			
+			// Try to match based on image alt text
+			if (eventImageAlt.includes('DJ')) return defaultEventData[0];
+			if (eventImageAlt.includes('Rock')) return defaultEventData[1];
+			if (eventImageAlt.includes('Food')) return defaultEventData[2];
+			
+			return null;
+		};
+
+		const defaultContent = getDefaultContent();
+
+		// Template for blocks - with or without default content
+		const TEMPLATE = isDefault && defaultContent ? [
 			['core/heading', {
 				level: 4,
 				placeholder: __('Event Title', 'events'),
 				className: 'evt-event-title',
-				content: __('Event Title', 'events')
+				content: defaultContent.title
 			}],
 			['core/paragraph', {
 				placeholder: __('Event Description', 'events'),
 				className: 'evt-event-description',
-				content: __('Add your event description here...', 'events')
+				content: defaultContent.description
 			}],
 			['core/paragraph', {
 				placeholder: __('Event Time', 'events'),
 				className: 'evt-event-time',
-				content: __('9:00 AM - 5:00 PM', 'events')
+				content: defaultContent.time
 			}],
 			['core/paragraph', {
 				placeholder: __('Event Location', 'events'),
 				className: 'evt-event-location',
-				content: __('Event Location', 'events')
+				content: defaultContent.location
 			}],
 			['core/paragraph', {
 				placeholder: __('Event Price', 'events'),
 				className: 'evt-event-price',
-				content: __('$25.00', 'events')
+				content: defaultContent.price
+			}],
+			['core/buttons', {}, [
+				['core/button', {
+					text: __('Read More', 'events'),
+					className: 'evt-event-read-more',
+					backgroundColor: 'vivid-cyan-blue',
+					url: '#'
+				}]
+			]]
+		] : [
+			// Empty template with only placeholders for new events
+			['core/heading', {
+				level: 4,
+				placeholder: __('Event Title', 'events'),
+				className: 'evt-event-title'
+			}],
+			['core/paragraph', {
+				placeholder: __('Event Description', 'events'),
+				className: 'evt-event-description'
+			}],
+			['core/paragraph', {
+				placeholder: __('9:00 AM - 5:00 PM', 'events'),
+				className: 'evt-event-time'
+			}],
+			['core/paragraph', {
+				placeholder: __('Event Location', 'events'),
+				className: 'evt-event-location'
+			}],
+			['core/paragraph', {
+				placeholder: __('Event Price', 'events'),
+				className: 'evt-event-price'
 			}],
 			['core/buttons', {}, [
 				['core/button', {
@@ -188,6 +296,14 @@ registerBlockType('evt/event-item', {
 				}]
 			]]
 		];
+
+		// Image Add/Remove Handler (Timeline style)
+		const toggleImageBlock = (shouldAdd) => {
+			setAttributes({ hasImage: shouldAdd });
+			if (!shouldAdd) {
+				setAttributes({ eventImage: '', eventImageAlt: '' });
+			}
+		};
 
 		return (
 			<>
@@ -201,47 +317,6 @@ registerBlockType('evt/event-item', {
 								is12Hour={true}
 							/>
 						</div>
-					</PanelBody>
-
-					<PanelBody title={__('Event Image', 'events')} initialOpen={false}>
-						<MediaUploadCheck>
-							<MediaUpload
-								onSelect={(media) => {
-									setAttributes({
-										eventImage: media.url,
-										eventImageAlt: media.alt || media.title
-									});
-								}}
-								allowedTypes={['image']}
-								value={eventImage}
-								render={({ open }) => (
-									<div>
-										{eventImage ? (
-											<>
-												<img
-													src={eventImage}
-													alt={eventImageAlt}
-													style={{ width: '100%', marginBottom: '10px' }}
-												/>
-												<Button isSecondary onClick={open} style={{ marginRight: '10px' }}>
-													{__('Change Image', 'events')}
-												</Button>
-												<Button
-													isDestructive
-													onClick={() => setAttributes({ eventImage: '', eventImageAlt: '' })}
-												>
-													{__('Remove', 'events')}
-												</Button>
-											</>
-										) : (
-											<Button isPrimary onClick={open}>
-												{__('Upload Image', 'events')}
-											</Button>
-										)}
-									</div>
-								)}
-							/>
-						</MediaUploadCheck>
 					</PanelBody>
 
 					<PanelBody title={__('Colors', 'events')} initialOpen={false}>
@@ -281,11 +356,90 @@ registerBlockType('evt/event-item', {
 
 				<div {...blockProps}>
 					<div className="evt-event-card">
-						{eventImage && (
-							<div className="evt-event-image">
-								<img src={eventImage} alt={eventImageAlt} />
+						{/* Image Section - Timeline Style */}
+						{hasImage ? (
+							<div className="evt-event-image-wrapper">
+								{eventImage ? (
+									<div className="evt-event-image">
+										<img src={eventImage} alt={eventImageAlt} />
+									</div>
+								) : (
+									<MediaUploadCheck>
+										<MediaUpload
+											onSelect={(media) => {
+												setAttributes({
+													eventImage: media.url,
+													eventImageAlt: media.alt || media.title
+												});
+											}}
+											allowedTypes={['image']}
+											value={eventImage}
+											render={({ open }) => (
+												<div className="evt-event-image" style={{ 
+													display: 'flex', 
+													alignItems: 'center', 
+													justifyContent: 'center',
+													background: '#f0f0f0'
+												}}>
+													<Button isPrimary onClick={open}>
+														{__('Upload Image', 'events')}
+													</Button>
+												</div>
+											)}
+										/>
+									</MediaUploadCheck>
+								)}
+								<div style={{ 
+									padding: '10px', 
+									background: '#fff',
+									borderBottom: '1px solid #ddd',
+									display: 'flex',
+									gap: '10px'
+								}}>
+									{eventImage && (
+										<MediaUploadCheck>
+											<MediaUpload
+												onSelect={(media) => {
+													setAttributes({
+														eventImage: media.url,
+														eventImageAlt: media.alt || media.title
+													});
+												}}
+												allowedTypes={['image']}
+												value={eventImage}
+												render={({ open }) => (
+													<Button isSmall isSecondary onClick={open}>
+														{__('Change Image', 'events')}
+													</Button>
+												)}
+											/>
+										</MediaUploadCheck>
+									)}
+									<Button 
+										isSmall 
+										isSecondary 
+										onClick={() => toggleImageBlock(false)}
+									>
+										{__('Remove Image Block', 'events')}
+									</Button>
+								</div>
+							</div>
+						) : (
+							<div style={{ 
+								padding: '10px', 
+								background: '#fff',
+								borderBottom: '1px solid #ddd'
+							}}>
+								<Button 
+									isSmall 
+									isSecondary 
+									onClick={() => toggleImageBlock(true)}
+								>
+									{__('Add Image Block', 'events')}
+								</Button>
 							</div>
 						)}
+						
 						<div className="evt-event-details" style={{ backgroundColor: detailsBackgroundColor }}>
 							<div className="evt-event-date-badge-container">
 								<div className="evt-border-badge" style={{ borderColor: borderBadgeColor }}>
@@ -311,8 +465,7 @@ registerBlockType('evt/event-item', {
 										'core/paragraph',
 										'core/list',
 										'core/buttons',
-										'core/button',
-										'core/image'
+										'core/button'
 									]}
 								/>
 							</div>
@@ -330,7 +483,8 @@ registerBlockType('evt/event-item', {
 			detailsBackgroundColor,
 			dateBadgeBackgroundColor,
 			dateBadgeTextColor,
-			borderBadgeColor
+			borderBadgeColor,
+			hasImage
 		} = attributes;
 
 		const blockProps = useBlockProps.save({
@@ -358,7 +512,7 @@ registerBlockType('evt/event-item', {
 		return (
 			<div {...blockProps}>
 				<div className="evt-event-card">
-					{eventImage && (
+					{hasImage && eventImage && (
 						<div className="evt-event-image">
 							<img src={eventImage} alt={eventImageAlt} />
 						</div>
