@@ -1,9 +1,10 @@
-import { registerBlockType } from '@wordpress/blocks';
+import { registerBlockType, createBlock } from '@wordpress/blocks';
 import { InnerBlocks, InspectorControls, MediaUpload, MediaUploadCheck, useBlockProps } from '@wordpress/block-editor';
 import { PanelBody, Button, DateTimePicker, __experimentalNumberControl as NumberControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { dateI18n, format, getSettings } from '@wordpress/date';
 import { useEffect } from '@wordpress/element';
+import { dispatch, select } from '@wordpress/data';
 
 // Get current date formatted
 const getCurrentDate = () => {
@@ -160,12 +161,32 @@ registerBlockType('evt/event-item', {
 			hasImage
 		} = attributes;
 
-		// Set hasImage based on eventImage
-		useEffect(() => {
-			if (eventImage && !hasImage) {
-				setAttributes({ hasImage: true });
+		// Get inner blocks to check for image block (only for new events)
+		const innerBlocks = select('core/block-editor').getBlock(clientId)?.innerBlocks || [];
+		const hasImageBlock = innerBlocks.some(block => block.name === 'core/image');
+
+		// Image Add Handler (Timeline style) - Only for new events
+		const addImageBlock = () => {
+			if (isDefault) return; // Don't add to default events
+			
+			// Create new WordPress image block
+			const imageBlock = createBlock('core/image', {
+				className: 'evt-event-image-block'
+			});
+			
+			// Insert at the beginning of InnerBlocks
+			dispatch('core/block-editor').insertBlocks(imageBlock, 0, clientId);
+		};
+
+		// Image Remove Handler - Only for new events
+		const removeImageBlock = () => {
+			if (isDefault) return; // Don't remove from default events
+			
+			const imageBlock = innerBlocks.find(block => block.name === 'core/image');
+			if (imageBlock) {
+				dispatch('core/block-editor').removeBlock(imageBlock.clientId);
 			}
-		}, [eventImage]);
+		};
 
 		const blockProps = useBlockProps({
 			className: 'evt-event-item'
@@ -356,87 +377,37 @@ registerBlockType('evt/event-item', {
 
 				<div {...blockProps}>
 					<div className="evt-event-card">
-						{/* Image Section - Timeline Style */}
-						{hasImage ? (
-							<div className="evt-event-image-wrapper">
-								{eventImage ? (
-									<div className="evt-event-image">
-										<img src={eventImage} alt={eventImageAlt} />
-									</div>
-								) : (
-									<MediaUploadCheck>
-										<MediaUpload
-											onSelect={(media) => {
-												setAttributes({
-													eventImage: media.url,
-													eventImageAlt: media.alt || media.title
-												});
-											}}
-											allowedTypes={['image']}
-											value={eventImage}
-											render={({ open }) => (
-												<div className="evt-event-image" style={{ 
-													display: 'flex', 
-													alignItems: 'center', 
-													justifyContent: 'center',
-													background: '#f0f0f0'
-												}}>
-													<Button isPrimary onClick={open}>
-														{__('Upload Image', 'events')}
-													</Button>
-												</div>
-											)}
-										/>
-									</MediaUploadCheck>
-								)}
-								<div style={{ 
-									padding: '10px', 
-									background: '#fff',
-									borderBottom: '1px solid #ddd',
-									display: 'flex',
-									gap: '10px'
-								}}>
-									{eventImage && (
-										<MediaUploadCheck>
-											<MediaUpload
-												onSelect={(media) => {
-													setAttributes({
-														eventImage: media.url,
-														eventImageAlt: media.alt || media.title
-													});
-												}}
-												allowedTypes={['image']}
-												value={eventImage}
-												render={({ open }) => (
-													<Button isSmall isSecondary onClick={open}>
-														{__('Change Image', 'events')}
-													</Button>
-												)}
-											/>
-										</MediaUploadCheck>
-									)}
-									<Button 
-										isSmall 
-										isSecondary 
-										onClick={() => toggleImageBlock(false)}
-									>
-										{__('Remove Image Block', 'events')}
-									</Button>
-								</div>
+						{/* Default Events: Direct Image Render */}
+						{isDefault && eventImage && (
+							<div className="evt-event-image">
+								<img src={eventImage} alt={eventImageAlt} />
 							</div>
-						) : (
+						)}
+
+						{/* New Events: Add/Remove Image Block Button */}
+						{!isDefault && (
 							<div style={{ 
 								padding: '10px', 
 								background: '#fff',
 								borderBottom: '1px solid #ddd'
 							}}>
-								<Button 
-									isSmall 
-									isSecondary 
-									onClick={() => toggleImageBlock(true)}
-								>
-									{__('Add Image Block', 'events')}
-								</Button>
+								{hasImageBlock ? (
+									<Button 
+										isSmall 
+										isSecondary 
+										onClick={removeImageBlock}
+									>
+										{__('Remove Image Block', 'events')}
+									</Button>
+								) : (
+									<Button 
+										isSmall 
+										isSecondary 
+										onClick={addImageBlock}
+									>
+										{__('Add Image Block', 'events')}
+									</Button>
+								)}
 							</div>
 						)}
 						
@@ -461,6 +432,7 @@ registerBlockType('evt/event-item', {
 									template={TEMPLATE}
 									templateLock={false}
 									allowedBlocks={[
+										'core/image',
 										'core/heading',
 										'core/paragraph',
 										'core/list',
@@ -484,7 +456,7 @@ registerBlockType('evt/event-item', {
 			dateBadgeBackgroundColor,
 			dateBadgeTextColor,
 			borderBadgeColor,
-			hasImage
+			isDefault
 		} = attributes;
 
 		const blockProps = useBlockProps.save({
@@ -512,11 +484,13 @@ registerBlockType('evt/event-item', {
 		return (
 			<div {...blockProps}>
 				<div className="evt-event-card">
-					{hasImage && eventImage && (
+					{/* Default Events: Direct Image Render */}
+					{isDefault && eventImage && (
 						<div className="evt-event-image">
 							<img src={eventImage} alt={eventImageAlt} />
 						</div>
 					)}
+					
 					<div className="evt-event-details" style={{ backgroundColor: detailsBackgroundColor }}>
 						<div className="evt-event-date-badge-container">
 							<div className="evt-border-badge" style={{ borderColor: borderBadgeColor }}>
@@ -534,6 +508,7 @@ registerBlockType('evt/event-item', {
 							<span className="evt-date-weekday">{dateParts.weekday}</span>
 						</div>
 						<div className="evt-event-details-inner">
+							{/* New events: Image comes from InnerBlocks, Default events: Only content */}
 							<InnerBlocks.Content />
 						</div>
 					</div>

@@ -39,14 +39,32 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* EVENT IMAGE */
+/* EVENT IMAGE - Default Events */
 .evt-event-image {
     width: 100%;
     height: 200px;
     overflow: hidden;
+    position: relative;
 }
 
 .evt-event-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* EVENT IMAGE - New Events (WordPress Image Block) */
+.evt-event-details-inner .wp-block-image,
+.evt-event-details-inner .evt-event-image-block {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    margin: 0 0 15px 0;
+    position: relative;
+}
+
+.evt-event-details-inner .wp-block-image img,
+.evt-event-details-inner .evt-event-image-block img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -58,7 +76,7 @@
     position: relative;
 }
 
-/* DATE BADGE */
+/* DATE BADGE - Overlaps on image */
 .evt-event-date-badge-container {
     position: absolute;
     top: -25px;
@@ -67,6 +85,7 @@
     flex-direction: column;
     align-items: center;
     gap: 8px;
+    z-index: 10;
 }
 
 .evt-border-badge {
