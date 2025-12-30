@@ -1,124 +1,170 @@
-/* EVENTS GRID - Modern Layout Styles */
-* {
-    box-sizing: border-box;
-}
-/* Grid Container */
+/**
+ * Events Grid Block - Frontend Styles
+ * Simplified version using default blocks
+ */
+
+/* EVENTS GRID CONTAINER */
 .evt-events-grid-container {
     display: grid;
-    grid-template-columns: repeat(var(--columns, 2), 1fr);
-    gap: 30px;
+    grid-template-columns: repeat(var(--columns, 3), 1fr);
+    gap: 24px;
     margin: 0 auto;
-    max-width: 100%;
-}
-/* EVENT CARD STYLES */
-   
-.evt-event-item {
-    width: 100%;
-    height: 100%;
+    padding: 20px 0;
 }
 
-.evt-event-card {
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    transition: all 0.3s ease;
-}
-
-.evt-event-card:hover {
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-    transform: translateY(-4px);
-}
-/* EVENT IMAGE WITH DATE BADGE */
-.evt-event-image {
-    height: 280px;
-    overflow: hidden;
-    background: #f5f5f5;
-}
-
-.evt-event-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-}
-
-.evt-event-card:hover .evt-event-image img {
-    transform: scale(1.05);
-}
-
-.evt-event-details .evt-event-date-badge-container{
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-}
-.evt-event-details{
-        display: flex;
-        align-items: start;
-        justify-content: start;
-        gap: 10px;
-        padding: 12px;
-}
-.evt-event-details .evt-event-date-badge-container .evt-event-date-badge {
-    padding: 7px 14px;
-    border-radius: 4px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-.evt-border-badge{
-    border-radius: 6px;
-    padding: 3px;
-}
-
-.evt-event-details .evt-event-date-badge-container .evt-event-date-badge .evt-date-month {
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-/* EVENT DETAILS SECTION */
-.evt-event-time .evt-time-icon {
-    font-size: 16px;
-}
-
-/* Read More Button */
-.evt-price-read-more{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.evt-event-read-more {
-    padding: 6px 11px 6px 11px;
-    text-decoration: none !IMPORTANT;
-    border-radius: 4px;
-}
-.evt-event-read-more a {
-    color: var(--evt-readmore-color);
-    text-decoration: none !IMPORTANT;
-}
-
-/* ALIGNMENT SUPPORT */
-.alignwide .evt-events-grid-container {
-    max-width: 1200px;
-}
-
-.alignfull .evt-events-grid-container {
-    max-width: 100%;
-    padding: 20px;
-}
-
-
-/* ACCESSIBILITY & INTERACTIONS */
-/* Responsive Grid */
+/* RESPONSIVE GRID */
 @media (max-width: 1024px) {
     .evt-events-grid-container {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 600px) {
     .evt-events-grid-container {
         grid-template-columns: 1fr;
-        gap: 20px;
     }
+}
+
+/* EVENT CARD */
+.evt-event-card {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: #fff;
+}
+
+.evt-event-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* EVENT IMAGE */
+.evt-event-image {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+}
+
+.evt-event-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* EVENT DETAILS */
+.evt-event-details {
+    padding: 20px;
+    position: relative;
+}
+
+/* DATE BADGE */
+.evt-event-date-badge-container {
+    position: absolute;
+    top: -25px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.evt-border-badge {
+    border-radius: 6px;
+    padding: 3px;
+    background: #fff;
+}
+
+.evt-event-date-badge {
+    padding: 7px 14px;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.evt-date-day {
+    font-size: 21px;
+    font-weight: 700;
+    line-height: 1;
+    display: block;
+}
+
+.evt-date-month {
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.2;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: block;
+}
+
+.evt-date-weekday {
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* EVENT DETAILS INNER */
+.evt-event-details-inner {
+    padding-top: 15px;
+}
+
+/* Default Block Styles */
+.evt-event-details-inner .evt-event-title {
+    margin: 4px 0 6px 0;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.evt-event-details-inner .evt-event-description {
+    margin: 0 0 12px 0;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.evt-event-details-inner .evt-event-time {
+    margin: 0 0 8px 0;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.evt-event-details-inner .evt-event-time:before {
+    content: '🕐';
+}
+
+.evt-event-details-inner .evt-event-location {
+    margin: 0 0 12px 0;
+    font-size: 14px;
+}
+
+.evt-event-details-inner .evt-event-price {
+    margin: 0 0 12px 0;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+/* Buttons Styling */
+.evt-event-details-inner .wp-block-buttons {
+    margin-top: 12px;
+}
+
+.evt-event-details-inner .evt-event-read-more {
+    font-size: 13px;
+}
+
+/* ALIGNMENT SUPPORT */
+.alignwide .evt-events-grid-container,
+.alignfull .evt-events-grid-container {
+    max-width: 100%;
+}
+
+/* EDITOR FIX */
+.block-editor-block-list__block .evt-event-item {
+    margin-bottom: 0;
 }
