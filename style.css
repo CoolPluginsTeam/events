@@ -6,10 +6,11 @@
 /* EVENTS GRID CONTAINER */
 .evt-events-grid-container {
     display: grid;
-    grid-template-columns: repeat(var(--columns, 3), 1fr);
-    gap: 24px;
+    grid-template-columns: repeat(var(--columns, 2), 1fr);
+    gap: 30px;
     margin: 0 auto;
     padding: 20px 0;
+    max-width: 100%;
 }
 
 /* RESPONSIVE GRID */
@@ -199,6 +200,9 @@
 
 .evt-event-details-inner .evt-event-read-more {
     font-size: 13px;
+}
+.evt-event-details-inner .evt-event-read-more a{
+    text-decoration: none;
 }
 
 
