@@ -163,22 +163,36 @@ registerBlockType('evt/event-item', {
 
 		// Get inner blocks to check for image block
 		const innerBlocks = select('core/block-editor').getBlock(clientId)?.innerBlocks || [];
-		const hasImageBlock = innerBlocks.some(block => block.name === 'core/image');
+		const imageBlock = innerBlocks.find(block => block.name === 'core/image');
+		const hasImageBlock = !!imageBlock;
+		
+		// Get image URL from block or attributes
+		const currentImageUrl = imageBlock?.attributes?.url || eventImage || '';
+		const currentImageAlt = imageBlock?.attributes?.alt || eventImageAlt || '';
+		
+		// Sync image block URL to attributes when it changes
+		useEffect(() => {
+			if (imageBlock?.attributes?.url && imageBlock.attributes.url !== eventImage) {
+				setAttributes({
+					eventImage: imageBlock.attributes.url,
+					eventImageAlt: imageBlock.attributes.alt || eventImageAlt
+				});
+			}
+		}, [imageBlock?.attributes?.url, imageBlock?.attributes?.alt]);
 
 		// Image Add Handler (Timeline style) - Works for all events
 		const addImageBlock = () => {
 			// Create new WordPress image block
-			const imageBlock = createBlock('core/image', {
+			const newImageBlock = createBlock('core/image', {
 				className: 'evt-event-image-block'
 			});
 			
 			// Insert at the beginning of InnerBlocks
-			dispatch('core/block-editor').insertBlocks(imageBlock, 0, clientId);
+			dispatch('core/block-editor').insertBlocks(newImageBlock, 0, clientId);
 		};
 
 		// Image Remove Handler - Works for all events
 		const removeImageBlock = () => {
-			const imageBlock = innerBlocks.find(block => block.name === 'core/image');
 			if (imageBlock) {
 				dispatch('core/block-editor').removeBlock(imageBlock.clientId);
 			}
@@ -242,8 +256,8 @@ registerBlockType('evt/event-item', {
 
 		const defaultContent = getDefaultContent();
 
-		// Template for blocks - with or without default content
-		// Default events: Image block + content blocks
+		// Template for all blocks including image
+		// Order: Image, Time, Title, Location, Price, Read More
 		const TEMPLATE = isDefault && defaultContent ? [
 			['core/image', {
 				url: eventImage,
@@ -401,23 +415,33 @@ registerBlockType('evt/event-item', {
 							)}
 						</div>
 						
-						<div className="evt-event-details" style={{ backgroundColor: detailsBackgroundColor }}>			
-							<div className="evt-event-details-inner">
-								<div className="evt-event-date-badge-container">
-									<div className="evt-border-badge" style={{ borderColor: borderBadgeColor }}>
-										<div
-											className="evt-event-date-badge"
-											style={{
-												backgroundColor: dateBadgeBackgroundColor,
-												color: dateBadgeTextColor
-											}}
-										>
-											<span className="evt-date-day">{dateParts.day}</span>
-											<span className="evt-date-month">{dateParts.month}</span>
-										</div>
+						{/* Image Rendered Directly - Outside details */}
+						{currentImageUrl && (
+							<div className="evt-event-image">
+								<img src={currentImageUrl} alt={currentImageAlt} />
+							</div>
+						)}
+						
+						<div className="evt-event-details" style={{ backgroundColor: detailsBackgroundColor }}>
+							{/* Date Badge - Inside details, outside inner */}
+							<div className="evt-event-date-badge-container">
+								<div className="evt-border-badge" style={{ borderColor: borderBadgeColor }}>
+									<div
+										className="evt-event-date-badge"
+										style={{
+											backgroundColor: dateBadgeBackgroundColor,
+											color: dateBadgeTextColor
+										}}
+									>
+										<span className="evt-date-day">{dateParts.day}</span>
+										<span className="evt-date-month">{dateParts.month}</span>
 									</div>
-									<span className="evt-date-weekday">{dateParts.weekday}</span>
 								</div>
+								<span className="evt-date-weekday">{dateParts.weekday}</span>
+							</div>
+							
+							{/* Content Blocks - Inside details-inner (image block will be filtered via CSS) */}
+							<div className="evt-event-details-inner">
 								<InnerBlocks
 									template={TEMPLATE}
 									templateLock={false}
@@ -474,8 +498,15 @@ registerBlockType('evt/event-item', {
 		return (
 			<div {...blockProps}>
 				<div className="evt-event-card">
+					{/* Image - Outside details */}
+					{eventImage && (
+						<div className="evt-event-image">
+							<img src={eventImage} alt={eventImageAlt} />
+						</div>
+					)}
+					
 					<div className="evt-event-details" style={{ backgroundColor: detailsBackgroundColor }}>
-						<div className="evt-event-details-inner">
+						{/* Date Badge - Inside details, outside inner */}
 						<div className="evt-event-date-badge-container">
 							<div className="evt-border-badge" style={{ borderColor: borderBadgeColor }}>
 								<div
@@ -491,7 +522,10 @@ registerBlockType('evt/event-item', {
 							</div>
 							<span className="evt-date-weekday">{dateParts.weekday}</span>
 						</div>
-							{/* All content including image comes from InnerBlocks */}
+						
+						{/* Content - Inside details-inner */}
+						<div className="evt-event-details-inner">
+							{/* All content blocks (image will be filtered via PHP) */}
 							<InnerBlocks.Content />
 						</div>
 					</div>

@@ -81,6 +81,7 @@
 
 /* DATE BADGE (EDITOR) - Overlaps on image */
 .editor-styles-wrapper .evt-event-date-badge-container {
+    /* position: absolute; */
     top: -25px;
     right: 20px;
     display: flex;
@@ -91,9 +92,9 @@
 }
 
 .editor-styles-wrapper .evt-border-badge {
+    border: 1px solid #00000040;
     border-radius: 6px;
     padding: 3px;
-    background: #fff;
 }
 
 .editor-styles-wrapper .evt-event-date-badge {
@@ -155,8 +156,32 @@
     gap: 5px;
 }
 
+/* Time Icon - Font Awesome (using :before) */
 .editor-styles-wrapper .evt-event-details-inner .evt-event-time:before {
-    content: '🕐';
+    content: '\e803'; /* clockicon-evt */
+    font-family: 'evticons';
+    font-style: normal;
+    font-weight: normal;
+    speak: never;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+/* Price and Read More Wrapper (EDITOR) */
+.editor-styles-wrapper .evt-event-details-inner .evt-price-read-more {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 12px;
+}
+
+.editor-styles-wrapper .evt-event-details-inner .evt-price-read-more .evt-event-price {
+    margin: 0;
+}
+
+.editor-styles-wrapper .evt-event-details-inner .evt-price-read-more .wp-block-buttons {
+    margin: 0;
 }
 
 .editor-styles-wrapper .evt-event-details-inner .evt-event-location {
@@ -202,4 +227,18 @@
 .editor-styles-wrapper .evt-event-details-inner .block-editor-block-list__block {
     margin-top: 0;
     margin-bottom: 0;
+}
+
+/* Hide image block in details-inner (rendered separately outside) */
+.editor-styles-wrapper .evt-event-details-inner .wp-block-image {
+    display: none;
+}
+
+/* Price and Read More Wrapper */
+.editor-styles-wrapper .evt-event-details-inner .evt-price-read-more {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 12px;
 }
