@@ -210,21 +210,18 @@ registerBlockType('evt/event-item', {
 		const defaultEventData = [
 			{
 				title: 'Crazy DJ Experience Santa Cruz',
-				description: 'Experience an electrifying night of music and entertainment.',
 				time: '9:00 AM - 5:00 PM',
 				location: 'JW Marriott, Sector 35',
 				price: '$25.00'
 			},
 			{
 				title: 'Cute Girls Rock Band Performance',
-				description: 'Join us for an amazing rock music performance.',
 				time: '9:00 AM - 5:00 PM',
 				location: 'Club XYZ, Sector 17',
 				price: '$20.00'
 			},
 			{
 				title: 'Free Food Distribution At Mumbai',
-				description: 'Community service event for food distribution.',
 				time: '9:00 AM - 5:00 PM',
 				location: 'Food Corp. Mumbai, Ft. Line',
 				price: '$15.00'
@@ -253,6 +250,11 @@ registerBlockType('evt/event-item', {
 				alt: eventImageAlt,
 				className: 'evt-event-image-block'
 			}],
+			['core/paragraph', {
+				placeholder: __('Event Time', 'events'),
+				className: 'evt-event-time',
+				content: defaultContent.time
+			}],
 			['core/heading', {
 				level: 4,
 				placeholder: __('Event Title', 'events'),
@@ -263,11 +265,6 @@ registerBlockType('evt/event-item', {
 				placeholder: __('Event Description', 'events'),
 				className: 'evt-event-description',
 				content: defaultContent.description
-			}],
-			['core/paragraph', {
-				placeholder: __('Event Time', 'events'),
-				className: 'evt-event-time',
-				content: defaultContent.time
 			}],
 			['core/paragraph', {
 				placeholder: __('Event Location', 'events'),
@@ -289,6 +286,10 @@ registerBlockType('evt/event-item', {
 			]]
 		] : [
 			// Empty template with only placeholders for new events
+			['core/paragraph', {
+				placeholder: __('9:00 AM - 5:00 PM', 'events'),
+				className: 'evt-event-time'
+			}],
 			['core/heading', {
 				level: 4,
 				placeholder: __('Event Title', 'events'),
@@ -297,10 +298,6 @@ registerBlockType('evt/event-item', {
 			['core/paragraph', {
 				placeholder: __('Event Description', 'events'),
 				className: 'evt-event-description'
-			}],
-			['core/paragraph', {
-				placeholder: __('9:00 AM - 5:00 PM', 'events'),
-				className: 'evt-event-time'
 			}],
 			['core/paragraph', {
 				placeholder: __('Event Location', 'events'),
@@ -404,23 +401,23 @@ registerBlockType('evt/event-item', {
 							)}
 						</div>
 						
-						<div className="evt-event-details" style={{ backgroundColor: detailsBackgroundColor }}>
-							<div className="evt-event-date-badge-container">
-								<div className="evt-border-badge" style={{ borderColor: borderBadgeColor }}>
-									<div
-										className="evt-event-date-badge"
-										style={{
-											backgroundColor: dateBadgeBackgroundColor,
-											color: dateBadgeTextColor
-										}}
-									>
-										<span className="evt-date-day">{dateParts.day}</span>
-										<span className="evt-date-month">{dateParts.month}</span>
-									</div>
-								</div>
-								<span className="evt-date-weekday">{dateParts.weekday}</span>
-							</div>
+						<div className="evt-event-details" style={{ backgroundColor: detailsBackgroundColor }}>			
 							<div className="evt-event-details-inner">
+								<div className="evt-event-date-badge-container">
+									<div className="evt-border-badge" style={{ borderColor: borderBadgeColor }}>
+										<div
+											className="evt-event-date-badge"
+											style={{
+												backgroundColor: dateBadgeBackgroundColor,
+												color: dateBadgeTextColor
+											}}
+										>
+											<span className="evt-date-day">{dateParts.day}</span>
+											<span className="evt-date-month">{dateParts.month}</span>
+										</div>
+									</div>
+									<span className="evt-date-weekday">{dateParts.weekday}</span>
+								</div>
 								<InnerBlocks
 									template={TEMPLATE}
 									templateLock={false}
@@ -478,6 +475,7 @@ registerBlockType('evt/event-item', {
 			<div {...blockProps}>
 				<div className="evt-event-card">
 					<div className="evt-event-details" style={{ backgroundColor: detailsBackgroundColor }}>
+						<div className="evt-event-details-inner">
 						<div className="evt-event-date-badge-container">
 							<div className="evt-border-badge" style={{ borderColor: borderBadgeColor }}>
 								<div
@@ -493,7 +491,6 @@ registerBlockType('evt/event-item', {
 							</div>
 							<span className="evt-date-weekday">{dateParts.weekday}</span>
 						</div>
-						<div className="evt-event-details-inner">
 							{/* All content including image comes from InnerBlocks */}
 							<InnerBlocks.Content />
 						</div>

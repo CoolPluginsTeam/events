@@ -78,7 +78,6 @@
 
 /* DATE BADGE - Overlaps on image */
 .evt-event-date-badge-container {
-    position: absolute;
     top: -25px;
     right: 20px;
     display: flex;
