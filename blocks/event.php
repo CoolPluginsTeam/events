@@ -61,6 +61,10 @@ add_action( 'init', function() {
 			'hasImage' => [
 				'type' => 'boolean',
 				'default' => false
+			],
+			'mediaBlock' => [
+				'type' => 'boolean',
+				'default' => false
 			]
 		],
 	] );

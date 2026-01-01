@@ -231,9 +231,9 @@
 }
 
 /* Hide image block in details-inner (rendered separately outside) */
-.editor-styles-wrapper .evt-event-details-inner .wp-block-image {
+/* .editor-styles-wrapper .evt-event-details-inner .wp-block-image {
     display: none;
-}
+} */
 
 /* Price and Read More Wrapper */
 .editor-styles-wrapper .evt-event-details-inner .evt-price-read-more {

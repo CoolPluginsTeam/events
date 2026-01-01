@@ -147,6 +147,10 @@ registerBlockType('evt/event-item', {
 		hasImage: {
 			type: 'boolean',
 			default: false
+		},
+		mediaBlock: {
+			type: 'boolean',
+			default: false
 		}
 	},
 	edit: ({ attributes, setAttributes, clientId }) => {
@@ -159,7 +163,8 @@ registerBlockType('evt/event-item', {
 			dateBadgeTextColor,
 			borderBadgeColor,
 			isDefault,
-			hasImage
+			hasImage,
+			mediaBlock
 		} = attributes;
 
 		// Get inner blocks to check for image block
@@ -181,21 +186,35 @@ registerBlockType('evt/event-item', {
 			}
 		}, [imageBlock?.attributes?.url, imageBlock?.attributes?.alt]);
 
-		// Image Add Handler (Timeline style) - Works for all events
-		const addImageBlock = () => {
-			// Create new WordPress image block
-			const newImageBlock = createBlock('core/image', {
-				className: 'evt-event-image-block'
-			});
-			
-			// Insert at the beginning of InnerBlocks
-			dispatch('core/block-editor').insertBlocks(newImageBlock, 0, clientId);
-		};
+		// Inner Block Template Handler (Timeline style) - Add/Remove image block
+		const innerBlockTemplate = (shouldAddImage) => {
+			const prevInnerBlock = select('core/block-editor').getBlock(clientId)?.innerBlocks || [];
+			const prevBlocksName = prevInnerBlock.map(block => block.name);
+			const prevMediaBlock = prevInnerBlock.filter(block => block.name === 'core/image');
+			const mediaIndex = prevBlocksName.indexOf('core/image');
 
-		// Image Remove Handler - Works for all events
-		const removeImageBlock = () => {
-			if (imageBlock) {
-				dispatch('core/block-editor').removeBlock(imageBlock.clientId);
+			// Remove image block if shouldAddImage is false
+			if (prevMediaBlock.length > 0 && !shouldAddImage) {
+				dispatch('core/block-editor').removeBlock(prevInnerBlock[mediaIndex].clientId, true);
+				setAttributes({ mediaBlock: false, eventImage: '', eventImageAlt: '' });
+			}
+			// Add image block if shouldAddImage is true and no image block exists
+			else if (shouldAddImage && prevBlocksName.length > 0 && !prevBlocksName.includes('core/image')) {
+				const insertedBlock = createBlock('core/image', {
+					url: eventImage || '',
+					alt: eventImageAlt || '',
+					className: 'evt-event-image-block'
+				});
+				dispatch('core/block-editor').insertBlocks(insertedBlock, 0, clientId);
+				setAttributes({ mediaBlock: true });
+				
+				// Auto-select the image block after adding (Timeline style)
+				setTimeout(() => {
+					const addedImageBlock = select('core/block-editor').getBlock(clientId)?.innerBlocks[0];
+					if (addedImageBlock && addedImageBlock.name === 'core/image') {
+						dispatch('core/block-editor').selectBlock(addedImageBlock.clientId);
+					}
+				}, 50);
 			}
 		};
 
@@ -332,14 +351,6 @@ registerBlockType('evt/event-item', {
 			]]
 		];
 
-		// Image Add/Remove Handler (Timeline style)
-		const toggleImageBlock = (shouldAdd) => {
-			setAttributes({ hasImage: shouldAdd });
-			if (!shouldAdd) {
-				setAttributes({ eventImage: '', eventImageAlt: '' });
-			}
-		};
-
 		return (
 			<>
 				<InspectorControls>
@@ -391,7 +402,7 @@ registerBlockType('evt/event-item', {
 
 				<div {...blockProps}>
 					<div className="evt-event-card">
-						{/* Add/Remove Image Block Button - Works for all events */}
+						{/* Add/Remove Image Block Button - Timeline style */}
 						<div style={{ 
 							padding: '10px', 
 							background: '#fff',
@@ -401,7 +412,7 @@ registerBlockType('evt/event-item', {
 								<Button 
 									isSmall 
 									isSecondary 
-									onClick={removeImageBlock}
+									onClick={() => innerBlockTemplate(false)}
 								>
 									{__('Remove Image Block', 'events')}
 								</Button>
@@ -409,7 +420,7 @@ registerBlockType('evt/event-item', {
 								<Button 
 									isSmall 
 									isSecondary 
-									onClick={addImageBlock}
+									onClick={() => innerBlockTemplate(true)}
 								>
 									{__('Add Image Block', 'events')}
 								</Button>
@@ -417,30 +428,13 @@ registerBlockType('evt/event-item', {
 						</div>
 						
 						{/* Image Rendered Directly - Outside details */}
-						{currentImageUrl && (
+						{/* {currentImageUrl && (
 							<div className="evt-event-image">
 								<img src={currentImageUrl} alt={currentImageAlt} />
 							</div>
 						)}
-						
+						 */}
 						<div className="evt-event-details" style={{ backgroundColor: detailsBackgroundColor }}>
-							{/* Date Badge - Inside details, outside inner */}
-							<div className="evt-event-date-badge-container">
-								<div className="evt-border-badge" style={{ borderColor: borderBadgeColor }}>
-									<div
-										className="evt-event-date-badge"
-										style={{
-											backgroundColor: dateBadgeBackgroundColor,
-											color: dateBadgeTextColor
-										}}
-									>
-										<span className="evt-date-day">{dateParts.day}</span>
-										<span className="evt-date-month">{dateParts.month}</span>
-									</div>
-								</div>
-								<span className="evt-date-weekday">{dateParts.weekday}</span>
-							</div>
-							
 							{/* Content Blocks - Inside details-inner (image block will be filtered via CSS) */}
 							<div className="evt-event-details-inner">
 								<InnerBlocks
@@ -455,6 +449,22 @@ registerBlockType('evt/event-item', {
 										'core/button'
 									]}
 								/>
+								{/* Date Badge - Inside details-inner, after image block */}
+								<div className="evt-event-date-badge-container">
+									<div className="evt-border-badge" style={{ borderColor: borderBadgeColor }}>
+										<div
+											className="evt-event-date-badge"
+											style={{
+												backgroundColor: dateBadgeBackgroundColor,
+												color: dateBadgeTextColor
+											}}
+										>
+											<span className="evt-date-day">{dateParts.day}</span>
+											<span className="evt-date-month">{dateParts.month}</span>
+										</div>
+									</div>
+									<span className="evt-date-weekday">{dateParts.weekday}</span>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -500,34 +510,33 @@ registerBlockType('evt/event-item', {
 			<div {...blockProps}>
 				<div className="evt-event-card">
 					{/* Image - Outside details */}
-					{eventImage && (
+					{/* {eventImage && (
 						<div className="evt-event-image">
 							<img src={eventImage} alt={eventImageAlt} />
 						</div>
-					)}
+					)} */}
 					
 					<div className="evt-event-details" style={{ backgroundColor: detailsBackgroundColor }}>
-						{/* Date Badge - Inside details, outside inner */}
-						<div className="evt-event-date-badge-container">
-							<div className="evt-border-badge" style={{ borderColor: borderBadgeColor }}>
-								<div
-									className="evt-event-date-badge"
-									style={{
-										backgroundColor: dateBadgeBackgroundColor,
-										color: dateBadgeTextColor
-									}}
-								>
-									<span className="evt-date-day">{dateParts.day}</span>
-									<span className="evt-date-month">{dateParts.month}</span>
-								</div>
-							</div>
-							<span className="evt-date-weekday">{dateParts.weekday}</span>
-						</div>
-						
 						{/* Content - Inside details-inner */}
 						<div className="evt-event-details-inner">
 							{/* All content blocks (image will be filtered via PHP) */}
 							<InnerBlocks.Content />
+							{/* Date Badge - Inside details-inner, after image block */}
+							<div className="evt-event-date-badge-container">
+								<div className="evt-border-badge" style={{ borderColor: borderBadgeColor }}>
+									<div
+										className="evt-event-date-badge"
+										style={{
+											backgroundColor: dateBadgeBackgroundColor,
+											color: dateBadgeTextColor
+										}}
+									>
+										<span className="evt-date-day">{dateParts.day}</span>
+										<span className="evt-date-month">{dateParts.month}</span>
+									</div>
+								</div>
+								<span className="evt-date-weekday">{dateParts.weekday}</span>
+							</div>
 						</div>
 					</div>
 				</div>
