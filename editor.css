@@ -1,3 +1,172 @@
+
+.editor-styles-wrapper .evt-events-grid-container .evt-events-grid-cards {
+    display: grid;
+    grid-template-columns: repeat(var(--columns, 2), 1fr);
+    gap: 30px;
+    padding: 20px 10px;
+    margin: 0;
+    align-items: stretch;
+}
+@media (max-width: 1024px) {
+    .editor-styles-wrapper .evt-events-grid-container .evt-events-grid-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .editor-styles-wrapper .evt-events-grid-container .evt-events-grid-cards  {
+        grid-template-columns: 1fr;
+    }
+}
+/* ****CARD*** */
+.editor-styles-wrapper .evt-event-card {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+.editor-styles-wrapper .evt-event-card .evt-add-image-block {
+    border-bottom: 1px solid rgb(221, 221, 221);
+    padding: 10px;
+    margin-bottom: 10px;
+}
+.editor-styles-wrapper .evt-events-grid-cards .block-editor-block-list__block {
+    margin-top: 0px;
+}
+.editor-styles-wrapper .evt-event-date-badge-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
+}
+.editor-styles-wrapper .evt-card-details{
+    display: flex;
+    gap: 15px;
+    padding: 10px;
+}
+.editor-styles-wrapper .evt-event-card .evt-event-detail{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+}
+.editor-styles-wrapper .evt-border-badge {
+    border: 1px solid #00000040;
+    border-radius: 6px;
+    padding: 3px;
+}
+.editor-styles-wrapper .evt-event-date-badge {
+    padding: 7px 14px;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+.editor-styles-wrapper .evt-date-weekday {
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.editor-styles-wrapper .evt-date-day {
+    font-size: 21px;
+    font-weight: 700;
+    line-height: 1;
+}
+.editor-styles-wrapper .evt-date-month {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: block;
+}
+.editor-styles-wrapper .evt-event-details-inner .evt-event-time {
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.editor-styles-wrapper .evt-event-details-inner .evt-event-time:before {
+    content: '\e803';
+    font-family: 'evticons';
+    font-style: normal;
+    font-weight: normal;
+    display: inline-block;
+    margin-right: 5px;
+}
+.editor-styles-wrapper .evt-event-details-inner .evt-event-title {
+    font-size: 18px;
+    font-weight: 500;
+}
+.editor-styles-wrapper .evt-event-details-inner .evt-event-location {
+    font-size: 15px;
+    font-weight: 400;
+}
+.editor-styles-wrapper .evt-event-details-inner .evt-price-read-more p {
+    font-size: 15px;
+    font-weight: 600;
+}
+.editor-styles-wrapper .evt-event-details-inner .evt-price-read-more {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    margin-top: 10px;
+}
+.editor-styles-wrapper .evt-price-read-more .evt-event-read-more div {
+    padding: 9px 16px;
+    line-height: 14px;
+    font-size: 14px;
+}
+.editor-styles-wrapper .evt-event-details-inner .wp-block-image, .editor-styles-wrapper .evt-event-details-inner .evt-event-image-block {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    position: relative;
+}
+/* BLOCK APPENDER & INSERTER */
+
+.editor-styles-wrapper .evt-events-grid-container .block-editor-button-block-appender {
+    width: 100%;
+    height: 100%;
+    border: 2px dashed #cdceff;
+    box-shadow: none;
+    border-radius: 8px;
+}
+
+.editor-styles-wrapper .evt-events-grid-container .block-editor-button-block-appender:hover {
+    border: 2px dashed #b1b3ff;
+}
+/* Plus Icon Styling */
+.editor-styles-wrapper .evt-events-grid-container .block-editor-button-block-appender svg {
+    width: 45px;
+    height: 45px;
+    fill: #abaff5;
+}
+
+.editor-styles-wrapper .evt-events-grid-container .block-editor-button-block-appender:hover svg {
+    fill: #b1b3ff;
+}
+
+/* Button Text (if any) */
+.editor-styles-wrapper .evt-events-grid-container .block-editor-button-block-appender::after {
+    content: 'Add Event';
+    color: #abaff5;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.editor-styles-wrapper .evt-events-grid-container .block-editor-button-block-appender:hover::after {
+    color: #b1b3ff;
+}
+/* Responsive Appender Button */
+@media (max-width: 782px) {
+    .editor-styles-wrapper .evt-events-grid-container .block-editor-button-block-appender {
+        min-height: 300px;
+    }
+    
+}
 /**
  * Events Grid Block - Editor Styles
  * Simplified version
@@ -7,27 +176,27 @@
   }
   
   /* Grid Container in Editor */
-  .editor-styles-wrapper .evt-events-grid-container .block-editor-block-list__layout {
+  /* .editor-styles-wrapper .evt-events-grid-container .block-editor-block-list__layout {
       display: grid;
       grid-template-columns: repeat(var(--columns, 2), 1fr);
       gap: 30px;
       padding: 20px 10px;
       margin: 0;
       align-items: stretch;
-  } */
+  }  */
 
 /* EVENTS GRID CONTAINER (EDITOR) */
-.editor-styles-wrapper .evt-events-grid-container {
+/* .editor-styles-wrapper .evt-events-grid-container {
     display: grid;
     grid-template-columns: repeat(var(--columns, 2), 1fr);
     gap: 30px;
     margin: 0 auto;
     padding: 20px 0;
     max-width: 100%;
-}
+} */
 
 /* RESPONSIVE GRID (EDITOR) */
-@media (max-width: 1024px) {
+/* @media (max-width: 1024px) {
     .editor-styles-wrapper .evt-events-grid-container {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -37,17 +206,16 @@
     .editor-styles-wrapper .evt-events-grid-container {
         grid-template-columns: 1fr;
     }
-}
+} */
 
 /* EVENT CARD (EDITOR) */
-.editor-styles-wrapper .evt-event-card {
+/* .editor-styles-wrapper .evt-event-card {
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     background: #fff;
 }
 
-/* EVENT IMAGE (EDITOR) - Default Events */
 .editor-styles-wrapper .evt-event-image {
     width: 100%;
     height: 200px;
@@ -61,7 +229,6 @@
     object-fit: cover;
 }
 
-/* EVENT IMAGE (EDITOR) - New Events (WordPress Image Block) */
 .editor-styles-wrapper .evt-event-details-inner .wp-block-image,
 .editor-styles-wrapper .evt-event-details-inner .evt-event-image-block {
     width: 100%;
@@ -79,7 +246,7 @@
     object-fit: cover;
 }
 
-/* Image Block Controls */
+
 .editor-styles-wrapper .evt-event-details-inner .wp-block-image figure {
     margin: 0;
 }
@@ -88,17 +255,13 @@
     min-height: 200px;
 }
 
-/* EVENT DETAILS (EDITOR) */
 .editor-styles-wrapper .evt-event-details {
     padding: 20px;
     position: relative;
-}
+} */
 
 /* DATE BADGE (EDITOR) - Overlaps on image */
-.editor-styles-wrapper .evt-event-date-badge-container {
-    /* position: absolute; */
-    /* top: -25px;
-    right: 20px; */
+/* .editor-styles-wrapper .evt-event-date-badge-container {
     display: flex;
     flex-direction: column;
     align-items: start;
@@ -147,15 +310,15 @@
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-}
+} */
 
 /* EVENT DETAILS INNER (EDITOR) */
-.editor-styles-wrapper .evt-event-details-inner {
+/* .editor-styles-wrapper .evt-event-details-inner {
     padding-top: 15px;
-}
+} */
 
 /* Default Block Styles (EDITOR) */
-.editor-styles-wrapper .evt-event-details-inner .evt-event-title {
+/* .editor-styles-wrapper .evt-event-details-inner .evt-event-title {
     margin: 4px 0 6px 0;
     font-size: 18px;
     font-weight: 600;
@@ -176,9 +339,9 @@
     gap: 5px;
 }
 
-/* Time Icon - Font Awesome (using :before) */
+
 .editor-styles-wrapper .evt-event-details-inner .evt-event-time:before {
-    content: '\e803'; /* clockicon-evt */
+    content: '\e803'; 
     font-family: 'evticons';
     font-style: normal;
     font-weight: normal;
@@ -187,7 +350,6 @@
     margin-right: 5px;
 }
 
-/* Price and Read More Wrapper (EDITOR) */
 .editor-styles-wrapper .evt-event-details-inner .evt-price-read-more {
     display: flex;
     align-items: center;
@@ -215,31 +377,53 @@
     font-weight: 700;
 }
 
-/* Buttons Styling (EDITOR) */
-.editor-styles-wrapper .evt-event-details-inner .wp-block-buttons {
-    margin-top: 12px;
-}
-
-/* BLOCK APPENDER BUTTON */
-.evt-events-grid-container .block-list-appender {
+.editor-styles-wrapper .evt-events-grid-container .block-editor-button-block-appender {
     width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    grid-column: 1 / -1;
+    height: 100%;
+    border: 2px dashed #cdceff;
+    box-shadow: none;
+    border-radius: 8px;
 }
 
-.evt-events-grid-container .block-editor-button-block-appender {
-    margin: 0 auto;
+.editor-styles-wrapper .evt-events-grid-container .block-editor-button-block-appender:hover {
+    border: 2px dashed #b1b3ff;
 }
 
-/* EDITOR BLOCK SELECTION */
+.editor-styles-wrapper .evt-events-grid-container .block-editor-button-block-appender svg {
+    width: 45px;
+    height: 45px;
+    fill: #abaff5;
+}
+
+.editor-styles-wrapper .evt-events-grid-container .block-editor-button-block-appender:hover svg {
+    fill: #b1b3ff;
+}
+
+.editor-styles-wrapper .evt-events-grid-container .block-editor-button-block-appender::after {
+    content: 'Add Event';
+    color: #abaff5;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.editor-styles-wrapper .evt-events-grid-container .block-editor-button-block-appender:hover::after {
+    color: #b1b3ff;
+}
+
+@media (max-width: 782px) {
+    .editor-styles-wrapper .evt-events-grid-container .block-editor-button-block-appender {
+        min-height: 300px;
+    }
+    
+}
+
+
 .editor-styles-wrapper .evt-event-item.is-selected .evt-event-card {
     outline: 2px solid #007cba;
 }
 
-/* INNERBLOCKS IN EDITOR */
+
 .editor-styles-wrapper .evt-event-details-inner .block-editor-block-list__layout {
     margin: 0;
 }
@@ -255,17 +439,17 @@
 .block-editor-block-list__layout .evt-event-time, .evt-event-title, .evt-event-description, .evt-event-location, .evt-event-price, .evt-event-read-more {
     width: calc(100% - 20%);
     margin-left: 70px !IMPORTANT;
-}
+} */
 /* Hide image block in details-inner (rendered separately outside) */
 /* .editor-styles-wrapper .evt-event-details-inner .wp-block-image {
     display: none;
 } */
 
 /* Price and Read More Wrapper */
-.editor-styles-wrapper .evt-event-details-inner .evt-price-read-more {
+/* .editor-styles-wrapper .evt-event-details-inner .evt-price-read-more {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 15px;
     margin-top: 12px;
-}
+} */

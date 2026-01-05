@@ -59,30 +59,38 @@ registerBlockType('evt/events-grid', {
 					</PanelBody>
 				</InspectorControls>
 				<div {...blockProps}>
-					<InnerBlocks
-						allowedBlocks={['evt/event-item']}
+				    <InnerBlocks
+						allowedBlocks={['evt/event-item', 'core/group']}
 						template={[
-							['evt/event-item', {
-								eventImage: defaultImages[0],
-								eventImageAlt: 'Crazy DJ Experience Santa Cruz',
-								eventDate: '2025-01-06',
-								isDefault: true,
-								hasImage: true
-							}],
-							['evt/event-item', {
-								eventImage: defaultImages[1],
-								eventImageAlt: 'Cute Girls Rock Band Performance',
-								eventDate: '2025-04-04',
-								isDefault: true,
-								hasImage: true
-							}],
-							['evt/event-item', {
-								eventImage: defaultImages[2],
-								eventImageAlt: 'Free Food Distribution At Mumbai',
-								eventDate: '2025-06-08',
-								isDefault: true,
-								hasImage: true
-							}]
+							[
+								'core/group',
+								{
+									className: 'evt-events-grid-cards' // 👈 tumhari custom class
+								},
+								[
+									['evt/event-item', {
+										eventImage: defaultImages[0],
+										eventImageAlt: 'Crazy DJ Experience Santa Cruz',
+										eventDate: '2025-01-06',
+										isDefault: true,
+										hasImage: true
+									}],
+									['evt/event-item', {
+										eventImage: defaultImages[1],
+										eventImageAlt: 'Cute Girls Rock Band Performance',
+										eventDate: '2025-04-04',
+										isDefault: true,
+										hasImage: true
+									}],
+									['evt/event-item', {
+										eventImage: defaultImages[2],
+										eventImageAlt: 'Free Food Distribution At Mumbai',
+										eventDate: '2025-06-08',
+										isDefault: true,
+										hasImage: true
+									}]
+								]
+							]
 						]}
 						renderAppender={() => <InnerBlocks.ButtonBlockAppender />}
 					/>
@@ -93,7 +101,7 @@ registerBlockType('evt/events-grid', {
 	save: ({ attributes }) => {
 		const { columns } = attributes;
 		const blockProps = useBlockProps.save({
-			className: 'evt-events-grid-container',
+			className: 'evt-events-grid-container evt-front-view',
 			style: { '--columns': columns }
 		});
 
@@ -448,83 +456,92 @@ registerBlockType('evt/event-item', {
 				  alt: eventImageAlt,
 				  className: 'evt-event-image-block'
 				}]
-			  ]],
-			
-			  // DATE BADGE
-			  ['evt/event-date-badge', {
-				eventDate: eventDate
-			  }],
-			
-			  // DETAILS GROUP
-			  ['core/group', { className: 'evt-event-details-inner' }, [
-			
-				['core/paragraph', {
-				  className: 'evt-event-time',
-				  content: defaultContent?.time || ''
+			]],
+			['core/group', { className: 'evt-card-details' }, [
+				// DATE BADGE
+				['evt/event-date-badge', {
+					eventDate: eventDate
 				}],
-			
-				['core/heading', {
-				  level: 4,
-				  className: 'evt-event-title',
-				  content: defaultContent?.title || ''
-				}],
-			
-				['core/paragraph', {
-				  className: 'evt-event-location',
-				  content: defaultContent?.location || ''
-				}],
-			
-				// PRICE + READ MORE GROUP
-				['core/group', { className: 'evt-price-read-more' }, [
-			
-				  ['core/paragraph', {
-					className: 'evt-event-price',
-					content: defaultContent?.price || ''
-				  }],
-			
-				  ['core/buttons', {}, [
-					['core/button', {
-					  text: 'Read More',
-					  className: 'evt-event-read-more',
-					  url: '#'
-					}]
-				  ]]
+				
+				// DETAILS GROUP
+				['core/group', { className: 'evt-event-detail' }, [
+				
+					['core/paragraph', {
+					className: 'evt-event-time',
+					content: defaultContent?.time || ''
+					}],
+				
+					['core/heading', {
+					level: 4,
+					className: 'evt-event-title',
+					content: defaultContent?.title || ''
+					}],
+				
+					['core/paragraph', {
+					className: 'evt-event-location',
+					content: defaultContent?.location || ''
+					}],
+				
+					// PRICE + READ MORE GROUP
+					['core/group', { className: 'evt-price-read-more' }, [
+				
+					['core/paragraph', {
+						className: 'evt-event-price',
+						content: defaultContent?.price || ''
+					}],
+				
+					['core/buttons', {}, [
+						['core/button', {
+						text: 'Read More',
+						className: 'evt-event-read-more',
+						url: '#'
+						}]
+					]]
+					]]
 				]]
-			  ]]
-		] : [
-			// Empty template with only placeholders for new events
-			['evt/event-date-badge', {
-				eventDate: eventDate
-			}],
-			['core/paragraph', {
-				placeholder: __('9:00 AM - 5:00 PM', 'events'),
-				className: 'evt-event-time'
-			}],
-			['core/heading', {
-				level: 4,
-				placeholder: __('Event Title', 'events'),
-				className: 'evt-event-title'
-			}],
-			['core/paragraph', {
-				placeholder: __('Event Description', 'events'),
-				className: 'evt-event-description'
-			}],
-			['core/paragraph', {
-				placeholder: __('Event Location', 'events'),
-				className: 'evt-event-location'
-			}],
-			['core/paragraph', {
-				placeholder: __('Event Price', 'events'),
-				className: 'evt-event-price'
-			}],
-			['core/buttons', {}, [
-				['core/button', {
-					text: __('Read More', 'events'),
-					className: 'evt-event-read-more',
-					backgroundColor: 'vivid-cyan-blue',
-					url: '#'
-				}]
 			]]
+		] : [
+			['core/group', { className: 'evt-card-details' }, [
+				// Empty template with only placeholders for new events
+				['evt/event-date-badge', {
+					eventDate: eventDate
+				}],
+				// DETAILS GROUP
+				['core/group', { className: 'evt-event-detail' }, [
+					['core/paragraph', {
+						placeholder: __('9:00 AM - 5:00 PM', 'events'),
+						className: 'evt-event-time'
+					}],
+					['core/heading', {
+						level: 4,
+						placeholder: __('Event Title', 'events'),
+						className: 'evt-event-title'
+					}],
+					['core/paragraph', {
+						placeholder: __('Event Description', 'events'),
+						className: 'evt-event-description'
+					}],
+					['core/paragraph', {
+						placeholder: __('Event Location', 'events'),
+						className: 'evt-event-location'
+					}],
+					// PRICE + READ MORE GROUP
+					['core/group', { className: 'evt-price-read-more' }, [
+						['core/paragraph', {
+							placeholder: __('Event Price', 'events'),
+							className: 'evt-event-price'
+						}],
+						['core/buttons', {}, [
+							['core/button', {
+								text: __('Read More', 'events'),
+								className: 'evt-event-read-more',
+								backgroundColor: 'vivid-cyan-blue',
+								url: '#'
+							}]
+						]]
+					]]
+				]]
+	        ]]
 		];
 
 		return (
@@ -544,11 +561,7 @@ registerBlockType('evt/event-item', {
 				<div {...blockProps}>
 					<div className="evt-event-card">
 						{/* Add/Remove Image Block Button - Timeline style */}
-						<div style={{ 
-							padding: '10px', 
-							background: '#fff',
-							borderBottom: '1px solid #ddd'
-						}}>
+						<div className="evt-add-image-block">
 							{hasImageBlock ? (
 								<Button 
 									isSmall 
