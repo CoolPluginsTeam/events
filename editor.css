@@ -2,6 +2,19 @@
  * Events Grid Block - Editor Styles
  * Simplified version
  */
+ /* .editor-styles-wrapper .evt-events-grid-container{
+    display: block;
+  }
+  
+  /* Grid Container in Editor */
+  .editor-styles-wrapper .evt-events-grid-container .block-editor-block-list__layout {
+      display: grid;
+      grid-template-columns: repeat(var(--columns, 2), 1fr);
+      gap: 30px;
+      padding: 20px 10px;
+      margin: 0;
+      align-items: stretch;
+  } */
 
 /* EVENTS GRID CONTAINER (EDITOR) */
 .editor-styles-wrapper .evt-events-grid-container {
@@ -56,6 +69,7 @@
     overflow: hidden;
     margin: 0 0 15px 0;
     position: relative;
+    padding-bottom: 10px;
 }
 
 .editor-styles-wrapper .evt-event-details-inner .wp-block-image img,
@@ -83,15 +97,20 @@
 /* DATE BADGE (EDITOR) - Overlaps on image */
 .editor-styles-wrapper .evt-event-date-badge-container {
     /* position: absolute; */
-    top: -25px;
-    right: 20px;
+    /* top: -25px;
+    right: 20px; */
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: start;
     gap: 8px;
     z-index: 10;
 }
-
+.editor-styles-wrapper .evt-event-date-badge-container {
+    width: 30%;
+    position: absolute;
+    left: 0;
+    top: 0px;
+}
 .editor-styles-wrapper .evt-border-badge {
     border: 1px solid #00000040;
     border-radius: 6px;
@@ -229,7 +248,14 @@
     margin-top: 0;
     margin-bottom: 0;
 }
+.editor-styles-wrapper .evt-event-details-inner .evt-event-read-more{
+    display: -webkit-inline-box;
+}
 
+.block-editor-block-list__layout .evt-event-time, .evt-event-title, .evt-event-description, .evt-event-location, .evt-event-price, .evt-event-read-more {
+    width: calc(100% - 20%);
+    margin-left: 70px !IMPORTANT;
+}
 /* Hide image block in details-inner (rendered separately outside) */
 /* .editor-styles-wrapper .evt-event-details-inner .wp-block-image {
     display: none;

@@ -105,12 +105,189 @@ registerBlockType('evt/events-grid', {
 	}
 });
 
+// CHILD BLOCK: Event Date Badge
+registerBlockType('evt/event-date-badge', {
+	title: __('Event Date Badge', 'events'),
+	icon: 'calendar',
+	category: 'widgets',
+	parent: ['evt/event-item'],
+	usesContext: ['evt/eventDate'],
+	attributes: {
+		eventDate: {
+			type: 'string',
+			default: getCurrentDate()
+		},
+		dateBadgeBackgroundColor: {
+			type: 'string',
+			default: '#2667FF'
+		},
+		dateBadgeTextColor: {
+			type: 'string',
+			default: '#ffffff'
+		},
+		borderBadgeColor: {
+			type: 'string',
+			default: '#00000040'
+		}
+	},
+	edit: ({ attributes, setAttributes, context }) => {
+		const {
+			eventDate,
+			dateBadgeBackgroundColor,
+			dateBadgeTextColor,
+			borderBadgeColor
+		} = attributes;
+
+		// Use parent's date if available
+		const parentDate = context['evt/eventDate'] || eventDate;
+		
+		// Sync parent date to child attribute
+		useEffect(() => {
+			if (context['evt/eventDate'] && context['evt/eventDate'] !== eventDate) {
+				setAttributes({ eventDate: context['evt/eventDate'] });
+			}
+		}, [context['evt/eventDate']]);
+
+		const blockProps = useBlockProps({
+			className: 'evt-event-date-badge-container'
+		});
+
+		// Parse date for display
+		const parseDate = (dateString) => {
+			if (!dateString) return { day: '01', month: 'Jan', weekday: 'MON' };
+			
+			try {
+				const date = new Date(dateString);
+				return {
+					day: dateI18n('d', date),
+					month: dateI18n('M', date),
+					weekday: dateI18n('D', date).toUpperCase()
+				};
+			} catch (e) {
+				return { day: '01', month: 'Jan', weekday: 'MON' };
+			}
+		};
+
+		const dateParts = parseDate(parentDate);
+
+		return (
+			<>
+				<InspectorControls>
+					<PanelBody title={__('Date Badge Settings', 'events')}>
+						<div style={{ marginBottom: '15px' }}>
+							<strong>{__('Event Date', 'events')}</strong>
+							<DateTimePicker
+								currentDate={parentDate}
+								onChange={(date) => setAttributes({ eventDate: date })}
+								is12Hour={true}
+							/>
+						</div>
+					</PanelBody>
+
+					<PanelBody title={__('Badge Colors', 'events')} initialOpen={false}>
+						<p><strong>{__('Badge Background', 'events')}</strong></p>
+						<input
+							type="color"
+							value={dateBadgeBackgroundColor}
+							onChange={(e) => setAttributes({ dateBadgeBackgroundColor: e.target.value })}
+							style={{ width: '100%', height: '40px', marginBottom: '10px' }}
+						/>
+
+						<p><strong>{__('Badge Text', 'events')}</strong></p>
+						<input
+							type="color"
+							value={dateBadgeTextColor}
+							onChange={(e) => setAttributes({ dateBadgeTextColor: e.target.value })}
+							style={{ width: '100%', height: '40px', marginBottom: '10px' }}
+						/>
+
+						<p><strong>{__('Border Color', 'events')}</strong></p>
+						<input
+							type="color"
+							value={borderBadgeColor}
+							onChange={(e) => setAttributes({ borderBadgeColor: e.target.value })}
+							style={{ width: '100%', height: '40px', marginBottom: '10px' }}
+						/>
+					</PanelBody>
+				</InspectorControls>
+
+				<div {...blockProps}>
+					<div className="evt-border-badge" style={{ borderColor: borderBadgeColor }}>
+						<div
+							className="evt-event-date-badge"
+							style={{
+								backgroundColor: dateBadgeBackgroundColor,
+								color: dateBadgeTextColor
+							}}
+						>
+							<span className="evt-date-day">{dateParts.day}</span>
+							<span className="evt-date-month">{dateParts.month}</span>
+						</div>
+					</div>
+					<span className="evt-date-weekday">{dateParts.weekday}</span>
+				</div>
+			</>
+		);
+	},
+	save: ({ attributes }) => {
+		const {
+			eventDate,
+			dateBadgeBackgroundColor,
+			dateBadgeTextColor,
+			borderBadgeColor
+		} = attributes;
+
+		const blockProps = useBlockProps.save({
+			className: 'evt-event-date-badge-container'
+		});
+
+		// Parse date for display
+		const parseDate = (dateString) => {
+			if (!dateString) return { day: '01', month: 'Jan', weekday: 'MON' };
+			
+			try {
+				const date = new Date(dateString);
+				return {
+					day: dateI18n('d', date),
+					month: dateI18n('M', date),
+					weekday: dateI18n('D', date).toUpperCase()
+				};
+			} catch (e) {
+				return { day: '01', month: 'Jan', weekday: 'MON' };
+			}
+		};
+
+		const dateParts = parseDate(eventDate);
+
+		return (
+			<div {...blockProps}>
+				<div className="evt-border-badge" style={{ borderColor: borderBadgeColor }}>
+					<div
+						className="evt-event-date-badge"
+						style={{
+							backgroundColor: dateBadgeBackgroundColor,
+							color: dateBadgeTextColor
+						}}
+					>
+						<span className="evt-date-day">{dateParts.day}</span>
+						<span className="evt-date-month">{dateParts.month}</span>
+					</div>
+				</div>
+				<span className="evt-date-weekday">{dateParts.weekday}</span>
+			</div>
+		);
+	}
+});
+
 // CHILD BLOCK: Event Item (uses default blocks inside)
 registerBlockType('evt/event-item', {
 	title: __('Event Item', 'events'),
 	icon: 'calendar',
 	category: 'widgets',
 	parent: ['evt/events-grid'],
+	providesContext: {
+		'evt/eventDate': 'eventDate'
+	},
 	attributes: {
 		eventImage: {
 			type: 'string',
@@ -127,18 +304,6 @@ registerBlockType('evt/event-item', {
 		detailsBackgroundColor: {
 			type: 'string',
 			default: '#ffffff'
-		},
-		dateBadgeBackgroundColor: {
-			type: 'string',
-			default: '#2667FF'
-		},
-		dateBadgeTextColor: {
-			type: 'string',
-			default: '#ffffff'
-		},
-		borderBadgeColor: {
-			type: 'string',
-			default: '#00000040'
 		},
 		isDefault: {
 			type: 'boolean',
@@ -159,9 +324,6 @@ registerBlockType('evt/event-item', {
 			eventImageAlt,
 			eventDate,
 			detailsBackgroundColor,
-			dateBadgeBackgroundColor,
-			dateBadgeTextColor,
-			borderBadgeColor,
 			isDefault,
 			hasImage,
 			mediaBlock
@@ -277,49 +439,63 @@ registerBlockType('evt/event-item', {
 		const defaultContent = getDefaultContent();
 
 		// Template for all blocks including image
-		// Order: Image, Time, Title, Location, Price, Read More
+		// Order: Image, Date Badge, Time, Title, Location, Price, Read More
 		const TEMPLATE = isDefault && defaultContent ? [
-			['core/image', {
-				url: eventImage,
-				alt: eventImageAlt,
-				className: 'evt-event-image-block'
-			}],
-			['core/paragraph', {
-				placeholder: __('Event Time', 'events'),
-				className: 'evt-event-time',
-				content: defaultContent.time
-			}],
-			['core/heading', {
-				level: 4,
-				placeholder: __('Event Title', 'events'),
-				className: 'evt-event-title',
-				content: defaultContent.title
-			}],
-			['core/paragraph', {
-				placeholder: __('Event Description', 'events'),
-				className: 'evt-event-description',
-				content: defaultContent.description
-			}],
-			['core/paragraph', {
-				placeholder: __('Event Location', 'events'),
-				className: 'evt-event-location',
-				content: defaultContent.location
-			}],
-			['core/paragraph', {
-				placeholder: __('Event Price', 'events'),
-				className: 'evt-event-price',
-				content: defaultContent.price
-			}],
-			['core/buttons', {}, [
-				['core/button', {
-					text: __('Read More', 'events'),
-					className: 'evt-event-read-more',
-					backgroundColor: 'vivid-cyan-blue',
-					url: '#'
+			// IMAGE GROUP
+			['core/group', { className: 'evt-event-image-wrap' }, [
+				['core/image', {
+				  url: eventImage,
+				  alt: eventImageAlt,
+				  className: 'evt-event-image-block'
 				}]
-			]]
+			  ]],
+			
+			  // DATE BADGE
+			  ['evt/event-date-badge', {
+				eventDate: eventDate
+			  }],
+			
+			  // DETAILS GROUP
+			  ['core/group', { className: 'evt-event-details-inner' }, [
+			
+				['core/paragraph', {
+				  className: 'evt-event-time',
+				  content: defaultContent?.time || ''
+				}],
+			
+				['core/heading', {
+				  level: 4,
+				  className: 'evt-event-title',
+				  content: defaultContent?.title || ''
+				}],
+			
+				['core/paragraph', {
+				  className: 'evt-event-location',
+				  content: defaultContent?.location || ''
+				}],
+			
+				// PRICE + READ MORE GROUP
+				['core/group', { className: 'evt-price-read-more' }, [
+			
+				  ['core/paragraph', {
+					className: 'evt-event-price',
+					content: defaultContent?.price || ''
+				  }],
+			
+				  ['core/buttons', {}, [
+					['core/button', {
+					  text: 'Read More',
+					  className: 'evt-event-read-more',
+					  url: '#'
+					}]
+				  ]]
+				]]
+			  ]]
 		] : [
 			// Empty template with only placeholders for new events
+			['evt/event-date-badge', {
+				eventDate: eventDate
+			}],
 			['core/paragraph', {
 				placeholder: __('9:00 AM - 5:00 PM', 'events'),
 				className: 'evt-event-time'
@@ -355,46 +531,11 @@ registerBlockType('evt/event-item', {
 			<>
 				<InspectorControls>
 					<PanelBody title={__('Event Settings', 'events')}>
-						<div style={{ marginBottom: '15px' }}>
-							<strong>{__('Event Date', 'events')}</strong>
-							<DateTimePicker
-								currentDate={eventDate}
-								onChange={(date) => setAttributes({ eventDate: date })}
-								is12Hour={true}
-							/>
-						</div>
-					</PanelBody>
-
-					<PanelBody title={__('Colors', 'events')} initialOpen={false}>
 						<p><strong>{__('Details Background', 'events')}</strong></p>
 						<input
 							type="color"
 							value={detailsBackgroundColor}
 							onChange={(e) => setAttributes({ detailsBackgroundColor: e.target.value })}
-							style={{ width: '100%', height: '40px', marginBottom: '10px' }}
-						/>
-
-						<p><strong>{__('Date Badge Background', 'events')}</strong></p>
-						<input
-							type="color"
-							value={dateBadgeBackgroundColor}
-							onChange={(e) => setAttributes({ dateBadgeBackgroundColor: e.target.value })}
-							style={{ width: '100%', height: '40px', marginBottom: '10px' }}
-						/>
-
-						<p><strong>{__('Date Badge Text', 'events')}</strong></p>
-						<input
-							type="color"
-							value={dateBadgeTextColor}
-							onChange={(e) => setAttributes({ dateBadgeTextColor: e.target.value })}
-							style={{ width: '100%', height: '40px', marginBottom: '10px' }}
-						/>
-
-						<p><strong>{__('Border Color', 'events')}</strong></p>
-						<input
-							type="color"
-							value={borderBadgeColor}
-							onChange={(e) => setAttributes({ borderBadgeColor: e.target.value })}
 							style={{ width: '100%', height: '40px', marginBottom: '10px' }}
 						/>
 					</PanelBody>
@@ -441,7 +582,9 @@ registerBlockType('evt/event-item', {
 									template={TEMPLATE}
 									templateLock={false}
 									allowedBlocks={[
+										'core/group',
 										'core/image',
+										'evt/event-date-badge',
 										'core/heading',
 										'core/paragraph',
 										'core/list',
@@ -449,22 +592,6 @@ registerBlockType('evt/event-item', {
 										'core/button'
 									]}
 								/>
-								{/* Date Badge - Inside details-inner, after image block */}
-								<div className="evt-event-date-badge-container">
-									<div className="evt-border-badge" style={{ borderColor: borderBadgeColor }}>
-										<div
-											className="evt-event-date-badge"
-											style={{
-												backgroundColor: dateBadgeBackgroundColor,
-												color: dateBadgeTextColor
-											}}
-										>
-											<span className="evt-date-day">{dateParts.day}</span>
-											<span className="evt-date-month">{dateParts.month}</span>
-										</div>
-									</div>
-									<span className="evt-date-weekday">{dateParts.weekday}</span>
-								</div>
 							</div>
 						</div>
 					</div>
@@ -474,37 +601,12 @@ registerBlockType('evt/event-item', {
 	},
 	save: ({ attributes }) => {
 		const {
-			eventImage,
-			eventImageAlt,
-			eventDate,
-			detailsBackgroundColor,
-			dateBadgeBackgroundColor,
-			dateBadgeTextColor,
-			borderBadgeColor,
-			isDefault
+			detailsBackgroundColor
 		} = attributes;
 
 		const blockProps = useBlockProps.save({
 			className: 'evt-event-item'
 		});
-
-		// Parse date for display
-		const parseDate = (dateString) => {
-			if (!dateString) return { day: '01', month: 'Jan', weekday: 'MON' };
-			
-			try {
-				const date = new Date(dateString);
-				return {
-					day: dateI18n('d', date),
-					month: dateI18n('M', date),
-					weekday: dateI18n('D', date).toUpperCase()
-				};
-			} catch (e) {
-				return { day: '01', month: 'Jan', weekday: 'MON' };
-			}
-		};
-
-		const dateParts = parseDate(eventDate);
 
 		return (
 			<div {...blockProps}>
@@ -519,24 +621,8 @@ registerBlockType('evt/event-item', {
 					<div className="evt-event-details" style={{ backgroundColor: detailsBackgroundColor }}>
 						{/* Content - Inside details-inner */}
 						<div className="evt-event-details-inner">
-							{/* All content blocks (image will be filtered via PHP) */}
+							{/* All content blocks including date badge */}
 							<InnerBlocks.Content />
-							{/* Date Badge - Inside details-inner, after image block */}
-							<div className="evt-event-date-badge-container">
-								<div className="evt-border-badge" style={{ borderColor: borderBadgeColor }}>
-									<div
-										className="evt-event-date-badge"
-										style={{
-											backgroundColor: dateBadgeBackgroundColor,
-											color: dateBadgeTextColor
-										}}
-									>
-										<span className="evt-date-day">{dateParts.day}</span>
-										<span className="evt-date-month">{dateParts.month}</span>
-									</div>
-								</div>
-								<span className="evt-date-weekday">{dateParts.weekday}</span>
-							</div>
 						</div>
 					</div>
 				</div>
