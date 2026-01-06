@@ -235,6 +235,25 @@ add_filter( 'render_block', function( $block_content, $block ) {
 		}
 	}
 	
+	// Remove empty content elements (only show if user has added content)
+	// Remove empty evt-event-title
+	$content_without_image = preg_replace( '/<h[1-6][^>]*class="[^"]*evt-event-title[^"]*"[^>]*>\s*<\/h[1-6]>/s', '', $content_without_image );
+
+	// Remove empty evt-event-time
+	$content_without_image = preg_replace( '/<p[^>]*class="[^"]*evt-event-time[^"]*"[^>]*>\s*<\/p>/s', '', $content_without_image );
+	
+	// Remove empty evt-event-location
+	$content_without_image = preg_replace( '/<p[^>]*class="[^"]*evt-event-location[^"]*"[^>]*>\s*<\/p>/s', '', $content_without_image );
+	
+	// Remove empty evt-event-description
+	$content_without_image = preg_replace( '/<p[^>]*class="[^"]*evt-event-description[^"]*"[^>]*>\s*<\/p>/s', '', $content_without_image );
+	
+	// Remove empty evt-event-price
+	$content_without_image = preg_replace( '/<p[^>]*class="[^"]*evt-event-price[^"]*"[^>]*>\s*<\/p>/s', '', $content_without_image );
+	
+	// Remove empty evt-price-read-more wrapper (if both price and button are gone)
+	$content_without_image = preg_replace( '/<div[^>]*class="[^"]*evt-price-read-more[^"]*"[^>]*>\s*<\/div>/s', '', $content_without_image );
+	
 	// If we have an image, convert it to evt-event-image and insert before evt-event-details
 	if ( $image_html ) {
 		preg_match( '/<img[^>]*src="([^"]*)"[^>]*>/', $image_html, $url_match );
