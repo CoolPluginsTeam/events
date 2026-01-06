@@ -1,6 +1,6 @@
 import { registerBlockType, createBlock } from '@wordpress/blocks';
-import { InnerBlocks, InspectorControls, useBlockProps } from '@wordpress/block-editor';
-import { PanelBody, Button, DateTimePicker, __experimentalNumberControl as NumberControl } from '@wordpress/components';
+import { InnerBlocks, InspectorControls, useBlockProps, ColorPalette } from '@wordpress/block-editor';
+import { PanelBody, PanelRow, Button, DateTimePicker, __experimentalNumberControl as NumberControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { dateI18n } from '@wordpress/date';
 import { useEffect } from '@wordpress/element';
@@ -213,29 +213,39 @@ registerBlockType('evt/event-date-badge', {
 					</PanelBody>
 
 					<PanelBody title={__('Badge Colors', 'events')} initialOpen={false}>
-						<p><strong>{__('Badge Background', 'events')}</strong></p>
-						<input
-							type="color"
-							value={dateBadgeBackgroundColor}
-							onChange={(e) => setAttributes({ dateBadgeBackgroundColor: e.target.value })}
-							style={{ width: '100%', height: '40px', marginBottom: '10px' }}
-						/>
-
-						<p><strong>{__('Badge Text', 'events')}</strong></p>
-						<input
-							type="color"
-							value={dateBadgeTextColor}
-							onChange={(e) => setAttributes({ dateBadgeTextColor: e.target.value })}
-							style={{ width: '100%', height: '40px', marginBottom: '10px' }}
-						/>
-
-						<p><strong>{__('Border Color', 'events')}</strong></p>
-						<input
-							type="color"
-							value={borderBadgeColor}
-							onChange={(e) => setAttributes({ borderBadgeColor: e.target.value })}
-							style={{ width: '100%', height: '40px', marginBottom: '10px' }}
-						/>
+						<PanelRow>
+							<div style={{ width: '100%', marginTop: '16px' }}>
+								<label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
+									{__('Badge Background Color', 'events')}
+								</label>
+								<ColorPalette
+									value={dateBadgeBackgroundColor}
+									onChange={(color) => setAttributes({ dateBadgeBackgroundColor: color || '#2667FF' })}
+								/>
+							</div>
+						</PanelRow>
+						<PanelRow>
+							<div style={{ width: '100%', marginTop: '16px' }}>
+								<label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
+									{__('Badge Text Color', 'events')}
+								</label>
+								<ColorPalette
+									value={dateBadgeTextColor}
+									onChange={(color) => setAttributes({ dateBadgeTextColor: color || '#ffffff' })}
+								/>
+							</div>
+						</PanelRow>
+						<PanelRow>
+							<div style={{ width: '100%', marginTop: '16px' }}>
+								<label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
+									{__('Border Color', 'events')}
+								</label>
+								<ColorPalette
+									value={borderBadgeColor}
+									onChange={(color) => setAttributes({ borderBadgeColor: color || '#00000040' })}
+								/>
+							</div>
+						</PanelRow>
 					</PanelBody>
 				</InspectorControls>
 
@@ -620,13 +630,17 @@ registerBlockType('evt/event-item', {
 			<>
 				<InspectorControls>
 					<PanelBody title={__('Event Settings', 'events')}>
-						<p><strong>{__('Details Background', 'events')}</strong></p>
-						<input
-							type="color"
-							value={detailsBackgroundColor}
-							onChange={(e) => setAttributes({ detailsBackgroundColor: e.target.value })}
-							style={{ width: '100%', height: '40px', marginBottom: '10px' }}
-						/>
+						<PanelRow>
+							<div style={{ width: '100%', marginTop: '16px' }}>
+								<label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
+									{__('Details Background Color', 'events')}
+								</label>
+								<ColorPalette
+									value={detailsBackgroundColor}
+									onChange={(color) => setAttributes({ detailsBackgroundColor: color || '#ffffff' })}
+								/>
+							</div>
+						</PanelRow>
 					</PanelBody>
 				</InspectorControls>
 
