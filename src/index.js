@@ -107,8 +107,8 @@ registerBlockType('evt/events-grid', {
 
 // CHILD BLOCK: Event Date Badge
 registerBlockType('evt/event-date-badge', {
-	title: __('Event Date Badge', 'events'),
-	icon: 'calendar',
+	title: __('Event Date', 'events'),
+	icon: 'clock',
 	category: 'widgets',
 	parent: ['evt/event-item'],
 	usesContext: ['evt/eventDate'],
@@ -130,7 +130,7 @@ registerBlockType('evt/event-date-badge', {
 			default: '#00000040'
 		}
 	},
-	edit: ({ attributes, setAttributes, context }) => {
+	edit: ({ attributes, setAttributes, context, clientId }) => {
 		const {
 			eventDate,
 			dateBadgeBackgroundColor,
@@ -140,6 +140,20 @@ registerBlockType('evt/event-date-badge', {
 
 		// Use parent's date if available
 		const parentDate = context['evt/eventDate'] || eventDate;
+		
+		// Get parent block ID
+		const parentClientId = useSelect((select) => {
+			const { getBlockParents, getBlock } = select('core/block-editor');
+			const parentIds = getBlockParents(clientId);
+			// Find the evt/event-item parent
+			for (let parentId of parentIds) {
+				const parentBlock = getBlock(parentId);
+				if (parentBlock && parentBlock.name === 'evt/event-item') {
+					return parentId;
+				}
+			}
+			return null;
+		}, [clientId]);
 		
 		// Sync parent date to child attribute
 		useEffect(() => {
@@ -170,6 +184,20 @@ registerBlockType('evt/event-date-badge', {
 
 		const dateParts = parseDate(parentDate);
 
+		// Handle date change - update both child and parent
+		const handleDateChange = (newDate) => {
+			// Update child attribute
+			setAttributes({ eventDate: newDate });
+			
+			// Update parent Event Item block's eventDate
+			if (parentClientId) {
+				dispatch('core/block-editor').updateBlockAttributes(
+					parentClientId,
+					{ eventDate: newDate }
+				);
+			}
+		};
+
 		return (
 			<>
 				<InspectorControls>
@@ -178,7 +206,7 @@ registerBlockType('evt/event-date-badge', {
 							<strong>{__('Event Date', 'events')}</strong>
 							<DateTimePicker
 								currentDate={parentDate}
-								onChange={(date) => setAttributes({ eventDate: date })}
+								onChange={handleDateChange}
 								is12Hour={true}
 							/>
 						</div>
