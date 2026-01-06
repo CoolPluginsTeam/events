@@ -114,6 +114,9 @@
     font-weight: 600;
     margin:0px
 }
+.evt-event-detail .wp-block-buttons{
+    margin: 0px;
+}
 .evt-front-view .evt-event-details-inner .evt-price-read-more {
     display: flex;
     gap: 15px;

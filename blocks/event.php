@@ -188,24 +188,52 @@ add_filter( 'render_block', function( $block_content, $block ) {
 	// Remove empty evt-event-image-wrap group
 	$content_without_image = preg_replace( '/<div[^>]*class="[^"]*evt-event-image-wrap[^"]*"[^>]*>\s*<\/div>/s', '', $content_without_image );
 	
-	// Remove buttons with href="#" from price-read-more group
-	$content_without_image = preg_replace_callback(
-		'/(<div[^>]*class="[^"]*evt-price-read-more[^"]*"[^>]*>)(.*?)(<\/div>)/s',
-		function( $matches ) {
-			$wrapper_open = $matches[1];
-			$inner_content = $matches[2];
-			$wrapper_close = $matches[3];
-			
-			// Check if button has href="#" and remove it if so
-			if ( preg_match( '/href=["\']#["\']/', $inner_content ) ) {
-				// Remove the entire buttons wrapper
-				$inner_content = preg_replace( '/<div[^>]*class="[^"]*wp-block-buttons[^"]*"[^>]*>.*?<\/div>/s', '', $inner_content );
+	// Remove Read More buttons with href="#" - Simple string replacement approach
+	// This works by finding wp-block-buttons wrapper and checking if it contains href="#"
+	if ( strpos( $content_without_image, 'href="#"' ) !== false || strpos( $content_without_image, "href='#'" ) !== false ) {
+		// Find all wp-block-buttons divs
+		$offset = 0;
+		while ( ( $start_pos = strpos( $content_without_image, 'class="wp-block-buttons', $offset ) ) !== false ) {
+			// Find the opening div tag
+			$div_start = strrpos( substr( $content_without_image, 0, $start_pos ), '<div' );
+			if ( $div_start === false ) {
+				$offset = $start_pos + 1;
+				continue;
 			}
 			
-			return $wrapper_open . $inner_content . $wrapper_close;
-		},
-		$content_without_image
-	);
+			// Find the closing div tag (account for nested divs)
+			$div_count = 1;
+			$search_pos = strpos( $content_without_image, '>', $div_start ) + 1;
+			$div_end = $search_pos;
+			
+			while ( $div_count > 0 && $div_end < strlen( $content_without_image ) ) {
+				$next_open = strpos( $content_without_image, '<div', $div_end );
+				$next_close = strpos( $content_without_image, '</div>', $div_end );
+				
+				if ( $next_close === false ) break;
+				
+				if ( $next_open !== false && $next_open < $next_close ) {
+					$div_count++;
+					$div_end = $next_open + 4;
+				} else {
+					$div_count--;
+					$div_end = $next_close + 6;
+				}
+			}
+			
+			// Extract the buttons block
+			$buttons_block = substr( $content_without_image, $div_start, $div_end - $div_start );
+			
+			// Check if this block contains href="#"
+			if ( strpos( $buttons_block, 'href="#"' ) !== false || strpos( $buttons_block, "href='#'" ) !== false ) {
+				// Remove this buttons block
+				$content_without_image = substr_replace( $content_without_image, '', $div_start, $div_end - $div_start );
+				$offset = $div_start;
+			} else {
+				$offset = $div_end;
+			}
+		}
+	}
 	
 	// If we have an image, convert it to evt-event-image and insert before evt-event-details
 	if ( $image_html ) {
