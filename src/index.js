@@ -121,6 +121,10 @@ registerBlockType('evt/event-date-badge', {
 			type: 'string',
 			default: getCurrentDate()
 		},
+		isDateSet: {
+			type: 'boolean',
+			default: false
+		},
 		dateBadgeBackgroundColor: {
 			type: 'string',
 			default: '#2667FF'
@@ -142,6 +146,7 @@ registerBlockType('evt/event-date-badge', {
 		const {
 			evtBadgeId,
 			eventDate,
+			isDateSet,
 			dateBadgeBackgroundColor,
 			dateBadgeTextColor,
 			borderBadgeColor,
@@ -244,8 +249,11 @@ registerBlockType('evt/event-date-badge', {
 
 		// Handle date change - update both child and parent
 		const handleDateChange = (newDate) => {
-			// Update child attribute
-			setAttributes({ eventDate: newDate });
+			// Update child attribute and mark as date set by user
+			setAttributes({ 
+				eventDate: newDate,
+				isDateSet: true
+			});
 			
 			// Update parent Event Item block's eventDate
 			if (parentClientId) {
@@ -333,8 +341,14 @@ registerBlockType('evt/event-date-badge', {
 	save: ({ attributes }) => {
 		const {
 			evtBadgeId,
-			eventDate
+			eventDate,
+			isDateSet
 		} = attributes;
+
+		// Don't render if date not set by user
+		if (!isDateSet) {
+			return null;
+		}
 
 		const blockProps = useBlockProps.save({
 			className: `evt-event-date-badge-container${evtBadgeId ? ` evt-badge-${evtBadgeId}` : ''}`
@@ -626,7 +640,8 @@ registerBlockType('evt/event-item', {
 			['core/group', { className: 'evt-card-details' }, [
 				// DATE BADGE
 				['evt/event-date-badge', {
-					eventDate: eventDate
+					eventDate: eventDate,
+					isDateSet: true
 				}],
 				
 				// DETAILS GROUP
@@ -672,10 +687,17 @@ registerBlockType('evt/event-item', {
 				]]
 			]]
 		] : [
+			// IMAGE GROUP for new events
+			['core/group', { className: 'evt-event-image-wrap' }, [
+				['core/image', {
+					className: 'evt-event-image-block'
+				}]
+			]],
 			['core/group', { className: 'evt-card-details' }, [
 				// Empty template with only placeholders for new events
 				['evt/event-date-badge', {
-					eventDate: eventDate
+					eventDate: eventDate,
+					isDateSet: false
 				}],
 				// DETAILS GROUP
 				['core/group', { className: 'evt-event-detail' }, [

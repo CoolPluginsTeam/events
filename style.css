@@ -86,7 +86,7 @@
     font-size: 14px;
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 1px;
 }
 .evt-front-view .evt-event-details-inner .evt-event-time:before {
     content: '\e803';

@@ -80,6 +80,10 @@ add_action( 'init', function() {
 				'type' => 'string',
 				'default' => date('Y-m-d')
 			],
+			'isDateSet' => [
+				'type' => 'boolean',
+				'default' => false
+			],
 			'dateBadgeBackgroundColor' => [
 				'type' => 'string',
 				'default' => '#2667FF'
@@ -181,11 +185,24 @@ add_filter( 'render_block', function( $block_content, $block ) {
 	// Remove image block from its original position
 	$content_without_image = preg_replace( '/<figure[^>]*class="[^"]*wp-block-image[^"]*"[^>]*>.*?<\/figure>/s', '', $block_content );
 	
-	// Extract price and read more, wrap them in evt-price-read-more
+	// Remove empty evt-event-image-wrap group
+	$content_without_image = preg_replace( '/<div[^>]*class="[^"]*evt-event-image-wrap[^"]*"[^>]*>\s*<\/div>/s', '', $content_without_image );
+	
+	// Remove buttons with href="#" from price-read-more group
 	$content_without_image = preg_replace_callback(
-		'/(<p[^>]*class="[^"]*evt-event-price[^"]*"[^>]*>.*?<\/p>)\s*(<div[^>]*class="[^"]*wp-block-buttons[^"]*"[^>]*>.*?<\/div>)/s',
+		'/(<div[^>]*class="[^"]*evt-price-read-more[^"]*"[^>]*>)(.*?)(<\/div>)/s',
 		function( $matches ) {
-			return '<div class="evt-price-read-more">' . $matches[1] . $matches[2] . '</div>';
+			$wrapper_open = $matches[1];
+			$inner_content = $matches[2];
+			$wrapper_close = $matches[3];
+			
+			// Check if button has href="#" and remove it if so
+			if ( preg_match( '/href=["\']#["\']/', $inner_content ) ) {
+				// Remove the entire buttons wrapper
+				$inner_content = preg_replace( '/<div[^>]*class="[^"]*wp-block-buttons[^"]*"[^>]*>.*?<\/div>/s', '', $inner_content );
+			}
+			
+			return $wrapper_open . $inner_content . $wrapper_close;
 		},
 		$content_without_image
 	);
