@@ -113,6 +113,10 @@ registerBlockType('evt/event-date-badge', {
 	parent: ['evt/event-item'],
 	usesContext: ['evt/eventDate'],
 	attributes: {
+		evtBadgeId: {
+			type: 'string',
+			default: ''
+		},
 		eventDate: {
 			type: 'string',
 			default: getCurrentDate()
@@ -136,12 +140,21 @@ registerBlockType('evt/event-date-badge', {
 	},
 	edit: ({ attributes, setAttributes, context, clientId }) => {
 		const {
+			evtBadgeId,
 			eventDate,
 			dateBadgeBackgroundColor,
 			dateBadgeTextColor,
 			borderBadgeColor,
 			weekdayColor
 		} = attributes;
+
+		// Generate unique badge ID if not present
+		useEffect(() => {
+			if (!evtBadgeId) {
+				const uniqueId = clientId.substring(0, 8);
+				setAttributes({ evtBadgeId: uniqueId });
+			}
+		}, []);
 
 		// Use parent's date if available
 		const parentDate = context['evt/eventDate'] || eventDate;
@@ -167,8 +180,48 @@ registerBlockType('evt/event-date-badge', {
 			}
 		}, [context['evt/eventDate']]);
 
+		// Inject CSS in editor for date badge
+		useEffect(() => {
+			if (!evtBadgeId) return;
+
+			// Remove existing style tag
+			const existingStyle = document.getElementById(`evt-badge-style-${evtBadgeId}`);
+			if (existingStyle) {
+				existingStyle.remove();
+			}
+
+			// Create new style tag
+			const style = document.createElement('style');
+			style.id = `evt-badge-style-${evtBadgeId}`;
+			style.innerHTML = `
+				.evt-badge-${evtBadgeId} .evt-border-badge {
+					border: 1px solid ${borderBadgeColor};
+				}
+				.evt-badge-${evtBadgeId} .evt-event-date-badge {
+					background-color: ${dateBadgeBackgroundColor};
+					color: ${dateBadgeTextColor};
+				}
+				.evt-badge-${evtBadgeId} .evt-date-day,
+				.evt-badge-${evtBadgeId} .evt-date-month {
+					color: ${dateBadgeTextColor};
+				}
+				.evt-badge-${evtBadgeId} .evt-date-weekday {
+					color: ${weekdayColor};
+				}
+			`;
+			document.head.appendChild(style);
+
+			// Cleanup
+			return () => {
+				const styleToRemove = document.getElementById(`evt-badge-style-${evtBadgeId}`);
+				if (styleToRemove) {
+					styleToRemove.remove();
+				}
+			};
+		}, [evtBadgeId, dateBadgeBackgroundColor, dateBadgeTextColor, borderBadgeColor, weekdayColor]);
+
 		const blockProps = useBlockProps({
-			className: 'evt-event-date-badge-container'
+			className: `evt-event-date-badge-container${evtBadgeId ? ` evt-badge-${evtBadgeId}` : ''}`
 		});
 
 		// Parse date for display
@@ -265,35 +318,26 @@ registerBlockType('evt/event-date-badge', {
 					</PanelBody>
 				</InspectorControls>
 
-				<div {...blockProps}>
-					<div className="evt-border-badge" style={{ borderColor: borderBadgeColor }}>
-						<div
-							className="evt-event-date-badge"
-							style={{
-								backgroundColor: dateBadgeBackgroundColor,
-								color: dateBadgeTextColor
-							}}
-						>
-							<span className="evt-date-day">{dateParts.day}</span>
-							<span className="evt-date-month">{dateParts.month}</span>
-						</div>
+			<div {...blockProps}>
+				<div className="evt-border-badge">
+					<div className="evt-event-date-badge">
+						<span className="evt-date-day">{dateParts.day}</span>
+						<span className="evt-date-month">{dateParts.month}</span>
 					</div>
-					<span className="evt-date-weekday" style={{ color: weekdayColor }}>{dateParts.weekday}</span>
 				</div>
+				<span className="evt-date-weekday">{dateParts.weekday}</span>
+			</div>
 			</>
 		);
 	},
 	save: ({ attributes }) => {
 		const {
-			eventDate,
-			dateBadgeBackgroundColor,
-			dateBadgeTextColor,
-			borderBadgeColor,
-			weekdayColor
+			evtBadgeId,
+			eventDate
 		} = attributes;
 
 		const blockProps = useBlockProps.save({
-			className: 'evt-event-date-badge-container'
+			className: `evt-event-date-badge-container${evtBadgeId ? ` evt-badge-${evtBadgeId}` : ''}`
 		});
 
 		// Parse date for display
@@ -316,19 +360,13 @@ registerBlockType('evt/event-date-badge', {
 
 		return (
 			<div {...blockProps}>
-				<div className="evt-border-badge" style={{ borderColor: borderBadgeColor }}>
-					<div
-						className="evt-event-date-badge"
-						style={{
-							backgroundColor: dateBadgeBackgroundColor,
-							color: dateBadgeTextColor
-						}}
-					>
+				<div className="evt-border-badge">
+					<div className="evt-event-date-badge">
 						<span className="evt-date-day">{dateParts.day}</span>
 						<span className="evt-date-month">{dateParts.month}</span>
 					</div>
 				</div>
-				<span className="evt-date-weekday" style={{ color: weekdayColor }}>{dateParts.weekday}</span>
+				<span className="evt-date-weekday">{dateParts.weekday}</span>
 			</div>
 		);
 	}
@@ -344,6 +382,10 @@ registerBlockType('evt/event-item', {
 		'evt/eventDate': 'eventDate'
 	},
 	attributes: {
+		evtBlockId: {
+			type: 'string',
+			default: ''
+		},
 		eventImage: {
 			type: 'string',
 			default: ''
@@ -375,14 +417,50 @@ registerBlockType('evt/event-item', {
 	},
 	edit: ({ attributes, setAttributes, clientId }) => {
 		const {
+			evtBlockId,
 			eventImage,
 			eventImageAlt,
 			eventDate,
 			detailsBackgroundColor,
-			isDefault,
-			hasImage,
-			mediaBlock
+			isDefault
 		} = attributes;
+
+		// Generate unique block ID if not present
+		useEffect(() => {
+			if (!evtBlockId) {
+				const uniqueId = clientId.substring(0, 8);
+				setAttributes({ evtBlockId: uniqueId });
+			}
+		}, []);
+
+		// Inject CSS in editor (only for event item's own styles)
+		useEffect(() => {
+			if (!evtBlockId) return;
+
+			// Remove existing style tag
+			const existingStyle = document.getElementById(`evt-block-style-${evtBlockId}`);
+			if (existingStyle) {
+				existingStyle.remove();
+			}
+
+			// Create new style tag - only for event details background
+			const style = document.createElement('style');
+			style.id = `evt-block-style-${evtBlockId}`;
+			style.innerHTML = `
+				.evt-block-${evtBlockId} .evt-event-details {
+					background-color: ${detailsBackgroundColor};
+				}
+			`;
+			document.head.appendChild(style);
+
+			// Cleanup
+			return () => {
+				const styleToRemove = document.getElementById(`evt-block-style-${evtBlockId}`);
+				if (styleToRemove) {
+					styleToRemove.remove();
+				}
+			};
+		}, [evtBlockId, detailsBackgroundColor]);
 
 		// Get inner blocks reactively to check for image block
 		const { innerBlocks, hasImageBlock } = useSelect((select) => {
@@ -418,10 +496,6 @@ registerBlockType('evt/event-item', {
 				imageBlock = imageGroup.innerBlocks.find(block => block.name === 'core/image');
 			}
 		}
-		
-		// Get image URL from block or attributes
-		const currentImageUrl = imageBlock?.attributes?.url || eventImage || '';
-		const currentImageAlt = imageBlock?.attributes?.alt || eventImageAlt || '';
 		
 		// Sync image block URL to attributes when it changes
 		useEffect(() => {
@@ -483,7 +557,7 @@ registerBlockType('evt/event-item', {
 		};
 
 		const blockProps = useBlockProps({
-			className: 'evt-event-item'
+			className: `evt-event-item${evtBlockId ? ` evt-block-${evtBlockId}` : ''}`
 		});
 
 		// Parse date for display
@@ -501,8 +575,6 @@ registerBlockType('evt/event-item', {
 				return { day: '01', month: 'Jan', weekday: 'MON' };
 			}
 		};
-
-		const dateParts = parseDate(eventDate);
 
 		// Default event data (for first 3 events)
 		const defaultEventData = [
@@ -686,7 +758,7 @@ registerBlockType('evt/event-item', {
 								</Button>
 							</div>
 						)}
-						<div className="evt-event-details" style={{ backgroundColor: detailsBackgroundColor }}>
+						<div className="evt-event-details">
 							{/* Content Blocks - Inside details-inner (image block will be filtered via CSS) */}
 							<div className="evt-event-details-inner">
 								<InnerBlocks
@@ -712,17 +784,17 @@ registerBlockType('evt/event-item', {
 	},
 	save: ({ attributes }) => {
 		const {
-			detailsBackgroundColor
+			evtBlockId
 		} = attributes;
 
 		const blockProps = useBlockProps.save({
-			className: 'evt-event-item'
+			className: `evt-event-item${evtBlockId ? ` evt-block-${evtBlockId}` : ''}`
 		});
 
 		return (
 			<div {...blockProps}>
 				<div className="evt-event-card">
-					<div className="evt-event-details" style={{ backgroundColor: detailsBackgroundColor }}>
+					<div className="evt-event-details">
 						{/* Content - Inside details-inner */}
 						<div className="evt-event-details-inner">
 							{/* All content blocks including date badge */}
