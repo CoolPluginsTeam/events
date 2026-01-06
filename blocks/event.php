@@ -83,6 +83,10 @@ add_action( 'init', function() {
 			'borderBadgeColor' => [
 				'type' => 'string',
 				'default' => '#00000040'
+			],
+			'weekdayColor' => [
+				'type' => 'string',
+				'default' => '#000000'
 			]
 		],
 	] );

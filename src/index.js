@@ -128,6 +128,10 @@ registerBlockType('evt/event-date-badge', {
 		borderBadgeColor: {
 			type: 'string',
 			default: '#00000040'
+		},
+		weekdayColor: {
+			type: 'string',
+			default: '#000000'
 		}
 	},
 	edit: ({ attributes, setAttributes, context, clientId }) => {
@@ -135,7 +139,8 @@ registerBlockType('evt/event-date-badge', {
 			eventDate,
 			dateBadgeBackgroundColor,
 			dateBadgeTextColor,
-			borderBadgeColor
+			borderBadgeColor,
+			weekdayColor
 		} = attributes;
 
 		// Use parent's date if available
@@ -212,11 +217,11 @@ registerBlockType('evt/event-date-badge', {
 						</div>
 					</PanelBody>
 
-					<PanelBody title={__('Badge Colors', 'events')} initialOpen={false}>
+					<PanelBody title={__('Date Colors', 'events')} initialOpen={false}>
 						<PanelRow>
 							<div style={{ width: '100%', marginTop: '16px' }}>
 								<label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
-									{__('Badge Background Color', 'events')}
+									{__('Background Color', 'events')}
 								</label>
 								<ColorPalette
 									value={dateBadgeBackgroundColor}
@@ -227,7 +232,7 @@ registerBlockType('evt/event-date-badge', {
 						<PanelRow>
 							<div style={{ width: '100%', marginTop: '16px' }}>
 								<label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
-									{__('Badge Text Color', 'events')}
+									{__('Text Color', 'events')}
 								</label>
 								<ColorPalette
 									value={dateBadgeTextColor}
@@ -243,6 +248,17 @@ registerBlockType('evt/event-date-badge', {
 								<ColorPalette
 									value={borderBadgeColor}
 									onChange={(color) => setAttributes({ borderBadgeColor: color || '#00000040' })}
+								/>
+							</div>
+						</PanelRow>
+						<PanelRow>
+							<div style={{ width: '100%', marginTop: '16px' }}>
+								<label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
+									{__('Weekday Color', 'events')}
+								</label>
+								<ColorPalette
+									value={weekdayColor}
+									onChange={(color) => setAttributes({ weekdayColor: color || '#000000' })}
 								/>
 							</div>
 						</PanelRow>
@@ -262,7 +278,7 @@ registerBlockType('evt/event-date-badge', {
 							<span className="evt-date-month">{dateParts.month}</span>
 						</div>
 					</div>
-					<span className="evt-date-weekday">{dateParts.weekday}</span>
+					<span className="evt-date-weekday" style={{ color: weekdayColor }}>{dateParts.weekday}</span>
 				</div>
 			</>
 		);
@@ -272,7 +288,8 @@ registerBlockType('evt/event-date-badge', {
 			eventDate,
 			dateBadgeBackgroundColor,
 			dateBadgeTextColor,
-			borderBadgeColor
+			borderBadgeColor,
+			weekdayColor
 		} = attributes;
 
 		const blockProps = useBlockProps.save({
@@ -311,7 +328,7 @@ registerBlockType('evt/event-date-badge', {
 						<span className="evt-date-month">{dateParts.month}</span>
 					</div>
 				</div>
-				<span className="evt-date-weekday">{dateParts.weekday}</span>
+				<span className="evt-date-weekday" style={{ color: weekdayColor }}>{dateParts.weekday}</span>
 			</div>
 		);
 	}
