@@ -14,7 +14,7 @@ add_action( 'init', function() {
 		'attributes' => [
 			'columns' => [
 				'type' => 'number',
-				'default' => 3
+				'default' => 2
 			]
 		],
 	] );

@@ -1,5 +1,5 @@
 import { registerBlockType, createBlock } from '@wordpress/blocks';
-import { InnerBlocks, InspectorControls, MediaUpload, MediaUploadCheck, useBlockProps } from '@wordpress/block-editor';
+import { InnerBlocks, InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import { PanelBody, Button, DateTimePicker, __experimentalNumberControl as NumberControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { dateI18n, format, getSettings } from '@wordpress/date';
@@ -26,7 +26,7 @@ const getDefaultImages = () => {
 
 // PARENT BLOCK: Events Grid Container
 registerBlockType('evt/events-grid', {
-	title: __('Events Grid', 'events'),
+	title: __('Events', 'events'),
 	icon: 'calendar-alt',
 	category: 'widgets',
 	attributes: {
@@ -39,7 +39,7 @@ registerBlockType('evt/events-grid', {
 		const { columns } = attributes;
 		const blockProps = useBlockProps({
 			className: 'evt-events-grid-container',
-			style: { '--columns': columns }
+			style: { '--grid-columns': columns }
 		});
 
 		const defaultImages = getDefaultImages();
@@ -60,14 +60,8 @@ registerBlockType('evt/events-grid', {
 				</InspectorControls>
 				<div {...blockProps}>
 				    <InnerBlocks
-						allowedBlocks={['evt/event-item', 'core/group']}
+						allowedBlocks={['evt/event-item']}
 						template={[
-							[
-								'core/group',
-								{
-									className: 'evt-events-grid-cards' // 👈 tumhari custom class
-								},
-								[
 									['evt/event-item', {
 										eventImage: defaultImages[0],
 										eventImageAlt: 'Crazy DJ Experience Santa Cruz',
@@ -89,8 +83,6 @@ registerBlockType('evt/events-grid', {
 										isDefault: true,
 										hasImage: true
 									}]
-								]
-							]
 						]}
 						renderAppender={() => <InnerBlocks.ButtonBlockAppender />}
 					/>
@@ -580,14 +572,6 @@ registerBlockType('evt/event-item', {
 								</Button>
 							)}
 						</div>
-						
-						{/* Image Rendered Directly - Outside details */}
-						{/* {currentImageUrl && (
-							<div className="evt-event-image">
-								<img src={currentImageUrl} alt={currentImageAlt} />
-							</div>
-						)}
-						 */}
 						<div className="evt-event-details" style={{ backgroundColor: detailsBackgroundColor }}>
 							{/* Content Blocks - Inside details-inner (image block will be filtered via CSS) */}
 							<div className="evt-event-details-inner">
@@ -624,13 +608,6 @@ registerBlockType('evt/event-item', {
 		return (
 			<div {...blockProps}>
 				<div className="evt-event-card">
-					{/* Image - Outside details */}
-					{/* {eventImage && (
-						<div className="evt-event-image">
-							<img src={eventImage} alt={eventImageAlt} />
-						</div>
-					)} */}
-					
 					<div className="evt-event-details" style={{ backgroundColor: detailsBackgroundColor }}>
 						{/* Content - Inside details-inner */}
 						<div className="evt-event-details-inner">
