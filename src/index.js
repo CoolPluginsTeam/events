@@ -2,9 +2,9 @@ import { registerBlockType, createBlock } from '@wordpress/blocks';
 import { InnerBlocks, InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import { PanelBody, Button, DateTimePicker, __experimentalNumberControl as NumberControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { dateI18n, format, getSettings } from '@wordpress/date';
+import { dateI18n } from '@wordpress/date';
 import { useEffect } from '@wordpress/element';
-import { dispatch, select } from '@wordpress/data';
+import { dispatch, select, useSelect } from '@wordpress/data';
 
 // Get current date formatted
 const getCurrentDate = () => {
@@ -27,7 +27,7 @@ const getDefaultImages = () => {
 // PARENT BLOCK: Events Grid Container
 registerBlockType('evt/events-grid', {
 	title: __('Events', 'events'),
-	icon: 'calendar-alt',
+	icon: 'grid-view',
 	category: 'widgets',
 	attributes: {
 		columns: {
@@ -329,10 +329,40 @@ registerBlockType('evt/event-item', {
 			mediaBlock
 		} = attributes;
 
-		// Get inner blocks to check for image block
-		const innerBlocks = select('core/block-editor').getBlock(clientId)?.innerBlocks || [];
-		const imageBlock = innerBlocks.find(block => block.name === 'core/image');
-		const hasImageBlock = !!imageBlock;
+		// Get inner blocks reactively to check for image block
+		const { innerBlocks, hasImageBlock } = useSelect((select) => {
+			const blocks = select('core/block-editor').getBlock(clientId)?.innerBlocks || [];
+			
+			// Check for direct image block or image inside group wrapper
+			let imageBlock = blocks.find(block => block.name === 'core/image');
+			if (!imageBlock) {
+				// Check inside group wrappers
+				const imageGroup = blocks.find(block => 
+					block.name === 'core/group' && 
+					block.attributes?.className?.includes('evt-event-image-wrap')
+				);
+				if (imageGroup && imageGroup.innerBlocks) {
+					imageBlock = imageGroup.innerBlocks.find(block => block.name === 'core/image');
+				}
+			}
+			
+			return {
+				innerBlocks: blocks,
+				hasImageBlock: !!imageBlock
+			};
+		}, [clientId]);
+		
+		// Find image block for URL extraction
+		let imageBlock = innerBlocks.find(block => block.name === 'core/image');
+		if (!imageBlock) {
+			const imageGroup = innerBlocks.find(block => 
+				block.name === 'core/group' && 
+				block.attributes?.className?.includes('evt-event-image-wrap')
+			);
+			if (imageGroup && imageGroup.innerBlocks) {
+				imageBlock = imageGroup.innerBlocks.find(block => block.name === 'core/image');
+			}
+		}
 		
 		// Get image URL from block or attributes
 		const currentImageUrl = imageBlock?.attributes?.url || eventImage || '';
@@ -351,30 +381,47 @@ registerBlockType('evt/event-item', {
 		// Inner Block Template Handler (Timeline style) - Add/Remove image block
 		const innerBlockTemplate = (shouldAddImage) => {
 			const prevInnerBlock = select('core/block-editor').getBlock(clientId)?.innerBlocks || [];
-			const prevBlocksName = prevInnerBlock.map(block => block.name);
-			const prevMediaBlock = prevInnerBlock.filter(block => block.name === 'core/image');
-			const mediaIndex = prevBlocksName.indexOf('core/image');
+			
+			// Find image group wrapper (evt-event-image-wrap)
+			const imageGroupIndex = prevInnerBlock.findIndex(block => 
+				block.name === 'core/group' && 
+				block.attributes?.className?.includes('evt-event-image-wrap')
+			);
+			
+			// Also check for direct image blocks (for new events)
+			const directImageIndex = prevInnerBlock.findIndex(block => block.name === 'core/image');
 
-			// Remove image block if shouldAddImage is false
-			if (prevMediaBlock.length > 0 && !shouldAddImage) {
-				dispatch('core/block-editor').removeBlock(prevInnerBlock[mediaIndex].clientId, true);
-				setAttributes({ mediaBlock: false, eventImage: '', eventImageAlt: '' });
+			// Remove image block/group if shouldAddImage is false
+			if (!shouldAddImage) {
+				if (imageGroupIndex !== -1) {
+					// Remove the entire image wrapper group
+					dispatch('core/block-editor').removeBlock(prevInnerBlock[imageGroupIndex].clientId, true);
+					setAttributes({ mediaBlock: false, eventImage: '', eventImageAlt: '', hasImage: false });
+				} else if (directImageIndex !== -1) {
+					// Remove direct image block
+					dispatch('core/block-editor').removeBlock(prevInnerBlock[directImageIndex].clientId, true);
+					setAttributes({ mediaBlock: false, eventImage: '', eventImageAlt: '', hasImage: false });
+				}
 			}
-			// Add image block if shouldAddImage is true and no image block exists
-			else if (shouldAddImage && prevBlocksName.length > 0 && !prevBlocksName.includes('core/image')) {
-				const insertedBlock = createBlock('core/image', {
-					url: eventImage || '',
-					alt: eventImageAlt || '',
-					className: 'evt-event-image-block'
-				});
+			// Add image block if shouldAddImage is true and no image exists
+			else if (shouldAddImage && imageGroupIndex === -1 && directImageIndex === -1) {
+				const insertedBlock = createBlock('core/group', {
+					className: 'evt-event-image-wrap'
+				}, [
+					createBlock('core/image', {
+						url: eventImage || '',
+						alt: eventImageAlt || '',
+						className: 'evt-event-image-block'
+					})
+				]);
 				dispatch('core/block-editor').insertBlocks(insertedBlock, 0, clientId);
-				setAttributes({ mediaBlock: true });
+				setAttributes({ mediaBlock: true, hasImage: true });
 				
-				// Auto-select the image block after adding (Timeline style)
+				// Auto-select the image block after adding
 				setTimeout(() => {
-					const addedImageBlock = select('core/block-editor').getBlock(clientId)?.innerBlocks[0];
-					if (addedImageBlock && addedImageBlock.name === 'core/image') {
-						dispatch('core/block-editor').selectBlock(addedImageBlock.clientId);
+					const addedGroup = select('core/block-editor').getBlock(clientId)?.innerBlocks[0];
+					if (addedGroup && addedGroup.innerBlocks && addedGroup.innerBlocks[0]) {
+						dispatch('core/block-editor').selectBlock(addedGroup.innerBlocks[0].clientId);
 					}
 				}, 50);
 			}
@@ -420,7 +467,7 @@ registerBlockType('evt/event-item', {
 				title: 'Free Food Distribution At Mumbai',
 				time: '9:00 AM - 5:00 PM',
 				location: 'Food Corp. Mumbai, Ft. Line',
-				price: '$15.00'
+				price: 'No Cost'
 			}
 		];
 
@@ -463,16 +510,21 @@ registerBlockType('evt/event-item', {
 					content: defaultContent?.time || ''
 					}],
 				
-					['core/heading', {
-					level: 4,
-					className: 'evt-event-title',
-					content: defaultContent?.title || ''
-					}],
-				
-					['core/paragraph', {
-					className: 'evt-event-location',
-					content: defaultContent?.location || ''
-					}],
+				['core/heading', {
+				level: 4,
+				className: 'evt-event-title',
+				content: defaultContent?.title || ''
+				}],
+			
+				['core/paragraph', {
+				placeholder: __('Event Description', 'events'),
+				className: 'evt-event-description'
+				}],
+			
+				['core/paragraph', {
+				className: 'evt-event-location',
+				content: defaultContent?.location || ''
+				}],
 				
 					// PRICE + READ MORE GROUP
 					['core/group', { className: 'evt-price-read-more' }, [
@@ -552,17 +604,9 @@ registerBlockType('evt/event-item', {
 
 				<div {...blockProps}>
 					<div className="evt-event-card">
-						{/* Add/Remove Image Block Button - Timeline style */}
-						<div className="evt-add-image-block">
-							{hasImageBlock ? (
-								<Button 
-									isSmall 
-									isSecondary 
-									onClick={() => innerBlockTemplate(false)}
-								>
-									{__('Remove Image Block', 'events')}
-								</Button>
-							) : (
+						{/* Add/Remove Image Block Button - Simple logic */}
+						{!hasImageBlock && (
+							<div className="evt-add-image-block">
 								<Button 
 									isSmall 
 									isSecondary 
@@ -570,8 +614,19 @@ registerBlockType('evt/event-item', {
 								>
 									{__('Add Image Block', 'events')}
 								</Button>
-							)}
-						</div>
+							</div>
+						)}
+						{hasImageBlock && (
+							<div className="evt-add-image-block">
+								<Button 
+									isSmall 
+									isSecondary 
+									onClick={() => innerBlockTemplate(false)}
+								>
+									{__('Remove Image Block', 'events')}
+								</Button>
+							</div>
+						)}
 						<div className="evt-event-details" style={{ backgroundColor: detailsBackgroundColor }}>
 							{/* Content Blocks - Inside details-inner (image block will be filtered via CSS) */}
 							<div className="evt-event-details-inner">
