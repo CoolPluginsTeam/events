@@ -26,7 +26,9 @@ add_action( 'init', function() {
 		'editor_style' => 'evt-event-editor',
 		'parent' => [ 'evt/events-grid' ],
 		'provides_context' => [
-			'evt/eventDate' => 'eventDate'
+			'evt/eventDate' => 'eventDate',
+			'evt/eventStartTime' => 'eventStartTime',
+			'evt/eventEndTime' => 'eventEndTime'
 		],
 		'attributes' => [
 			'evtBlockId' => [
@@ -44,6 +46,14 @@ add_action( 'init', function() {
 			'eventDate' => [
 				'type' => 'string',
 				'default' => date('Y-m-d')
+			],
+			'eventStartTime' => [
+				'type' => 'string',
+				'default' => '09:00'
+			],
+			'eventEndTime' => [
+				'type' => 'string',
+				'default' => '17:00'
 			],
 			'detailsBackgroundColor' => [
 				'type' => 'string',
@@ -79,6 +89,14 @@ add_action( 'init', function() {
 			'eventDate' => [
 				'type' => 'string',
 				'default' => date('Y-m-d')
+			],
+			'eventStartTime' => [
+				'type' => 'string',
+				'default' => '09:00'
+			],
+			'eventEndTime' => [
+				'type' => 'string',
+				'default' => '17:00'
 			],
 			'isDateSet' => [
 				'type' => 'boolean',
@@ -192,9 +210,9 @@ add_filter( 'render_block', function( $block_content, $block ) {
 	// Remove empty evt-event-image-wrap group
 	$content_without_image = preg_replace( '/<div[^>]*class="[^"]*evt-event-image-wrap[^"]*"[^>]*>\s*<\/div>/s', '', $content_without_image );
 	
-	// Remove Read More buttons with href="#" - Simple string replacement approach
-	// This works by finding wp-block-buttons wrapper and checking if it contains href="#"
-	if ( strpos( $content_without_image, 'href="#"' ) !== false || strpos( $content_without_image, "href='#'" ) !== false ) {
+	// Remove Read More buttons with href="" - Simple string replacement approach
+	// This works by finding wp-block-buttons wrapper and checking if it contains href=""
+	if ( strpos( $content_without_image, 'href=""' ) !== false || strpos( $content_without_image, "href=''" ) !== false ) {
 		// Find all wp-block-buttons divs
 		$offset = 0;
 		while ( ( $start_pos = strpos( $content_without_image, 'class="wp-block-buttons', $offset ) ) !== false ) {
@@ -228,8 +246,8 @@ add_filter( 'render_block', function( $block_content, $block ) {
 			// Extract the buttons block
 			$buttons_block = substr( $content_without_image, $div_start, $div_end - $div_start );
 			
-			// Check if this block contains href="#"
-			if ( strpos( $buttons_block, 'href="#"' ) !== false || strpos( $buttons_block, "href='#'" ) !== false ) {
+			// Check if this block contains href=""
+			if ( strpos( $buttons_block, 'href=""' ) !== false || strpos( $buttons_block, "href=''" ) !== false ) {
 				// Remove this buttons block
 				$content_without_image = substr_replace( $content_without_image, '', $div_start, $div_end - $div_start );
 				$offset = $div_start;

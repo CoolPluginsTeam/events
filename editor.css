@@ -163,6 +163,9 @@
     font-weight: 600;
     letter-spacing: 0.5px;
 }
+.evt-date-badge-settings .components-datetime__time > fieldset:first-of-type {
+    display: none;
+}
 @media (max-width: 1024px) {
     .evt-events-grid-container > .block-editor-inner-blocks > .block-editor-block-list__layout {
         grid-template-columns: repeat(2, 1fr);

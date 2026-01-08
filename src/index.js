@@ -24,6 +24,20 @@ const getDefaultImages = () => {
 	return ['', '', ''];
 };
 
+// Convert 24-hour time to 12-hour AM/PM format
+const formatTime12Hour = (time24) => {
+	if (!time24) return '';
+	
+	const [hours, minutes] = time24.split(':');
+	let hour = parseInt(hours);
+	const ampm = hour >= 12 ? 'PM' : 'AM';
+	
+	hour = hour % 12;
+	hour = hour ? hour : 12; // 0 should be 12
+	
+	return `${hour}:${minutes} ${ampm}`;
+};
+
 // PARENT BLOCK: Events Grid Container
 registerBlockType('evt/events-grid', {
 	title: __('Events', 'events'),
@@ -111,7 +125,7 @@ registerBlockType('evt/event-date-badge', {
 	icon: 'clock',
 	category: 'widgets',
 	parent: ['evt/event-item'],
-	usesContext: ['evt/eventDate'],
+	usesContext: ['evt/eventDate', 'evt/eventStartTime', 'evt/eventEndTime'],
 	attributes: {
 		evtBadgeId: {
 			type: 'string',
@@ -120,6 +134,14 @@ registerBlockType('evt/event-date-badge', {
 		eventDate: {
 			type: 'string',
 			default: getCurrentDate()
+		},
+		eventStartTime: {
+			type: 'string',
+			default: '09:00'
+		},
+		eventEndTime: {
+			type: 'string',
+			default: '17:00'
 		},
 		isDateSet: {
 			type: 'boolean',
@@ -150,6 +172,8 @@ registerBlockType('evt/event-date-badge', {
 		const {
 			evtBadgeId,
 			eventDate,
+			eventStartTime,
+			eventEndTime,
 			isDateSet,
 			hideYear,
 			dateBadgeBackgroundColor,
@@ -166,8 +190,10 @@ registerBlockType('evt/event-date-badge', {
 			}
 		}, []);
 
-		// Use parent's date if available
+		// Use parent's date and times if available
 		const parentDate = context['evt/eventDate'] || eventDate;
+		const parentStartTime = context['evt/eventStartTime'] || eventStartTime;
+		const parentEndTime = context['evt/eventEndTime'] || eventEndTime;
 		
 		// Get parent block ID
 		const parentClientId = useSelect((select) => {
@@ -183,12 +209,25 @@ registerBlockType('evt/event-date-badge', {
 			return null;
 		}, [clientId]);
 		
-		// Sync parent date to child attribute
+		// Sync parent values to child attributes
 		useEffect(() => {
 			if (context['evt/eventDate'] && context['evt/eventDate'] !== eventDate) {
 				setAttributes({ eventDate: context['evt/eventDate'] });
 			}
-		}, [context['evt/eventDate']]);
+			if (context['evt/eventStartTime'] && context['evt/eventStartTime'] !== eventStartTime) {
+				setAttributes({ eventStartTime: context['evt/eventStartTime'] });
+			}
+			if (context['evt/eventEndTime'] && context['evt/eventEndTime'] !== eventEndTime) {
+				setAttributes({ eventEndTime: context['evt/eventEndTime'] });
+			}
+		}, [context['evt/eventDate'], context['evt/eventStartTime'], context['evt/eventEndTime']]);
+		
+		// Update time paragraph when component mounts or times change
+		useEffect(() => {
+			if (parentClientId && parentStartTime && parentEndTime) {
+				updateTimeParagraph(parentStartTime, parentEndTime);
+			}
+		}, [parentClientId, parentStartTime, parentEndTime]);
 
 		// Inject CSS in editor for date badge
 		useEffect(() => {
@@ -269,17 +308,98 @@ registerBlockType('evt/event-date-badge', {
 				);
 			}
 		};
+		
+		// Handle time changes - update both child and parent
+		const handleStartTimeChange = (newTime) => {
+			setAttributes({ eventStartTime: newTime });
+			
+			// Update parent Event Item block
+			if (parentClientId) {
+				dispatch('core/block-editor').updateBlockAttributes(
+					parentClientId,
+					{ eventStartTime: newTime }
+				);
+				
+				// Update time paragraph content
+				updateTimeParagraph(newTime, parentEndTime);
+			}
+		};
+		
+		const handleEndTimeChange = (newTime) => {
+			setAttributes({ eventEndTime: newTime });
+			
+			// Update parent Event Item block
+			if (parentClientId) {
+				dispatch('core/block-editor').updateBlockAttributes(
+					parentClientId,
+					{ eventEndTime: newTime }
+				);
+				
+				// Update time paragraph content
+				updateTimeParagraph(parentStartTime, newTime);
+			}
+		};
+		
+		// Update time paragraph in parent block
+		const updateTimeParagraph = (startTime, endTime) => {
+			if (!parentClientId) return;
+			
+			const parentBlock = select('core/block-editor').getBlock(parentClientId);
+			if (!parentBlock) return;
+			
+			// Find time paragraph in innerBlocks
+			const findTimeParagraph = (blocks) => {
+				for (let block of blocks) {
+					if (block.name === 'core/paragraph' && block.attributes.className === 'evt-event-time') {
+						return block.clientId;
+					}
+					if (block.innerBlocks && block.innerBlocks.length > 0) {
+						const found = findTimeParagraph(block.innerBlocks);
+						if (found) return found;
+					}
+				}
+				return null;
+			};
+			
+			const timeParagraphId = findTimeParagraph(parentBlock.innerBlocks);
+			if (timeParagraphId) {
+				const formattedTime = `${formatTime12Hour(startTime)} – ${formatTime12Hour(endTime)}`;
+				dispatch('core/block-editor').updateBlockAttributes(
+					timeParagraphId,
+					{ content: formattedTime }
+				);
+			}
+		};
 
 		return (
 			<>
 				<InspectorControls>
-					<PanelBody title={__('Date Badge Settings', 'events')}>
+					<PanelBody className="evt-date-badge-settings" title={__('Date Badge Settings', 'events')}>
 						<div style={{ marginBottom: '15px' }}>
 							<strong>{__('Event Date', 'events')}</strong>
 							<DateTimePicker
 								currentDate={parentDate}
 								onChange={handleDateChange}
 								is12Hour={true}
+							/>
+						</div>
+						<p style={{ fontSize: '13px', color: '#FF0000', marginBottom: '10px' }}>{__('If you do not want to display the year, please remove the value from the year section.', 'events')}</p>
+						<div style={{ marginBottom: '15px' }}>
+							<strong>{__('Start Time', 'events')}</strong>
+							<input
+								type="time"
+								value={parentStartTime}
+								onChange={(e) => handleStartTimeChange(e.target.value)}
+								style={{ width: '100%', padding: '8px', marginTop: '8px', border: '1px solid #ddd', borderRadius: '4px' }}
+							/>
+						</div>
+						<div style={{ marginBottom: '15px' }}>
+							<strong>{__('End Time', 'events')}</strong>
+							<input
+								type="time"
+								value={parentEndTime}
+								onChange={(e) => handleEndTimeChange(e.target.value)}
+								style={{ width: '100%', padding: '8px', marginTop: '8px', border: '1px solid #ddd', borderRadius: '4px' }}
 							/>
 						</div>
 					</PanelBody>
@@ -407,7 +527,9 @@ registerBlockType('evt/event-item', {
 	category: 'widgets',
 	parent: ['evt/events-grid'],
 	providesContext: {
-		'evt/eventDate': 'eventDate'
+		'evt/eventDate': 'eventDate',
+		'evt/eventStartTime': 'eventStartTime',
+		'evt/eventEndTime': 'eventEndTime'
 	},
 	attributes: {
 		evtBlockId: {
@@ -425,6 +547,14 @@ registerBlockType('evt/event-item', {
 		eventDate: {
 			type: 'string',
 			default: getCurrentDate()
+		},
+		eventStartTime: {
+			type: 'string',
+			default: '09:00'
+		},
+		eventEndTime: {
+			type: 'string',
+			default: '17:00'
 		},
 		detailsBackgroundColor: {
 			type: 'string',
@@ -449,6 +579,8 @@ registerBlockType('evt/event-item', {
 			eventImage,
 			eventImageAlt,
 			eventDate,
+			eventStartTime,
+			eventEndTime,
 			detailsBackgroundColor,
 			isDefault
 		} = attributes;
@@ -639,6 +771,9 @@ registerBlockType('evt/event-item', {
 		};
 
 		const defaultContent = getDefaultContent();
+		
+		// Format time display
+		const formattedTime = `${formatTime12Hour(eventStartTime)} – ${formatTime12Hour(eventEndTime)}`;
 
 		// Template for all blocks including image
 		// Order: Image, Date Badge, Time, Title, Location, Price, Read More
@@ -655,7 +790,8 @@ registerBlockType('evt/event-item', {
 				// DATE BADGE
 				['evt/event-date-badge', {
 					eventDate: eventDate,
-					isDateSet: true
+					isDateSet: true,
+					hideYear: true
 				}],
 				
 				// DETAILS GROUP
@@ -663,7 +799,7 @@ registerBlockType('evt/event-item', {
 				
 					['core/paragraph', {
 					className: 'evt-event-time',
-					content: defaultContent?.time || ''
+					content: formattedTime
 					}],
 				
 				['core/heading', {
@@ -694,7 +830,7 @@ registerBlockType('evt/event-item', {
 						['core/button', {
 						text: 'Read More',
 						className: 'evt-event-read-more',
-						url: '#'
+						url: ''
 						}]
 					]]
 					]]
@@ -716,8 +852,9 @@ registerBlockType('evt/event-item', {
 				// DETAILS GROUP
 				['core/group', { className: 'evt-event-detail' }, [
 					['core/paragraph', {
-						placeholder: __('9:00 AM - 5:00 PM', 'events'),
-						className: 'evt-event-time'
+						placeholder: __('9:00 AM – 5:00 PM', 'events'),
+						className: 'evt-event-time',
+						content: formattedTime
 					}],
 					['core/heading', {
 						level: 4,
@@ -743,7 +880,7 @@ registerBlockType('evt/event-item', {
 								text: __('Read More', 'events'),
 								className: 'evt-event-read-more',
 								backgroundColor: 'vivid-cyan-blue',
-								url: '#'
+								url: ''
 							}]
 						]]
 					]]
