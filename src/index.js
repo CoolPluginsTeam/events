@@ -69,6 +69,7 @@ registerBlockType('evt/events-grid', {
 							min={1}
 							max={3}
 							help={__('Number of columns in the grid (1-3)', 'evt')}
+							__next40pxDefaultSize={true}
 						/>
 					</PanelBody>
 				</InspectorControls>
@@ -147,6 +148,10 @@ registerBlockType('evt/event-date-badge', {
 			type: 'boolean',
 			default: false
 		},
+		isTimeSet: {
+			type: 'boolean',
+			default: false
+		},
 		hideYear: {
 			type: 'boolean',
 			default: false
@@ -175,6 +180,7 @@ registerBlockType('evt/event-date-badge', {
 			eventStartTime,
 			eventEndTime,
 			isDateSet,
+			isTimeSet,
 			hideYear,
 			dateBadgeBackgroundColor,
 			dateBadgeTextColor,
@@ -224,10 +230,10 @@ registerBlockType('evt/event-date-badge', {
 		
 		// Update time paragraph when component mounts or times change
 		useEffect(() => {
-			if (parentClientId && parentStartTime && parentEndTime) {
+			if (parentClientId && parentStartTime && parentEndTime && isTimeSet) {
 				updateTimeParagraph(parentStartTime, parentEndTime);
 			}
-		}, [parentClientId, parentStartTime, parentEndTime]);
+		}, [parentClientId, parentStartTime, parentEndTime, isTimeSet]);
 
 		// Inject CSS in editor for date badge
 		useEffect(() => {
@@ -311,7 +317,10 @@ registerBlockType('evt/event-date-badge', {
 		
 		// Handle time changes - update both child and parent
 		const handleStartTimeChange = (newTime) => {
-			setAttributes({ eventStartTime: newTime });
+			setAttributes({ 
+				eventStartTime: newTime,
+				isTimeSet: true
+			});
 			
 			// Update parent Event Item block
 			if (parentClientId) {
@@ -326,7 +335,10 @@ registerBlockType('evt/event-date-badge', {
 		};
 		
 		const handleEndTimeChange = (newTime) => {
-			setAttributes({ eventEndTime: newTime });
+			setAttributes({ 
+				eventEndTime: newTime,
+				isTimeSet: true
+			});
 			
 			// Update parent Event Item block
 			if (parentClientId) {
@@ -472,11 +484,12 @@ registerBlockType('evt/event-date-badge', {
 			evtBadgeId,
 			eventDate,
 			isDateSet,
+			isTimeSet,
 			hideYear
 		} = attributes;
 
-		// Don't render if date not set by user
-		if (!isDateSet) {
+		// Don't render if date OR time not set by user
+		if (!isDateSet || !isTimeSet) {
 			return null;
 		}
 
@@ -582,7 +595,9 @@ registerBlockType('evt/event-item', {
 			eventStartTime,
 			eventEndTime,
 			detailsBackgroundColor,
-			isDefault
+			isDefault,
+			hasImage,
+			mediaBlock
 		} = attributes;
 
 		// Generate unique block ID if not present
@@ -623,92 +638,73 @@ registerBlockType('evt/event-item', {
 		}, [evtBlockId, detailsBackgroundColor]);
 
 		// Get inner blocks reactively to check for image block
-		const { innerBlocks, hasImageBlock } = useSelect((select) => {
+		const hasImageBlock = useSelect((select) => {
 			const blocks = select('core/block-editor').getBlock(clientId)?.innerBlocks || [];
 			
-			// Check for direct image block or image inside group wrapper
-			let imageBlock = blocks.find(block => block.name === 'core/image');
-			if (!imageBlock) {
-				// Check inside group wrappers
-				const imageGroup = blocks.find(block => 
+			// Check for direct image block
+			const directImage = blocks.find(block => block.name === 'core/image');
+			if (directImage) return true;
+			
+			// Check inside group wrappers
+			const imageGroup = blocks.find(block => 
+				block.name === 'core/group' && 
+				block.attributes?.className?.includes('evt-event-image-wrap')
+			);
+			
+			if (imageGroup && imageGroup.innerBlocks) {
+				const nestedImage = imageGroup.innerBlocks.find(block => block.name === 'core/image');
+				if (nestedImage) return true;
+			}
+			
+			return false;
+		}, [clientId]);
+
+		// Inner Block Template Handler - Add/Remove image block
+		const innerBlockTemplate = (shouldAddImage) => {
+			if (!shouldAddImage) {
+				// REMOVE: Find and remove image block/group
+				const currentBlocks = select('core/block-editor').getBlock(clientId)?.innerBlocks || [];
+				
+				// Try to find image group first
+				const imageGroupBlock = currentBlocks.find(block => 
 					block.name === 'core/group' && 
 					block.attributes?.className?.includes('evt-event-image-wrap')
 				);
-				if (imageGroup && imageGroup.innerBlocks) {
-					imageBlock = imageGroup.innerBlocks.find(block => block.name === 'core/image');
+				
+				if (imageGroupBlock) {
+					dispatch('core/block-editor').removeBlock(imageGroupBlock.clientId);
+				} else {
+					// Try direct image block
+					const directImageBlock = currentBlocks.find(block => block.name === 'core/image');
+					if (directImageBlock) {
+						dispatch('core/block-editor').removeBlock(directImageBlock.clientId);
+					}
 				}
-			}
-			
-			return {
-				innerBlocks: blocks,
-				hasImageBlock: !!imageBlock
-			};
-		}, [clientId]);
-		
-		// Find image block for URL extraction
-		let imageBlock = innerBlocks.find(block => block.name === 'core/image');
-		if (!imageBlock) {
-			const imageGroup = innerBlocks.find(block => 
-				block.name === 'core/group' && 
-				block.attributes?.className?.includes('evt-event-image-wrap')
-			);
-			if (imageGroup && imageGroup.innerBlocks) {
-				imageBlock = imageGroup.innerBlocks.find(block => block.name === 'core/image');
-			}
-		}
-		
-		// Sync image block URL to attributes when it changes
-		useEffect(() => {
-			if (imageBlock?.attributes?.url && imageBlock.attributes.url !== eventImage) {
-				setAttributes({
-					eventImage: imageBlock.attributes.url,
-					eventImageAlt: imageBlock.attributes.alt || eventImageAlt
+				
+				// Clear attributes immediately
+				setAttributes({ 
+					mediaBlock: false, 
+					eventImage: '', 
+					eventImageAlt: '', 
+					hasImage: false 
 				});
-			}
-		}, [imageBlock?.attributes?.url, imageBlock?.attributes?.alt]);
-
-		// Inner Block Template Handler (Timeline style) - Add/Remove image block
-		const innerBlockTemplate = (shouldAddImage) => {
-			const prevInnerBlock = select('core/block-editor').getBlock(clientId)?.innerBlocks || [];
-			
-			// Find image group wrapper (evt-event-image-wrap)
-			const imageGroupIndex = prevInnerBlock.findIndex(block => 
-				block.name === 'core/group' && 
-				block.attributes?.className?.includes('evt-event-image-wrap')
-			);
-			
-			// Also check for direct image blocks (for new events)
-			const directImageIndex = prevInnerBlock.findIndex(block => block.name === 'core/image');
-
-			// Remove image block/group if shouldAddImage is false
-			if (!shouldAddImage) {
-				if (imageGroupIndex !== -1) {
-					// Remove the entire image wrapper group
-					dispatch('core/block-editor').removeBlock(prevInnerBlock[imageGroupIndex].clientId, true);
-					setAttributes({ mediaBlock: false, eventImage: '', eventImageAlt: '', hasImage: false });
-				} else if (directImageIndex !== -1) {
-					// Remove direct image block
-					dispatch('core/block-editor').removeBlock(prevInnerBlock[directImageIndex].clientId, true);
-					setAttributes({ mediaBlock: false, eventImage: '', eventImageAlt: '', hasImage: false });
-				}
-			}
-			// Add image block if shouldAddImage is true and no image exists
-			else if (shouldAddImage && imageGroupIndex === -1 && directImageIndex === -1) {
+			} else {
+				// ADD: Create new image block
 				const insertedBlock = createBlock('core/group', {
 					className: 'evt-event-image-wrap'
 				}, [
 					createBlock('core/image', {
-						url: eventImage || '',
-						alt: eventImageAlt || '',
 						className: 'evt-event-image-block'
 					})
 				]);
+				
 				dispatch('core/block-editor').insertBlocks(insertedBlock, 0, clientId);
 				setAttributes({ mediaBlock: true, hasImage: true });
 				
-				// Auto-select the image block after adding
+				// Auto-select the image block
 				setTimeout(() => {
-					const addedGroup = select('core/block-editor').getBlock(clientId)?.innerBlocks[0];
+					const blocks = select('core/block-editor').getBlock(clientId)?.innerBlocks || [];
+					const addedGroup = blocks[0];
 					if (addedGroup && addedGroup.innerBlocks && addedGroup.innerBlocks[0]) {
 						dispatch('core/block-editor').selectBlock(addedGroup.innerBlocks[0].clientId);
 					}
@@ -790,7 +786,9 @@ registerBlockType('evt/event-item', {
 				// DATE BADGE
 				['evt/event-date-badge', {
 					eventDate: eventDate,
-					isDateSet: true
+					isDateSet: true,
+					isTimeSet: true,
+					hideYear: true
 				}],
 				
 				// DETAILS GROUP
@@ -846,14 +844,14 @@ registerBlockType('evt/event-item', {
 				// Empty template with only placeholders for new events
 				['evt/event-date-badge', {
 					eventDate: eventDate,
-					isDateSet: false
+					isDateSet: false,
+					isTimeSet: false
 				}],
 				// DETAILS GROUP
 				['core/group', { className: 'evt-event-detail' }, [
 					['core/paragraph', {
 						placeholder: __('9:00 AM – 5:00 PM', 'events'),
-						className: 'evt-event-time',
-						content: formattedTime
+						className: 'evt-event-time'
 					}],
 					['core/heading', {
 						level: 4,

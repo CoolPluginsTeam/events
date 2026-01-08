@@ -102,6 +102,10 @@ add_action( 'init', function() {
 				'type' => 'boolean',
 				'default' => false
 			],
+			'isTimeSet' => [
+				'type' => 'boolean',
+				'default' => false
+			],
 			'hideYear' => [
 				'type' => 'boolean',
 				'default' => false
