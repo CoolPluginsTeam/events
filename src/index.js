@@ -790,8 +790,7 @@ registerBlockType('evt/event-item', {
 				// DATE BADGE
 				['evt/event-date-badge', {
 					eventDate: eventDate,
-					isDateSet: true,
-					hideYear: true
+					isDateSet: true
 				}],
 				
 				// DETAILS GROUP
