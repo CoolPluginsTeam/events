@@ -45,7 +45,7 @@ add_action( 'init', function() {
 			],
 			'eventDate' => [
 				'type' => 'string',
-				'default' => date('Y-m-d')
+				'default' => wp_date('Y-m-d')
 			],
 			'eventStartTime' => [
 				'type' => 'string',
@@ -88,7 +88,7 @@ add_action( 'init', function() {
 			],
 			'eventDate' => [
 				'type' => 'string',
-				'default' => date('Y-m-d')
+				'default' => wp_date('Y-m-d')
 			],
 			'eventStartTime' => [
 				'type' => 'string',
