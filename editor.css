@@ -17,6 +17,23 @@
     padding: 10px;
     margin-bottom: 10px;
 }
+/* Hide appender button inside event items when blocks are deleted */
+.evt-event-item .block-list-appender,
+.evt-event-item .block-editor-button-block-appender,
+.editor-styles-wrapper .evt-event-details-inner .block-list-appender,
+.editor-styles-wrapper .evt-event-detail .block-list-appender,
+.editor-styles-wrapper .evt-card-details .block-list-appender,
+.editor-styles-wrapper .evt-event-image-wrap .block-list-appender,
+.editor-styles-wrapper .evt-price-read-more .block-list-appender,
+.evt-event-details .block-list-appender,
+.wp-block-group.evt-card-details .block-list-appender,
+.wp-block-group.evt-event-detail .block-list-appender,
+.wp-block-group.evt-event-image-wrap .block-list-appender,
+.wp-block-group.evt-price-read-more .block-list-appender,
+.evt-event-item .wp-block-buttons .block-list-appender,
+.evt-event-item .wp-block-buttons .block-editor-button-block-appender {
+    display: none !important;
+}
 .editor-styles-wrapper .block-editor-block-list__block {
     margin: 0px !important;
 }

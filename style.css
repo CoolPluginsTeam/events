@@ -30,7 +30,13 @@
     gap: 15px;
     padding: 10px;
 }
-
+.evt-front-view .evt-card-details .wp-block-group__inner-container{
+    display: flex;
+    gap: 10px;
+}
+.evt-front-view .evt-event-detail .wp-block-group__inner-container{
+    display: block;
+}
 .evt-front-view .block-editor-block-list__block {
     margin-top: 0px;
 }
@@ -51,6 +57,11 @@
     flex-direction: column;
     gap: 5px;
     margin:0px
+}
+.evt-front-view .evt-event-card .evt-event-detail p,
+.evt-front-view .evt-event-card .evt-event-detail h4 {
+margin: 0px;
+padding: 0px;
 }
 .evt-front-view .evt-border-badge {
     border-radius: 6px;
@@ -93,6 +104,7 @@
     display: flex;
     align-items: center;
     gap: 1px;
+    /* margin:0px */
 }
 .evt-front-view .evt-event-details-inner .evt-event-time:before {
     content: '\e803';
@@ -105,7 +117,6 @@
 .evt-front-view .evt-event-details-inner .evt-event-title {
     font-size: 18px;
     font-weight: 500;
-    margin:0px
 }
 .evt-front-view .evt-event-details-inner .evt-event-description {
     margin:0px
@@ -113,7 +124,6 @@
 .evt-front-view .evt-event-details-inner .evt-event-location {
     font-size: 15px;
     font-weight: 400;
-    margin:0px
 }
 .evt-front-view .evt-event-details-inner .evt-price-read-more p {
     font-size: 15px;
@@ -124,6 +134,12 @@
     margin: 0px;
 }
 .evt-front-view .evt-event-details-inner .evt-price-read-more {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    margin-top:0px
+}
+.evt-front-view .evt-event-details-inner .evt-price-read-more .wp-block-group__inner-container {
     display: flex;
     gap: 15px;
     align-items: center;
