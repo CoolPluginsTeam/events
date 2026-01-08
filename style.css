@@ -82,6 +82,12 @@
     letter-spacing: 0.5px;
     display: block;
 }
+.evt-front-view .evt-date-year {
+    font-size: 10px;
+    font-weight: 500;
+    display: block;
+    margin-top: 2px;
+}
 .evt-front-view .evt-event-details-inner .evt-event-time {
     font-size: 14px;
     display: flex;
@@ -112,7 +118,7 @@
 .evt-front-view .evt-event-details-inner .evt-price-read-more p {
     font-size: 15px;
     font-weight: 600;
-    margin:0px
+    margin:0px !important;
 }
 .evt-event-detail .wp-block-buttons{
     margin: 0px;

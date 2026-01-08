@@ -65,21 +65,21 @@ registerBlockType('evt/events-grid', {
 									['evt/event-item', {
 										eventImage: defaultImages[0],
 										eventImageAlt: 'Crazy DJ Experience Santa Cruz',
-										eventDate: '2025-01-06',
+										eventDate: '0001-01-06',
 										isDefault: true,
 										hasImage: true
 									}],
 									['evt/event-item', {
 										eventImage: defaultImages[1],
 										eventImageAlt: 'Cute Girls Rock Band Performance',
-										eventDate: '2025-04-04',
+										eventDate: '0001-04-04',
 										isDefault: true,
 										hasImage: true
 									}],
 									['evt/event-item', {
 										eventImage: defaultImages[2],
 										eventImageAlt: 'Free Food Distribution At Mumbai',
-										eventDate: '2025-06-08',
+										eventDate: '0001-06-08',
 										isDefault: true,
 										hasImage: true
 									}]
@@ -125,6 +125,10 @@ registerBlockType('evt/event-date-badge', {
 			type: 'boolean',
 			default: false
 		},
+		hideYear: {
+			type: 'boolean',
+			default: false
+		},
 		dateBadgeBackgroundColor: {
 			type: 'string',
 			default: '#2667FF'
@@ -147,6 +151,7 @@ registerBlockType('evt/event-date-badge', {
 			evtBadgeId,
 			eventDate,
 			isDateSet,
+			hideYear,
 			dateBadgeBackgroundColor,
 			dateBadgeTextColor,
 			borderBadgeColor,
@@ -231,17 +236,18 @@ registerBlockType('evt/event-date-badge', {
 
 		// Parse date for display
 		const parseDate = (dateString) => {
-			if (!dateString) return { day: '01', month: 'Jan', weekday: 'MON' };
+			if (!dateString) return { day: '01', month: 'Jan', year: '0001', weekday: 'MON' };
 			
 			try {
 				const date = new Date(dateString);
 				return {
 					day: dateI18n('d', date),
 					month: dateI18n('M', date),
+					year: dateI18n('Y', date),
 					weekday: dateI18n('D', date).toUpperCase()
 				};
 			} catch (e) {
-				return { day: '01', month: 'Jan', weekday: 'MON' };
+				return { day: '01', month: 'Jan', year: '0001', weekday: 'MON' };
 			}
 		};
 
@@ -331,6 +337,9 @@ registerBlockType('evt/event-date-badge', {
 					<div className="evt-event-date-badge">
 						<span className="evt-date-day">{dateParts.day}</span>
 						<span className="evt-date-month">{dateParts.month}</span>
+						{!hideYear && dateParts.year !== '0001' && (
+							<span className="evt-date-year">{dateParts.year}</span>
+						)}
 					</div>
 				</div>
 				<span className="evt-date-weekday">{dateParts.weekday}</span>
@@ -342,7 +351,8 @@ registerBlockType('evt/event-date-badge', {
 		const {
 			evtBadgeId,
 			eventDate,
-			isDateSet
+			isDateSet,
+			hideYear
 		} = attributes;
 
 		// Don't render if date not set by user
@@ -356,17 +366,18 @@ registerBlockType('evt/event-date-badge', {
 
 		// Parse date for display
 		const parseDate = (dateString) => {
-			if (!dateString) return { day: '01', month: 'Jan', weekday: 'MON' };
+			if (!dateString) return { day: '01', month: 'Jan', year: '0001', weekday: 'MON' };
 			
 			try {
 				const date = new Date(dateString);
 				return {
 					day: dateI18n('d', date),
 					month: dateI18n('M', date),
+					year: dateI18n('Y', date),
 					weekday: dateI18n('D', date).toUpperCase()
 				};
 			} catch (e) {
-				return { day: '01', month: 'Jan', weekday: 'MON' };
+				return { day: '01', month: 'Jan', year: '0001', weekday: 'MON' };
 			}
 		};
 
@@ -378,6 +389,9 @@ registerBlockType('evt/event-date-badge', {
 					<div className="evt-event-date-badge">
 						<span className="evt-date-day">{dateParts.day}</span>
 						<span className="evt-date-month">{dateParts.month}</span>
+						{!hideYear && dateParts.year !== '0001' && (
+							<span className="evt-date-year">{dateParts.year}</span>
+						)}
 					</div>
 				</div>
 				<span className="evt-date-weekday">{dateParts.weekday}</span>

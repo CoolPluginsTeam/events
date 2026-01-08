@@ -84,6 +84,10 @@ add_action( 'init', function() {
 				'type' => 'boolean',
 				'default' => false
 			],
+			'hideYear' => [
+				'type' => 'boolean',
+				'default' => false
+			],
 			'dateBadgeBackgroundColor' => [
 				'type' => 'string',
 				'default' => '#2667FF'
