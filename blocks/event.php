@@ -207,8 +207,38 @@ add_filter( 'render_block', function( $block_content, $block ) {
 	// Remove image block from its original position
 	$content_without_image = preg_replace( '/<figure[^>]*class="[^"]*wp-block-image[^"]*"[^>]*>.*?<\/figure>/s', '', $block_content );
 	
-	// Remove empty evt-event-image-wrap group
-	$content_without_image = preg_replace( '/<div[^>]*class="[^"]*evt-event-image-wrap[^"]*"[^>]*>\s*<\/div>/s', '', $content_without_image );
+	// Remove evt-event-image-wrap group completely - manually find and remove with div counting
+	if ( strpos( $content_without_image, 'evt-event-image-wrap' ) !== false ) {
+		$wrap_start = strpos( $content_without_image, 'evt-event-image-wrap' );
+		if ( $wrap_start !== false ) {
+			// Find the opening div tag
+			$div_start = strrpos( substr( $content_without_image, 0, $wrap_start ), '<div' );
+			if ( $div_start !== false ) {
+				// Find the closing div tag (account for nested divs)
+				$div_count = 1;
+				$search_pos = strpos( $content_without_image, '>', $div_start ) + 1;
+				$div_end = $search_pos;
+				
+				while ( $div_count > 0 && $div_end < strlen( $content_without_image ) ) {
+					$next_open = strpos( $content_without_image, '<div', $div_end );
+					$next_close = strpos( $content_without_image, '</div>', $div_end );
+					
+					if ( $next_close === false ) break;
+					
+					if ( $next_open !== false && $next_open < $next_close ) {
+						$div_count++;
+						$div_end = $next_open + 4;
+					} else {
+						$div_count--;
+						$div_end = $next_close + 6;
+					}
+				}
+				
+				// Remove the entire evt-event-image-wrap block
+				$content_without_image = substr_replace( $content_without_image, '', $div_start, $div_end - $div_start );
+			}
+		}
+	}
 	
 	// Remove Read More buttons with href="" - Simple string replacement approach
 	// This works by finding wp-block-buttons wrapper and checking if it contains href=""
