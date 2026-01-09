@@ -128,8 +128,6 @@
 .editor-styles-wrapper .evt-event-details-inner .evt-price-read-more p {
     font-size: 15px;
     font-weight: 600;
-    pointer-events: none;
-    cursor: none;
 }
 .editor-styles-wrapper .evt-event-details-inner .evt-price-read-more {
     display: flex;
@@ -149,8 +147,6 @@
     padding: 9px 16px;
     line-height: 14px;
     font-size: 14px;
-    pointer-events: none;
-    cursor: none;
 }
 .editor-styles-wrapper .evt-event-details-inner .evt-event-image-block {
     width: 100%;
@@ -161,7 +157,6 @@
 .editor-styles-wrapper .evt-event-details-inner .evt-event-image-block img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
 }
 .editor-styles-wrapper .evt-events-grid-container .evt-event-image-block .components-placeholder {
     height: 100%;
@@ -196,7 +191,7 @@
     font-weight: 600;
     letter-spacing: 0.5px;
 }
-.evt-date-badge-settings .components-datetime__time > fieldset:first-of-type {
+.evt-date-settings .components-datetime__time > fieldset:first-of-type {
     display: none;
 }
 @media (max-width: 1024px) {

@@ -23,7 +23,6 @@
 .evt-front-view .evt-event-image img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
 }
 .evt-front-view .evt-card-details {
     display: flex;

@@ -80,21 +80,21 @@ registerBlockType('evt/events-grid', {
 									['evt/event-item', {
 										eventImage: defaultImages[0],
 										eventImageAlt: 'Crazy DJ Experience Santa Cruz',
-										eventDate: '0001-01-06',
+										eventDate: '2026-01-06',
 										isDefault: true,
 										hasImage: true
 									}],
 									['evt/event-item', {
 										eventImage: defaultImages[1],
 										eventImageAlt: 'Cute Girls Rock Band Performance',
-										eventDate: '0001-04-04',
+										eventDate: '2026-04-04',
 										isDefault: true,
 										hasImage: true
 									}],
 									['evt/event-item', {
 										eventImage: defaultImages[2],
 										eventImageAlt: 'Free Food Distribution At Mumbai',
-										eventDate: '0001-06-08',
+										eventDate: '2026-06-08',
 										isDefault: true,
 										hasImage: true
 									}]
@@ -386,7 +386,7 @@ registerBlockType('evt/event-date-badge', {
 		return (
 			<>
 				<InspectorControls>
-					<PanelBody className="evt-date-badge-settings" title={__('Date Badge Settings', 'events')}>
+					<PanelBody className="evt-date-settings" title={__('Date Settings', 'events')}>
 						<div style={{ marginBottom: '15px' }}>
 							<strong>{__('Event Date', 'events')}</strong>
 							<DateTimePicker
@@ -716,22 +716,6 @@ registerBlockType('evt/event-item', {
 			className: `evt-event-item${evtBlockId ? ` evt-block-${evtBlockId}` : ''}`
 		});
 
-		// Parse date for display
-		const parseDate = (dateString) => {
-			if (!dateString) return { day: '01', month: 'Jan', weekday: 'MON' };
-			
-			try {
-				const date = new Date(dateString);
-				return {
-					day: dateI18n('d', date),
-					month: dateI18n('M', date),
-					weekday: dateI18n('D', date).toUpperCase()
-				};
-			} catch (e) {
-				return { day: '01', month: 'Jan', weekday: 'MON' };
-			}
-		};
-
 		// Default event data (for first 3 events)
 		const defaultEventData = [
 			{
@@ -787,8 +771,7 @@ registerBlockType('evt/event-item', {
 				['evt/event-date-badge', {
 					eventDate: eventDate,
 					isDateSet: true,
-					isTimeSet: true,
-					hideYear: true
+					isTimeSet: true
 				}],
 				
 				// DETAILS GROUP
@@ -876,7 +859,6 @@ registerBlockType('evt/event-item', {
 							['core/button', {
 								text: __('Read More', 'events'),
 								className: 'evt-event-read-more',
-								backgroundColor: 'vivid-cyan-blue',
 								url: ''
 							}]
 						]]
