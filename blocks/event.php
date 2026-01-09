@@ -310,17 +310,11 @@ add_filter( 'render_block', function( $block_content, $block ) {
 	// Remove empty evt-price-read-more wrapper (if both price and button are gone)
 	$content_without_image = preg_replace( '/<div[^>]*class="[^"]*evt-price-read-more[^"]*"[^>]*>\s*<\/div>/s', '', $content_without_image );
 	
-	// If we have an image, convert it to evt-event-image and insert before evt-event-details
+	// If we have an image, wrap it in evt-event-image and insert before evt-event-details
 	if ( $image_html ) {
-		preg_match( '/<img[^>]*src="([^"]*)"[^>]*>/', $image_html, $url_match );
-		$image_url = ! empty( $url_match[1] ) ? $url_match[1] : '';
-		
-		if ( $image_url ) {
-			preg_match( '/<img[^>]*alt="([^"]*)"[^>]*>/', $image_html, $alt_match );
-			$image_alt = ! empty( $alt_match[1] ) ? $alt_match[1] : '';
-			$image_div = '<div class="evt-event-image"><img src="' . esc_url( $image_url ) . '" alt="' . esc_attr( $image_alt ) . '" /></div>';
-			$content_without_image = str_replace( '<div class="evt-event-details"', $image_div . '<div class="evt-event-details"', $content_without_image );
-		}
+		// Preserve the entire figure tag with all attributes (width, height, aspect ratio, etc.)
+		$image_div = '<div class="evt-event-image">' . $image_html . '</div>';
+		$content_without_image = str_replace( '<div class="evt-event-details"', $image_div . '<div class="evt-event-details"', $content_without_image );
 	}
 	
 	return $content_without_image;

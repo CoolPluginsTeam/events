@@ -16,13 +16,47 @@
 }
 .evt-front-view .evt-event-image {
     width: 100%;
-    height: 200px;
-    overflow: hidden;
     position: relative;
+    line-height: 0;
+}
+.evt-front-view .evt-event-image figure {
+    margin: 0 !important;
+    display: block;
 }
 .evt-front-view .evt-event-image img {
+    display: block;
     width: 100%;
     height: 100%;
+}
+/* WordPress image block specific */
+.evt-front-view .evt-event-image .wp-block-image {
+    margin: 0 !important;
+}
+.evt-front-view .evt-event-image .wp-block-image img {
+    width: 100%;
+    height: 100%;
+}
+/* Preserve aspect ratio and object-fit from WordPress */
+.evt-front-view .evt-event-image figure[style*="aspect-ratio"],
+.evt-front-view .evt-event-image .wp-block-image[style*="aspect-ratio"] {
+    overflow: hidden;
+}
+.evt-front-view .evt-event-image figure[style*="aspect-ratio"] img,
+.evt-front-view .evt-event-image .wp-block-image[style*="aspect-ratio"] img {
+    width: 100% !important;
+    height: 100% !important;
+}
+/* Preserve width and height attributes */
+.evt-front-view .evt-event-image img[width],
+.evt-front-view .evt-event-image img[height] {
+    width: 100px !important;
+    height: auto !important;
+}
+/* When aspect ratio is set, maintain full dimensions */
+.evt-front-view .evt-event-image figure[style*="aspect-ratio"] img[width],
+.evt-front-view .evt-event-image figure[style*="aspect-ratio"] img[height] {
+    width: 100px !important;
+    height: 100px !important;
 }
 .evt-front-view .evt-card-details {
     display: flex;
