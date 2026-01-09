@@ -151,24 +151,13 @@
 .editor-styles-wrapper .evt-event-image-wrap {
     width: 100%;
     position: relative;
-    line-height: 0;
 }
 .editor-styles-wrapper .evt-event-image-wrap figure {
-    margin: 0 !important;
-    display: block;
+    margin: 0;
 }
-.editor-styles-wrapper .evt-event-image-wrap img {
-    display: block;
-    width: 100%;
-    height: 100%;
-}
-/* WordPress image block specific */
+/* Let WordPress image block handle its own dimensions in editor */
 .editor-styles-wrapper .evt-event-image-wrap .wp-block-image {
-    margin: 0 !important;
-}
-.editor-styles-wrapper .evt-event-image-wrap .wp-block-image img {
-    width: 100%;
-    height: 100%;
+    margin: 0;
 }
 .editor-styles-wrapper .evt-events-grid-container .evt-event-image-block .components-placeholder {
     min-height: 200px;
@@ -176,28 +165,10 @@
     gap: 5px;
     box-shadow: inset 0 0 0 1px #d9d9d9;
 }
-/* Preserve aspect ratio and object-fit in editor */
-.editor-styles-wrapper .evt-event-image-wrap figure[style*="aspect-ratio"],
-.editor-styles-wrapper .evt-event-image-wrap .wp-block-image[style*="aspect-ratio"] {
+/* Support for aspect ratio when set by WordPress in editor */
+.editor-styles-wrapper .evt-event-image-wrap figure[style*="aspect-ratio"] {
     overflow: hidden;
 }
-.editor-styles-wrapper .evt-event-image-wrap figure[style*="aspect-ratio"] img,
-.editor-styles-wrapper .evt-event-image-wrap .wp-block-image[style*="aspect-ratio"] img {
-    width: 100% !important;
-    height: 100% !important;
-}
-/* Preserve width and height attributes in editor */
-/* .editor-styles-wrapper .evt-event-image-wrap img[width],
-.editor-styles-wrapper .evt-event-image-wrap img[height] {
-    width: 100% !important;
-    height: auto !important;
-} */
-/* When aspect ratio is set, maintain full dimensions in editor */
-/* .editor-styles-wrapper .evt-event-image-wrap figure[style*="aspect-ratio"] img[width],
-.editor-styles-wrapper .evt-event-image-wrap figure[style*="aspect-ratio"] img[height] {
-    width: 100px !important;
-    height: 100px !important;
-} */
 /* BLOCK APPENDER & INSERTER */
 
 .editor-styles-wrapper .evt-events-grid-container .block-editor-block-list__layout > .block-list-appender {
