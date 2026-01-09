@@ -299,7 +299,7 @@ registerBlockType('evt/event-date-badge', {
 								is12Hour={true}
 							/>
 						</div>
-						<p style={{ fontSize: '13px', color: '#FF0000', marginBottom: '10px' }}><strong>{__('Note:', 'events')}</strong> {__('If you do not want to display the year, please remove the value from the year section.', 'events')}</p>
+						<p style={{ fontSize: '13px', color: '#FF0000', marginBottom: '10px' }}><strong>{__('Note:', 'events')}</strong> {__('To hide the year, simply set the year value to 0001 in the year section.', 'events')}</p>
 					</PanelBody>
 
 					<PanelBody title={__('Date Colors', 'events')} initialOpen={false}>
@@ -982,36 +982,22 @@ const withTimeSettings = createHigherOrderComponent((BlockEdit) => {
 					},
 					createElement(
 						'div',
-						{ style: { marginBottom: '15px' } },
+						{ className: 'evt-start-time-input' },
 						createElement('strong', {}, __('Start Time', 'events')),
 						createElement('input', {
 							type: 'time',
 							value: currentStartTime,
 							onChange: (e) => handleStartTimeChange(e.target.value),
-							style: { 
-								width: '100%', 
-								padding: '8px', 
-								marginTop: '8px', 
-								border: '1px solid #ddd', 
-								borderRadius: '4px' 
-							}
 						})
 					),
 					createElement(
 						'div',
-						{ style: { marginBottom: '15px' } },
+						{ className: 'evt-end-time-input' },
 						createElement('strong', {}, __('End Time', 'events')),
 						createElement('input', {
 							type: 'time',
 							value: currentEndTime,
 							onChange: (e) => handleEndTimeChange(e.target.value),
-							style: { 
-								width: '100%', 
-								padding: '8px', 
-								marginTop: '8px', 
-								border: '1px solid #ddd', 
-								borderRadius: '4px' 
-							}
 						})
 					)
 				)
