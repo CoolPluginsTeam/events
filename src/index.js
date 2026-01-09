@@ -848,10 +848,7 @@ registerBlockType('evt/event-item', {
 	}
 });
 
-// ====================
 // EXTEND CORE/PARAGRAPH BLOCK FOR TIME SETTINGS
-// ====================
-
 // Add custom attributes to core/paragraph block
 addFilter(
 	'blocks.registerBlockType',
@@ -988,6 +985,11 @@ const withTimeSettings = createHigherOrderComponent((BlockEdit) => {
 							type: 'time',
 							value: currentStartTime,
 							onChange: (e) => handleStartTimeChange(e.target.value),
+							onClick: (e) => {
+								if (e.target.showPicker) {
+									e.target.showPicker();
+								}
+							}
 						})
 					),
 					createElement(
@@ -998,6 +1000,11 @@ const withTimeSettings = createHigherOrderComponent((BlockEdit) => {
 							type: 'time',
 							value: currentEndTime,
 							onChange: (e) => handleEndTimeChange(e.target.value),
+							onClick: (e) => {
+								if (e.target.showPicker) {
+									e.target.showPicker();
+								}
+							}
 						})
 					)
 				)
