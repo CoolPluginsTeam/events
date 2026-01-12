@@ -155,6 +155,9 @@
 .editor-styles-wrapper .evt-event-image-wrap figure {
     margin: 0;
 }
+.editor-styles-wrapper .evt-event-image-wrap figure img{
+    width: 100%;
+}
 /* Let WordPress image block handle its own dimensions in editor */
 .editor-styles-wrapper .evt-event-image-wrap .wp-block-image {
     margin: 0;
@@ -209,6 +212,9 @@
 	border: 1px solid #ddd; 
 	border-radius: 4px;
 	cursor: pointer !important;
+}
+.evt-date-settings .components-datetime__time .components-datetime__time-wrapper .components-datetime__time-field{
+    margin-bottom: 0px;
 }
 @media (max-width: 1024px) {
     .evt-events-grid-container > .block-editor-inner-blocks > .block-editor-block-list__layout {

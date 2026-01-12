@@ -21,6 +21,9 @@
 .evt-front-view .evt-event-image figure {
     margin: 0;
 }
+.evt-front-view .evt-event-image figure img{
+    width: 100%;
+}
 /* Let WordPress image block handle its own dimensions */
 .evt-front-view .evt-event-image .wp-block-image {
     margin: 0;
@@ -64,8 +67,8 @@
 }
 .evt-front-view .evt-event-card .evt-event-detail p,
 .evt-front-view .evt-event-card .evt-event-detail h4 {
-margin: 0px;
-padding: 0px;
+    margin: 0px;
+    padding: 0px;
 }
 .evt-front-view .evt-border-badge {
     border-radius: 6px;

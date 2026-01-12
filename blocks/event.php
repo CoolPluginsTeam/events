@@ -4,6 +4,10 @@
  * - evt/events-grid (Parent Container)
  * - evt/event-item (Child Event Card with InnerBlocks)
  */
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 add_action( 'init', function() {
 	// Register parent block: Events Grid Container
