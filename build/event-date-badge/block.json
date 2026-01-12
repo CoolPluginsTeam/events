@@ -1,0 +1,51 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "evt/event-date-badge",
+  "version": "0.1.0",
+  "title": "Event Date",
+  "category": "widgets",
+  "icon": "clock",
+  "description": "Event Date Badge",
+  "textdomain": "events",
+  "parent": [
+    "evt/event-item"
+  ],
+  "usesContext": [
+    "evt/eventDate"
+  ],
+  "attributes": {
+    "evtBadgeId": {
+      "type": "string",
+      "default": ""
+    },
+    "eventDate": {
+      "type": "string"
+    },
+    "isDateSet": {
+      "type": "boolean",
+      "default": false
+    },
+    "hideYear": {
+      "type": "boolean",
+      "default": false
+    },
+    "dateBadgeBackgroundColor": {
+      "type": "string",
+      "default": "#2667FF"
+    },
+    "dateBadgeTextColor": {
+      "type": "string",
+      "default": "#ffffff"
+    },
+    "borderBadgeColor": {
+      "type": "string",
+      "default": "#00000040"
+    },
+    "weekdayColor": {
+      "type": "string",
+      "default": "#000000"
+    }
+  },
+  "editorScript": "file:./index.js"
+}

@@ -9,130 +9,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-add_action( 'init', function() {
-	// Register parent block: Events Grid Container
-	register_block_type( 'evt/events-grid', [
-		'editor_script' => 'evt-event',
-		'style' => 'evt-event',
-		'editor_style' => 'evt-event-editor',
-		'attributes' => [
-			'columns' => [
-				'type' => 'number',
-				'default' => 2
-			]
-		],
-	] );
-
-	// Register child block: Event Item
-	register_block_type( 'evt/event-item', [
-		'editor_script' => 'evt-event',
-		'style' => 'evt-event',
-		'editor_style' => 'evt-event-editor',
-		'parent' => [ 'evt/events-grid' ],
-		'provides_context' => [
-			'evt/eventDate' => 'eventDate',
-			'evt/eventStartTime' => 'eventStartTime',
-			'evt/eventEndTime' => 'eventEndTime'
-		],
-		'attributes' => [
-			'evtBlockId' => [
-				'type' => 'string',
-				'default' => ''
-			],
-			'eventImage' => [
-				'type' => 'string',
-				'default' => ''
-			],
-			'eventImageAlt' => [
-				'type' => 'string',
-				'default' => ''
-			],
-			'eventDate' => [
-				'type' => 'string',
-				'default' => wp_date('Y-m-d')
-			],
-			'eventStartTime' => [
-				'type' => 'string',
-				'default' => '09:00'
-			],
-			'eventEndTime' => [
-				'type' => 'string',
-				'default' => '17:00'
-			],
-			'detailsBackgroundColor' => [
-				'type' => 'string',
-				'default' => '#ffffff'
-			],
-			'isDefault' => [
-				'type' => 'boolean',
-				'default' => false
-			],
-			'hasImage' => [
-				'type' => 'boolean',
-				'default' => false
-			],
-			'mediaBlock' => [
-				'type' => 'boolean',
-				'default' => false
-			]
-		],
-	] );
-
-	// Register date badge block: Event Date Badge
-	register_block_type( 'evt/event-date-badge', [
-		'editor_script' => 'evt-event',
-		'style' => 'evt-event',
-		'editor_style' => 'evt-event-editor',
-		'parent' => [ 'evt/event-item' ],
-		'uses_context' => [ 'evt/eventDate' ],
-		'attributes' => [
-			'evtBadgeId' => [
-				'type' => 'string',
-				'default' => ''
-			],
-			'eventDate' => [
-				'type' => 'string',
-				'default' => wp_date('Y-m-d')
-			],
-			'eventStartTime' => [
-				'type' => 'string',
-				'default' => '09:00'
-			],
-			'eventEndTime' => [
-				'type' => 'string',
-				'default' => '17:00'
-			],
-			'isDateSet' => [
-				'type' => 'boolean',
-				'default' => false
-			],
-			'isTimeSet' => [
-				'type' => 'boolean',
-				'default' => false
-			],
-			'hideYear' => [
-				'type' => 'boolean',
-				'default' => false
-			],
-			'dateBadgeBackgroundColor' => [
-				'type' => 'string',
-				'default' => '#2667FF'
-			],
-			'dateBadgeTextColor' => [
-				'type' => 'string',
-				'default' => '#ffffff'
-			],
-			'borderBadgeColor' => [
-				'type' => 'string',
-				'default' => '#00000040'
-			],
-			'weekdayColor' => [
-				'type' => 'string',
-				'default' => '#000000'
-			]
-		],
-	] );
-} );
+/**
+ * Register Blocks from metadata
+ */
+function evt_register_blocks() {
+	$build_path = plugin_dir_path( __DIR__ ) . 'build/';
+	
+	register_block_type( $build_path . 'events-grid' );
+	register_block_type( $build_path . 'event-item' );
+	register_block_type( $build_path . 'event-date-badge' );
+}
+add_action( 'init', 'evt_register_blocks' );
 
 // Recursive function to extract date badge attributes from innerBlocks
 function evt_extract_date_badge_attrs( $inner_blocks ) {

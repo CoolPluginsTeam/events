@@ -1,0 +1,61 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "evt/event-item",
+    "version": "0.1.0",
+    "title": "Event Item",
+    "category": "widgets",
+    "icon": "calendar",
+    "description": "Event Item Card",
+    "textdomain": "events",
+    "parent": [
+        "evt/events-grid"
+    ],
+    "providesContext": {
+        "evt/eventDate": "eventDate",
+        "evt/eventStartTime": "eventStartTime",
+        "evt/eventEndTime": "eventEndTime"
+    },
+    "attributes": {
+        "evtBlockId": {
+            "type": "string",
+            "default": ""
+        },
+        "eventImage": {
+            "type": "string",
+            "default": ""
+        },
+        "eventImageAlt": {
+            "type": "string",
+            "default": ""
+        },
+        "eventDate": {
+            "type": "string"
+        },
+        "eventStartTime": {
+            "type": "string",
+            "default": "09:00"
+        },
+        "eventEndTime": {
+            "type": "string",
+            "default": "17:00"
+        },
+        "detailsBackgroundColor": {
+            "type": "string",
+            "default": "#ffffff"
+        },
+        "isDefault": {
+            "type": "boolean",
+            "default": false
+        },
+        "hasImage": {
+            "type": "boolean",
+            "default": false
+        },
+        "mediaBlock": {
+            "type": "boolean",
+            "default": false
+        }
+    },
+    "editorScript": "file:./index.js"
+}
