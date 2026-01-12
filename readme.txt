@@ -8,74 +8,55 @@ Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Create and display multiple events in a beautiful modern grid layout inside Gutenberg.
+Create and display a dedicated Event block directly inside Gutenberg.
 
 == Description ==
 
-The **Events** is a powerful plugin that allows you to easily add and display multiple events on your WordPress site using the Gutenberg editor. 
-The plugin adds a modern Events Grid Block inside the Gutenberg editor, so you can showcase multiple events in a stunning grid layout with beautiful event cards.
+The **Events** is a powerful plugin that allows you to easily add and display **Events Grid Block** using a dedicated Gutenberg block. 
+
+Simply insert the Events block, fill in the event details, and your event will appear instantly in a grid layout, without using any shortcodes or complex settings.
 
 ### Key Features
-* **Modern Grid Layout:** Display multiple events in a responsive 1-4 column grid layout (default 3 columns)
-* **Multiple Events Support:** Add unlimited event cards within a single events grid block
-* **Beautiful Event Cards:** Each event card features a large image with an overlaid date badge
-* **Event Date Badge:** Automatic date formatting with day, month, and weekday display in a stylish blue badge
-* **Event Date & Time Picker:** Select event date and time from an intuitive calendar picker
-* **Event Pricing:** Add event pricing information (e.g., "Free - $25.00" or "$15.00")
-* **Event Location:** Display venue or location information for each event
-* **Featured Images:** Upload beautiful images for each event with automatic responsive sizing
-* **Default Content:** Comes with 3 pre-filled sample events to get started quickly
-* **Fully Responsive:** Grid automatically adapts to 2 columns on tablets and 1 column on mobile devices
-* **Hover Effects:** Smooth animations and shadows on hover for better user experience
-* **Card Design:** Modern card-based design with rounded corners and elegant shadows
-* **Easy Customization:** Adjust columns, dates, images, and all event details easily
-* **Block Inserter:** Add new events easily with the built-in block appender button
-* Lightweight & Fast Loading
-* No Coding Required
-* SEO Friendly
+* **Dedicated Events Block:** Provides a ready-to-use event block inside the block editor. Just add it to your page and enter event details.
+* **Add Event Title:** Enter a title for the event to tell users what your event is about.
+* **Event Description:** Write a short or detailed description of your event to explain what it is about.
+* **Event Date Selection:** Select the event date from a simple calendar pop-up.
+* **Event Location:** Add the location or venue of your event in a dedicated field.
+* **Integrate Image:** Make your events more attractive by uploading an image related to your event.
+* **Read More Button:** Display a **"Read More"** button on the event block that redirects visitors to a full event page, or any custom link.
+* **Customization:** Easily customize the background and text color of your dedicated event blocks according to the website theme.
+* Lightweight & Easy to Use.
+* Fully Responsive.
 
 == Installation ==
 - Go to **Plugins > Add New** in your WordPress admin area.
-- Search for **"Events Grid"**.
+- Search for **"Events"**.
 - Install & Activate plugin.
-- Next, create or edit a **page/post** where you want to show events.
-- Click the **+ Add Block** button and search for **"Events Grid"**.
-- Add the block - it comes with 3 sample events pre-filled.
-- Click on any event card to edit its details (title, date, location, price, image).
-- Add more events using the **+** button at the bottom of the grid.
-- Adjust grid columns (1-4) from the block settings panel on the right.
-- Publish or Update your page to see the beautiful events grid in action!
+- Next, create or edit a **page/post** where you want to show an event.
+- Click the **+ Add Block** button and search for **"Event"**.
+- Add the block and enter your event details.
 
 == Frequently Asked Questions ==
 
 = Does the plugin work with all Gutenberg themes? =
 Yes, the plugin is fully compatible with all themes that support the WordPress block editor (Gutenberg).
 
-= How many events can I add? =
-You can add unlimited events within a single Events Grid block. Just click the + button to add more event cards.
-
-= Can I change the number of columns? =
-Yes! You can set 1-4 columns from the block settings panel. Default is 3 columns. The grid is responsive and automatically adjusts on mobile/tablet devices.
-
-= Does it come with default content? =
-Yes, when you first add the Events Grid block, it comes with 3 beautifully pre-filled sample events so you can see how it looks right away.
-
-= Can I customize event images? =
-Yes, you can upload custom images for each event. Click on any event card, then use the sidebar settings to upload or change the image.
+= Can I customize the colors of the event block? =
+Yes, you can change the background color and text color directly from the block's color settings.
 
 = Do I need coding knowledge to use this plugin? =
-No coding is required. The plugin is built for beginners. Just insert the block and the default events appear. Edit them or add new ones easily.
+No coding is required. The plugin is built for beginners. Just insert the block and start entering your event information.
 
-= Where can I display the events grid? =
-You can add it to any page or post inside the Gutenberg editor. You can also use Wide or Full width alignment.
+= Where can I display the event block? =
+You can add it to any page or post inside the Gutenberg editor.
 
-= Is the design mobile responsive? =
-Yes! The grid automatically adapts: 3 columns on desktop, 2 columns on tablets, and 1 column on mobile phones.
+= Can I link the event to another page or website? =
+Yes. You can use the **Read More** button to link your event to a detailed page, registration form, or any external URL.
 
 = How can I report security bugs? =
-You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities [Report a security vulnerability](https://patchstack.com/database/vdp/template-events-calendar).
+You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team helps validate, triage, and handle any security vulnerabilities [Report a security vulnerability](https://patchstack.com/database/vdp/template-events-calendar).
 
 == Changelog ==
 
-= 1.0 - 17 December 2025 =
+= 1.0 - 14 January 2026 =
 * Initial release
