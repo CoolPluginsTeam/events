@@ -14,9 +14,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Don't render if date not set by user
-if ( empty( $attributes['isDateSet'] ) ) {
-	return '';
-}
+// if ( empty( $attributes['isDateSet'] ) ) {
+// 	return '';
+// }
 
 // phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 // All variables below are local to this render callback, not global variables
@@ -25,30 +25,35 @@ $evt_badge_id = isset( $attributes['evtBadgeId'] ) ? esc_attr( $attributes['evtB
 $evt_event_date = isset( $attributes['eventDate'] ) ? $attributes['eventDate'] : '';
 $evt_hide_year = isset( $attributes['hideYear'] ) ? $attributes['hideYear'] : false;
 
+// If date not set by user, use current date as default (same as editor)
+if ( empty( $evt_event_date ) ) {
+	$evt_event_date = wp_date( 'Y-m-d' );
+}
+
 // Get colors
 $evt_badge_bg = isset( $attributes['dateBadgeBackgroundColor'] ) ? esc_attr( $attributes['dateBadgeBackgroundColor'] ) : '#2667FF';
 $evt_badge_text = isset( $attributes['dateBadgeTextColor'] ) ? esc_attr( $attributes['dateBadgeTextColor'] ) : '#ffffff';
 $evt_border_color = isset( $attributes['borderBadgeColor'] ) ? esc_attr( $attributes['borderBadgeColor'] ) : '#00000040';
 $evt_weekday_color = isset( $attributes['weekdayColor'] ) ? esc_attr( $attributes['weekdayColor'] ) : '#000000';
 
-// Parse date
-$evt_date_parts = array(
-	'day' => '01',
-	'month' => 'Jan',
-	'year' => '0001',
-	'weekday' => 'MON'
-);
-
-if ( ! empty( $evt_event_date ) ) {
-	$timestamp = strtotime( $evt_event_date );
-	if ( $timestamp ) {
-		$evt_date_parts = array(
-			'day' => wp_date( 'd', $timestamp ),
-			'month' => wp_date( 'M', $timestamp ),
-			'year' => wp_date( 'Y', $timestamp ),
-			'weekday' => strtoupper( wp_date( 'D', $timestamp ) )
-		);
-	}
+// Parse date - Always use the date (current or user-set)
+$timestamp = strtotime( $evt_event_date );
+if ( $timestamp ) {
+	$evt_date_parts = array(
+		'day' => wp_date( 'd', $timestamp ),
+		'month' => wp_date( 'M', $timestamp ),
+		'year' => wp_date( 'Y', $timestamp ),
+		'weekday' => strtoupper( wp_date( 'D', $timestamp ) )
+	);
+} else {
+	// Fallback if date parsing fails
+	$current_time = current_time( 'timestamp' );
+	$evt_date_parts = array(
+		'day' => wp_date( 'd', $current_time ),
+		'month' => wp_date( 'M', $current_time ),
+		'year' => wp_date( 'Y', $current_time ),
+		'weekday' => strtoupper( wp_date( 'D', $current_time ) )
+	);
 }
 
 // Generate wrapper attributes
