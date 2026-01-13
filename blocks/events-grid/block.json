@@ -1,0 +1,30 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "evt/events-grid",
+	"version": "1.0.0",
+	"title": "Events Grid",
+	"category": "widgets",
+	"icon": "calendar-alt",
+	"description": "Display multiple events in a responsive grid layout.",
+	"keywords": ["event", "calendar", "grid"],
+	"textdomain": "events",
+	"attributes": {
+		"columns": {
+			"type": "number",
+			"default": 2
+		}
+	},
+	"providesContext": {},
+	"supports": {
+		"html": false,
+		"align": ["wide", "full"],
+		"spacing": {
+			"margin": true,
+			"padding": true
+		}
+	},
+	"editorScript": "file:../../build/events-grid/index.js",
+	"editorStyle": "file:../../editor.css",
+	"style": "file:../../style.css"
+}

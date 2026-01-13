@@ -1,0 +1,72 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "evt/event-date-badge",
+	"version": "1.0.0",
+	"title": "Event Date Badge",
+	"category": "widgets",
+	"icon": "clock",
+	"description": "Display event date in a styled badge.",
+	"keywords": ["date", "badge", "calendar"],
+	"textdomain": "events",
+	"parent": ["evt/event-item"],
+	"attributes": {
+		"evtBadgeId": {
+			"type": "string",
+			"default": ""
+		},
+		"eventDate": {
+			"type": "string",
+			"default": ""
+		},
+		"eventStartTime": {
+			"type": "string",
+			"default": "09:00"
+		},
+		"eventEndTime": {
+			"type": "string",
+			"default": "17:00"
+		},
+		"isDateSet": {
+			"type": "boolean",
+			"default": false
+		},
+		"isTimeSet": {
+			"type": "boolean",
+			"default": false
+		},
+		"hideYear": {
+			"type": "boolean",
+			"default": false
+		},
+		"dateBadgeBackgroundColor": {
+			"type": "string",
+			"default": "#2667FF"
+		},
+		"dateBadgeTextColor": {
+			"type": "string",
+			"default": "#ffffff"
+		},
+		"borderBadgeColor": {
+			"type": "string",
+			"default": "#00000040"
+		},
+		"weekdayColor": {
+			"type": "string",
+			"default": "#000000"
+		}
+	},
+	"usesContext": ["evt/eventDate"],
+	"supports": {
+		"html": false,
+		"reusable": false,
+		"color": {
+			"background": true,
+			"text": true
+		}
+	},
+	"editorScript": "file:../../build/event-date-badge/index.js",
+	"editorStyle": "file:../../editor.css",
+	"style": "file:../../style.css",
+	"render": "file:./render.php"
+}

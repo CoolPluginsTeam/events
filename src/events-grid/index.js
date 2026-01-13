@@ -1,0 +1,91 @@
+/**
+ * Events Grid Block (Parent Container)
+ * WordPress Block Standard: Separate entry point
+ */
+import { registerBlockType } from '@wordpress/blocks';
+import { InnerBlocks, InspectorControls, useBlockProps } from '@wordpress/block-editor';
+import { PanelBody, __experimentalNumberControl as NumberControl } from '@wordpress/components';
+import { __ } from '@wordpress/i18n';
+import { getDefaultImages } from '../shared/helpers';
+
+// Register Events Grid Block
+registerBlockType('evt/events-grid', {
+	title: __('Events', 'events'),
+	icon: 'grid-view',
+	category: 'widgets',
+	attributes: {
+		columns: {
+			type: 'number',
+			default: 2
+		}
+	},
+	edit: ({ attributes, setAttributes }) => {
+		const { columns } = attributes;
+		const blockProps = useBlockProps({
+			className: 'evt-events-grid-container',
+			style: { '--grid-columns': columns }
+		});
+
+		const defaultImages = getDefaultImages();
+
+		return (
+			<>
+				<InspectorControls>
+					<PanelBody title={__('Grid Settings', 'events')}>
+						<NumberControl
+							label={__('Columns', 'events')}
+							value={columns}
+							onChange={(value) => setAttributes({ columns: parseInt(value) || 2 })}
+							min={1}
+							max={3}
+							help={__('Number of columns in the grid (1-3)', 'evt')}
+							__next40pxDefaultSize={true}
+						/>
+					</PanelBody>
+				</InspectorControls>
+				<div {...blockProps}>
+					<InnerBlocks
+						allowedBlocks={['evt/event-item']}
+						template={[
+							['evt/event-item', {
+								eventImage: defaultImages[0],
+								eventImageAlt: 'Crazy DJ Experience Santa Cruz',
+								eventDate: '2026-01-06',
+								isDefault: true,
+								hasImage: true
+							}],
+							['evt/event-item', {
+								eventImage: defaultImages[1],
+								eventImageAlt: 'Cute Girls Rock Band Performance',
+								eventDate: '2026-04-04',
+								isDefault: true,
+								hasImage: true
+							}],
+							['evt/event-item', {
+								eventImage: defaultImages[2],
+								eventImageAlt: 'Free Food Distribution At Mumbai',
+								eventDate: '2026-06-08',
+								isDefault: true,
+								hasImage: true
+							}]
+						]}
+						renderAppender={() => <InnerBlocks.ButtonBlockAppender />}
+					/>
+				</div>
+			</>
+		);
+	},
+	save: ({ attributes }) => {
+		const { columns } = attributes;
+		const blockProps = useBlockProps.save({
+			className: 'evt-events-grid-container evt-front-view',
+			style: { '--columns': columns }
+		});
+
+		return (
+			<div {...blockProps}>
+				<InnerBlocks.Content />
+			</div>
+		);
+	}
+});

@@ -1,0 +1,72 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "evt/event-item",
+	"version": "1.0.0",
+	"title": "Event Item",
+	"category": "widgets",
+	"icon": "calendar",
+	"description": "Individual event card with details.",
+	"keywords": ["event", "card", "item"],
+	"textdomain": "events",
+	"parent": ["evt/events-grid"],
+	"attributes": {
+		"evtBlockId": {
+			"type": "string",
+			"default": ""
+		},
+		"eventImage": {
+			"type": "string",
+			"default": ""
+		},
+		"eventImageAlt": {
+			"type": "string",
+			"default": ""
+		},
+		"eventDate": {
+			"type": "string",
+			"default": ""
+		},
+		"eventStartTime": {
+			"type": "string",
+			"default": "09:00"
+		},
+		"eventEndTime": {
+			"type": "string",
+			"default": "17:00"
+		},
+		"detailsBackgroundColor": {
+			"type": "string",
+			"default": "#ffffff"
+		},
+		"isDefault": {
+			"type": "boolean",
+			"default": false
+		},
+		"hasImage": {
+			"type": "boolean",
+			"default": false
+		},
+		"mediaBlock": {
+			"type": "boolean",
+			"default": false
+		}
+	},
+	"providesContext": {
+		"evt/eventDate": "eventDate",
+		"evt/eventStartTime": "eventStartTime",
+		"evt/eventEndTime": "eventEndTime"
+	},
+	"supports": {
+		"html": false,
+		"reusable": false,
+		"color": {
+			"background": true,
+			"text": false
+		}
+	},
+	"editorScript": "file:../../build/event-item/index.js",
+	"editorStyle": "file:../../editor.css",
+	"style": "file:../../style.css",
+	"render": "file:./render.php"
+}

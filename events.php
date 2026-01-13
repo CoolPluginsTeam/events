@@ -48,68 +48,49 @@ final class evt_Events_Block {
 	 */
 	private function __construct() {
 		$this->evt_include_files();
+		$this->evt_enqueue_assets();
 		register_activation_hook( EVENTS_FILE, array( $this, 'evt_plugin_activate' ) );
 		register_deactivation_hook( EVENTS_FILE, array( $this, 'evt_plugin_deactivate' ) );
-		// Register Block Scripts
-		add_action( 'init', function() {
-			$asset_file   = EVENTS_PATH . '/build/index.asset.php';
-			$asset        = file_exists( $asset_file ) ? require_once $asset_file : null;
-			$dependencies = isset( $asset['dependencies'] ) ? $asset['dependencies'] : [];
-
-			// Block JS
-			wp_register_script(
-				'evt-event',
-				EVENTS_URL . 'build/index.js',
-				$dependencies,
-				EVENTS_VERSION,
-				true
-			);
-
-			// Pass plugin assets URLs to JavaScript
-			wp_localize_script( 'evt-event', 'evtPluginData', [
-				'pluginUrl' => EVENTS_URL,
-				'images' => [
-					'crazyDJ' => EVENTS_URL . 'assets/images/crazy-DJ-experience-santa-cruz.webp',
-					'rockBand' => EVENTS_URL . 'assets/images/cute-girls-rock-band-performance.webp',
-					'foodDistribution' => EVENTS_URL . 'assets/images/free-food-distribution-at-mumbai.webp',
-				]
-			] );
-
-			// Block front end style
-			wp_register_style(
-				'evt-event',
-				EVENTS_URL . 'style.css',
-				[],
-				filemtime( EVENTS_PATH . '/style.css' )
-			);
-
-			// Block editor style
-			wp_register_style(
-				'evt-event-editor',
-				EVENTS_URL . 'editor.css',
-				[],
-				filemtime( EVENTS_PATH . '/editor.css' )
+	}
+	
+	/**
+	 * Enqueue shared assets (WordPress Standard)
+	 * block.json handles individual block scripts automatically
+	 */
+	public function evt_enqueue_assets() {
+		// Pass plugin data to JavaScript (shared across all blocks)
+		add_action( 'enqueue_block_editor_assets', function() {
+			wp_add_inline_script(
+				'wp-blocks',
+				'window.evtPluginData = ' . wp_json_encode( array(
+					'pluginUrl' => EVENTS_URL,
+					'images' => array(
+						'crazyDJ' => EVENTS_URL . 'assets/images/crazy-DJ-experience-santa-cruz.webp',
+						'rockBand' => EVENTS_URL . 'assets/images/cute-girls-rock-band-performance.webp',
+						'foodDistribution' => EVENTS_URL . 'assets/images/free-food-distribution-at-mumbai.webp',
+					)
+				) ),
+				'before'
 			);
 			
-			// Fontello Icon Font
-			wp_register_style(
+			// Enqueue icon font for editor
+			wp_enqueue_style( 
 				'evt-icons',
 				EVENTS_URL . 'assets/css/evt-icons.css',
-				[],
-				filemtime( EVENTS_PATH . 'assets/css/evt-icons.css' )
+				array(),
+				EVENTS_VERSION
 			);
-			} );
-
-			// Enqueue Google Fonts (100 fonts including)
-			add_action( 'wp_enqueue_scripts', function() {
-				// Enqueue Icons Icon Font
-				wp_enqueue_style( 'evt-icons' );
-			} );
-
-			add_action( 'enqueue_block_editor_assets', function() {
-				// Enqueue Icons Icon Font for Editor
-				wp_enqueue_style( 'evt-icons' );
-			} );
+		} );
+		
+		// Enqueue icon font for frontend
+		add_action( 'wp_enqueue_scripts', function() {
+			wp_enqueue_style( 
+				'evt-icons',
+				EVENTS_URL . 'assets/css/evt-icons.css',
+				array(),
+				EVENTS_VERSION
+			);
+		} );
 	}
 	
 	/**
@@ -135,11 +116,26 @@ final class evt_Events_Block {
 		// Deactivation functionality here (if needed)
 	}
 	/**
-	 * AUTO-GENERATED blocks will be added here
+	 * Register all blocks using block.json (WordPress Standard)
 	 */
-
 	public function evt_include_files() {
-		include_once EVENTS_PATH . '/blocks/event.php';
+		// Register blocks using block.json metadata
+		add_action( 'init', array( $this, 'evt_register_blocks' ) );
+	}
+	
+	/**
+	 * Register blocks from their block.json files
+	 * This follows WordPress Block Standards
+	 */
+	public function evt_register_blocks() {
+		// Register Events Grid block
+		register_block_type( EVENTS_PATH . 'blocks/events-grid' );
+		
+		// Register Event Item block with render callback
+		register_block_type( EVENTS_PATH . 'blocks/event-item' );
+		
+		// Register Event Date Badge block with render callback  
+		register_block_type( EVENTS_PATH . 'blocks/event-date-badge' );
 	}
 
 }
