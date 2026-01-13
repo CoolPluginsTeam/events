@@ -309,7 +309,7 @@ registerBlockType('evt/event-item', {
 			// Empty template with only placeholders for new events
 			['evt/event-date-badge', {
 				eventDate: eventDate,
-				isDateSet: false
+				isDateSet: true
 			}],
 			// DETAILS GROUP
 			['core/group', { className: 'evt-event-detail' }, [

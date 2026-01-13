@@ -98,8 +98,8 @@ final class evt_Events_Block {
 	 * Saves plugin version and install dates
 	 */
 	public function evt_plugin_activate() {
-		update_option( 'events-v', EBEC_VERSION );
-		update_option( 'events_activation_time', date( 'Y-m-d h:i:s' ) );
+		update_option( 'events-v', EVENTS_VERSION );
+		update_option( 'events_activation_time', gmdate( 'Y-m-d h:i:s' ) );
 
 		if (!get_option( 'events_initial_save_version' ) ) {
 			add_option( 'events_initial_save_version', EVENTS_VERSION );
@@ -110,7 +110,7 @@ final class evt_Events_Block {
 	}
 
 	/**
-	 * Plugin Deactivation Hook
+	 * Plugin Deactivation Hookcd 
 	 */
 	public function evt_plugin_deactivate() {
 		// Deactivation functionality here (if needed)
@@ -139,6 +139,8 @@ final class evt_Events_Block {
 	}
 
 }
+
+// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- Function is prefixed with 'evt_'
 function evt_Events_Block() {
 	return evt_Events_Block::get_instance();
 }

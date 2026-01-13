@@ -13,36 +13,38 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+// All variables below are local to this render callback, not global variables
 // Get block attributes
-$block_id = isset( $attributes['evtBlockId'] ) ? esc_attr( $attributes['evtBlockId'] ) : '';
-$details_bg = isset( $attributes['detailsBackgroundColor'] ) ? esc_attr( $attributes['detailsBackgroundColor'] ) : '#ffffff';
+$evt_block_id = isset( $attributes['evtBlockId'] ) ? esc_attr( $attributes['evtBlockId'] ) : '';
+$evt_details_bg = isset( $attributes['detailsBackgroundColor'] ) ? esc_attr( $attributes['detailsBackgroundColor'] ) : '#ffffff';
 
 // Process content (same logic as before, but cleaner)
-$processed_content = $content;
+$evt_processed_content = $content;
 
 // Step 1: Extract image from InnerBlocks
-preg_match( '/<figure[^>]*class="[^"]*wp-block-image[^"]*"[^>]*>.*?<\/figure>/s', $processed_content, $image_match );
-$image_html = ! empty( $image_match[0] ) ? $image_match[0] : '';
+preg_match( '/<figure[^>]*class="[^"]*wp-block-image[^"]*"[^>]*>.*?<\/figure>/s', $evt_processed_content, $evt_image_match );
+$evt_image_html = ! empty( $evt_image_match[0] ) ? $evt_image_match[0] : '';
 
 // Step 2: Remove image from original position
-if ( $image_html ) {
-	$processed_content = preg_replace( '/<figure[^>]*class="[^"]*wp-block-image[^"]*"[^>]*>.*?<\/figure>/s', '', $processed_content );
+if ( $evt_image_html ) {
+	$evt_processed_content = preg_replace( '/<figure[^>]*class="[^"]*wp-block-image[^"]*"[^>]*>.*?<\/figure>/s', '', $evt_processed_content );
 }
 
 // Step 3: Remove evt-event-image-wrap group wrapper (no longer needed)
-if ( strpos( $processed_content, 'evt-event-image-wrap' ) !== false ) {
-	$wrap_start = strpos( $processed_content, 'evt-event-image-wrap' );
+if ( strpos( $evt_processed_content, 'evt-event-image-wrap' ) !== false ) {
+	$wrap_start = strpos( $evt_processed_content, 'evt-event-image-wrap' );
 	if ( $wrap_start !== false ) {
-		$div_start = strrpos( substr( $processed_content, 0, $wrap_start ), '<div' );
+		$div_start = strrpos( substr( $evt_processed_content, 0, $wrap_start ), '<div' );
 		if ( $div_start !== false ) {
 			// Count nested divs to find correct closing tag
 			$div_count = 1;
-			$search_pos = strpos( $processed_content, '>', $div_start ) + 1;
+			$search_pos = strpos( $evt_processed_content, '>', $div_start ) + 1;
 			$div_end = $search_pos;
 			
-			while ( $div_count > 0 && $div_end < strlen( $processed_content ) ) {
-				$next_open = strpos( $processed_content, '<div', $div_end );
-				$next_close = strpos( $processed_content, '</div>', $div_end );
+			while ( $div_count > 0 && $div_end < strlen( $evt_processed_content ) ) {
+				$next_open = strpos( $evt_processed_content, '<div', $div_end );
+				$next_close = strpos( $evt_processed_content, '</div>', $div_end );
 				
 				if ( $next_close === false ) break;
 				
@@ -55,16 +57,16 @@ if ( strpos( $processed_content, 'evt-event-image-wrap' ) !== false ) {
 				}
 			}
 			
-			$processed_content = substr_replace( $processed_content, '', $div_start, $div_end - $div_start );
+			$evt_processed_content = substr_replace( $evt_processed_content, '', $div_start, $div_end - $div_start );
 		}
 	}
 }
 
 // Step 4: Remove Read More buttons with empty/# hrefs
-if ( strpos( $processed_content, 'href=""' ) !== false || strpos( $processed_content, 'href="#"' ) !== false ) {
+if ( strpos( $evt_processed_content, 'href=""' ) !== false || strpos( $evt_processed_content, 'href="#"' ) !== false ) {
 	$offset = 0;
-	while ( ( $start_pos = strpos( $processed_content, 'class="wp-block-buttons', $offset ) ) !== false ) {
-		$div_start = strrpos( substr( $processed_content, 0, $start_pos ), '<div' );
+	while ( ( $start_pos = strpos( $evt_processed_content, 'class="wp-block-buttons', $offset ) ) !== false ) {
+		$div_start = strrpos( substr( $evt_processed_content, 0, $start_pos ), '<div' );
 		if ( $div_start === false ) {
 			$offset = $start_pos + 1;
 			continue;
@@ -72,12 +74,12 @@ if ( strpos( $processed_content, 'href=""' ) !== false || strpos( $processed_con
 		
 		// Find closing div with nesting support
 		$div_count = 1;
-		$search_pos = strpos( $processed_content, '>', $div_start ) + 1;
+		$search_pos = strpos( $evt_processed_content, '>', $div_start ) + 1;
 		$div_end = $search_pos;
 		
-		while ( $div_count > 0 && $div_end < strlen( $processed_content ) ) {
-			$next_open = strpos( $processed_content, '<div', $div_end );
-			$next_close = strpos( $processed_content, '</div>', $div_end );
+		while ( $div_count > 0 && $div_end < strlen( $evt_processed_content ) ) {
+			$next_open = strpos( $evt_processed_content, '<div', $div_end );
+			$next_close = strpos( $evt_processed_content, '</div>', $div_end );
 			
 			if ( $next_close === false ) break;
 			
@@ -90,11 +92,11 @@ if ( strpos( $processed_content, 'href=""' ) !== false || strpos( $processed_con
 			}
 		}
 		
-		$buttons_block = substr( $processed_content, $div_start, $div_end - $div_start );
+		$buttons_block = substr( $evt_processed_content, $div_start, $div_end - $div_start );
 		
 		// Check if empty href
 		if ( strpos( $buttons_block, 'href=""' ) !== false || strpos( $buttons_block, 'href="#"' ) !== false ) {
-			$processed_content = substr_replace( $processed_content, '', $div_start, $div_end - $div_start );
+			$evt_processed_content = substr_replace( $evt_processed_content, '', $div_start, $div_end - $div_start );
 			$offset = $div_start;
 		} else {
 			$offset = $div_end;
@@ -103,36 +105,50 @@ if ( strpos( $processed_content, 'href=""' ) !== false || strpos( $processed_con
 }
 
 // Step 5: Remove empty content elements
-$processed_content = preg_replace( '/<h[1-6][^>]*class="[^"]*evt-event-title[^"]*"[^>]*>\s*<\/h[1-6]>/s', '', $processed_content );
-$processed_content = preg_replace( '/<p[^>]*class="[^"]*evt-event-time[^"]*"[^>]*>\s*<\/p>/s', '', $processed_content );
-$processed_content = preg_replace( '/<p[^>]*class="[^"]*evt-event-location[^"]*"[^>]*>\s*<\/p>/s', '', $processed_content );
-$processed_content = preg_replace( '/<p[^>]*class="[^"]*evt-event-description[^"]*"[^>]*>\s*<\/p>/s', '', $processed_content );
-$processed_content = preg_replace( '/<p[^>]*class="[^"]*evt-event-price[^"]*"[^>]*>\s*<\/p>/s', '', $processed_content );
-$processed_content = preg_replace( '/<div[^>]*class="[^"]*evt-price-read-more[^"]*"[^>]*>\s*<\/div>/s', '', $processed_content );
+$evt_processed_content = preg_replace( '/<h[1-6][^>]*class="[^"]*evt-event-title[^"]*"[^>]*>\s*<\/h[1-6]>/s', '', $evt_processed_content );
+$evt_processed_content = preg_replace( '/<p[^>]*class="[^"]*evt-event-time[^"]*"[^>]*>\s*<\/p>/s', '', $evt_processed_content );
+$evt_processed_content = preg_replace( '/<p[^>]*class="[^"]*evt-event-location[^"]*"[^>]*>\s*<\/p>/s', '', $evt_processed_content );
+$evt_processed_content = preg_replace( '/<p[^>]*class="[^"]*evt-event-description[^"]*"[^>]*>\s*<\/p>/s', '', $evt_processed_content );
+$evt_processed_content = preg_replace( '/<p[^>]*class="[^"]*evt-event-price[^"]*"[^>]*>\s*<\/p>/s', '', $evt_processed_content );
+$evt_processed_content = preg_replace( '/<div[^>]*class="[^"]*evt-price-read-more[^"]*"[^>]*>\s*<\/div>/s', '', $evt_processed_content );
 
 // Generate wrapper attributes
 $wrapper_attributes = get_block_wrapper_attributes( array(
-	'class' => 'evt-event-item' . ( $block_id ? ' evt-block-' . $block_id : '' ),
+	'class' => 'evt-event-item' . ( $evt_block_id ? ' evt-block-' . $evt_block_id : '' ),
 ) );
 
 // Inject block-specific CSS
-$block_css = '';
-if ( $block_id ) {
-	$block_css = sprintf(
+$evt_block_css = '';
+if ( $evt_block_id ) {
+	$evt_block_css = sprintf(
 		'<style>.evt-block-%s .evt-event-details { background-color: %s; }</style>',
-		$block_id,
-		$details_bg
+		$evt_block_id,
+		$evt_details_bg
 	);
 }
 
 // Build final HTML
 ?>
-<?php echo $block_css; ?>
-<div <?php echo $wrapper_attributes; ?>>
+<?php 
+// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Already escaped via sprintf with esc_attr()
+echo $evt_block_css; 
+?>
+<div <?php 
+// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Safe output from get_block_wrapper_attributes()
+echo $wrapper_attributes; 
+?>>
 	<div class="evt-event-card">
-		<?php if ( $image_html ) : ?>
-			<div class="evt-event-image"><?php echo $image_html; ?></div>
+		<?php if ( $evt_image_html ) : ?>
+			<div class="evt-event-image"><?php 
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Safe HTML from WordPress InnerBlocks
+			echo $evt_image_html; 
+			?></div>
 		<?php endif; ?>
-		<?php echo $processed_content; ?>
+		<?php 
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Safe HTML from WordPress InnerBlocks  
+		echo $evt_processed_content; 
+		?>
 	</div>
 </div>
+<?php
+// phpcs:enable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
