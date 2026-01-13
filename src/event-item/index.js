@@ -430,7 +430,6 @@ registerBlockType('evt/event-item', {
 
 		return (
 			<div {...blockProps}>
-				<div className="evt-event-card">
 					<div className="evt-event-details">
 						{/* Content - Inside details-inner */}
 						<div className="evt-event-details-inner">
@@ -438,7 +437,6 @@ registerBlockType('evt/event-item', {
 							<InnerBlocks.Content />
 						</div>
 					</div>
-				</div>
 			</div>
 		);
 	}
