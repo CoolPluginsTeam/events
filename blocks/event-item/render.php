@@ -23,6 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Remove wrapper divs by class name
  */
+// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- Function is prefixed with 'evt_'
 if ( ! function_exists( 'evt_remove_wrapper_divs' ) ) {
 	function evt_remove_wrapper_divs( $html, $class_name ) {
 		if ( strpos( $html, $class_name ) === false ) {
@@ -46,6 +47,7 @@ if ( ! function_exists( 'evt_remove_wrapper_divs' ) ) {
 /**
  * Remove empty buttons blocks
  */
+// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- Function is prefixed with 'evt_'
 if ( ! function_exists( 'evt_remove_empty_buttons' ) ) {
 	function evt_remove_empty_buttons( $html ) {
 		if ( strpos( $html, 'href=""' ) === false && strpos( $html, 'href="#"' ) === false ) {
@@ -85,6 +87,7 @@ if ( ! function_exists( 'evt_remove_empty_buttons' ) ) {
 /**
  * Remove empty elements by class name
  */
+// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- Function is prefixed with 'evt_'
 if ( ! function_exists( 'evt_remove_empty_elements' ) ) {
 	function evt_remove_empty_elements( $html, $class_name ) {
 		$offset = 0;
@@ -112,7 +115,7 @@ if ( ! function_exists( 'evt_remove_empty_elements' ) ) {
 				$element = substr( $html, $tag_start, $close_pos + strlen( $close_tag ) - $tag_start );
 				
 				// Check if empty (only whitespace/tags)
-				$content_check = strip_tags( $element );
+				$content_check = wp_strip_all_tags( $element );
 				if ( trim( $content_check ) === '' ) {
 					$html = substr_replace( $html, '', $tag_start, $close_pos + strlen( $close_tag ) - $tag_start );
 					$offset = $tag_start;
@@ -130,6 +133,7 @@ if ( ! function_exists( 'evt_remove_empty_elements' ) ) {
 /**
  * Find closing tag position
  */
+// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- Function is prefixed with 'evt_'
 if ( ! function_exists( 'evt_find_closing_tag' ) ) {
 	function evt_find_closing_tag( $html, $start_pos, $tag_name ) {
 		$depth = 1;
