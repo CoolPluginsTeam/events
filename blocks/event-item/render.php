@@ -23,8 +23,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Remove wrapper divs by class name
  */
-// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- Function is prefixed with 'evt_'
 if ( ! function_exists( 'evt_remove_wrapper_divs' ) ) {
+	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- Function is prefixed with 'evt_'
 	function evt_remove_wrapper_divs( $html, $class_name ) {
 		if ( strpos( $html, $class_name ) === false ) {
 			return $html;
@@ -47,8 +47,8 @@ if ( ! function_exists( 'evt_remove_wrapper_divs' ) ) {
 /**
  * Remove empty buttons blocks
  */
-// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- Function is prefixed with 'evt_'
 if ( ! function_exists( 'evt_remove_empty_buttons' ) ) {
+	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- Function is prefixed with 'evt_'
 	function evt_remove_empty_buttons( $html ) {
 		if ( strpos( $html, 'href=""' ) === false && strpos( $html, 'href="#"' ) === false ) {
 			return $html;
@@ -87,8 +87,8 @@ if ( ! function_exists( 'evt_remove_empty_buttons' ) ) {
 /**
  * Remove empty elements by class name
  */
-// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- Function is prefixed with 'evt_'
 if ( ! function_exists( 'evt_remove_empty_elements' ) ) {
+	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- Function is prefixed with 'evt_'
 	function evt_remove_empty_elements( $html, $class_name ) {
 		$offset = 0;
 		
@@ -133,8 +133,8 @@ if ( ! function_exists( 'evt_remove_empty_elements' ) ) {
 /**
  * Find closing tag position
  */
-// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- Function is prefixed with 'evt_'
 if ( ! function_exists( 'evt_find_closing_tag' ) ) {
+	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- Function is prefixed with 'evt_'
 	function evt_find_closing_tag( $html, $start_pos, $tag_name ) {
 		$depth = 1;
 		$pos = strpos( $html, '>', $start_pos ) + 1;

@@ -158,13 +158,12 @@ final class evt_Events_Block {
 	 */
 	public function evt_register_blocks() {
 		// Register Events Grid block
-		register_block_type( EVENTS_PATH . 'blocks/events-grid' );
-		
-		// Register Event Item block with render callback
-		register_block_type( EVENTS_PATH . 'blocks/event-item' );
-		
-		// Register Event Date Badge block with render callback  
-		register_block_type( EVENTS_PATH . 'blocks/event-date-badge' );
+		$evt_blocks_dir = EVENTS_PATH . 'blocks/';
+		if ( is_dir( $evt_blocks_dir ) ) {
+			foreach ( glob( $evt_blocks_dir . '*/block.json' ) as $block_json ) {
+				register_block_type( dirname( $block_json ) );
+			}
+		}
 	}
 
 }
