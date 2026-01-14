@@ -1,6 +1,6 @@
 /**
  * Event Date Badge Block (Child Block)
- * WordPress Block Standard: Separate entry point
+ * WordPress Block Standard: Import metadata from block.json
  */
 import { registerBlockType } from '@wordpress/blocks';
 import { InspectorControls, useBlockProps, ColorPalette } from '@wordpress/block-editor';
@@ -10,48 +10,10 @@ import { dateI18n } from '@wordpress/date';
 import { useEffect } from '@wordpress/element';
 import { dispatch, useSelect } from '@wordpress/data';
 import { getCurrentDate } from '../shared/helpers';
+import metadata from '../../blocks/event-date-badge/block.json';
 
-// Register Event Date Badge Block
-registerBlockType('evt/event-date-badge', {
-	title: __('Event Date', 'events'),
-	icon: 'clock',
-	category: 'widgets',
-	parent: ['evt/event-item'],
-	usesContext: ['evt/eventDate'],
-	attributes: {
-		evtBadgeId: {
-			type: 'string',
-			default: ''
-		},
-		eventDate: {
-			type: 'string',
-			default: getCurrentDate()
-		},
-		isDateSet: {
-			type: 'boolean',
-			default: false
-		},
-		hideYear: {
-			type: 'boolean',
-			default: false
-		},
-		dateBadgeBackgroundColor: {
-			type: 'string',
-			default: '#2667FF'
-		},
-		dateBadgeTextColor: {
-			type: 'string',
-			default: '#ffffff'
-		},
-		borderBadgeColor: {
-			type: 'string',
-			default: '#00000040'
-		},
-		weekdayColor: {
-			type: 'string',
-			default: '#000000'
-		}
-	},
+// Register Event Date Badge Block using block.json metadata
+registerBlockType(metadata.name, {
 	edit: ({ attributes, setAttributes, context, clientId }) => {
 		const {
 			evtBadgeId,
@@ -64,16 +26,23 @@ registerBlockType('evt/event-date-badge', {
 			weekdayColor
 		} = attributes;
 
-		// Generate unique badge ID if not present
-		useEffect(() => {
-			if (!evtBadgeId) {
-				const uniqueId = clientId.substring(0, 8);
-				setAttributes({ evtBadgeId: uniqueId });
-			}
-		}, []);
+	// Generate unique badge ID if not present
+	useEffect(() => {
+		if (!evtBadgeId) {
+			const uniqueId = clientId.substring(0, 8);
+			setAttributes({ evtBadgeId: uniqueId });
+		}
+	}, []);
 
-		// Use parent's date if available
-		const parentDate = context['evt/eventDate'] || eventDate;
+	// Set current date if eventDate is empty (for new date badges)
+	useEffect(() => {
+		if (!eventDate && !context['evt/eventDate']) {
+			setAttributes({ eventDate: getCurrentDate() });
+		}
+	}, []);
+
+	// Use parent's date if available
+	const parentDate = context['evt/eventDate'] || eventDate || getCurrentDate();
 		
 		// Get parent block ID
 		const parentClientId = useSelect((select) => {

@@ -1,6 +1,6 @@
 /**
  * Event Item Block (Child Block with InnerBlocks)
- * WordPress Block Standard: Separate entry point
+ * WordPress Block Standard: Import metadata from block.json
  * Includes: Paragraph extension for time settings
  */
 import { registerBlockType, createBlock } from '@wordpress/blocks';
@@ -12,60 +12,10 @@ import { dispatch, select, useSelect } from '@wordpress/data';
 import { addFilter } from '@wordpress/hooks';
 import { createHigherOrderComponent } from '@wordpress/compose';
 import { getCurrentDate, formatTime12Hour } from '../shared/helpers';
+import metadata from '../../blocks/event-item/block.json';
 
-// CHILD BLOCK: Event Item (uses default blocks inside)
-registerBlockType('evt/event-item', {
-	title: __('Event Item', 'events'),
-	icon: 'calendar',
-	category: 'widgets',
-	parent: ['evt/events-grid'],
-	providesContext: {
-		'evt/eventDate': 'eventDate',
-		'evt/eventStartTime': 'eventStartTime',
-		'evt/eventEndTime': 'eventEndTime'
-	},
-	attributes: {
-		evtBlockId: {
-			type: 'string',
-			default: ''
-		},
-		eventImage: {
-			type: 'string',
-			default: ''
-		},
-		eventImageAlt: {
-			type: 'string',
-			default: ''
-		},
-		eventDate: {
-			type: 'string',
-			default: getCurrentDate()
-		},
-		eventStartTime: {
-			type: 'string',
-			default: '09:00'
-		},
-		eventEndTime: {
-			type: 'string',
-			default: '17:00'
-		},
-		detailsBackgroundColor: {
-			type: 'string',
-			default: '#ffffff'
-		},
-		isDefault: {
-			type: 'boolean',
-			default: false
-		},
-		hasImage: {
-			type: 'boolean',
-			default: false
-		},
-		mediaBlock: {
-			type: 'boolean',
-			default: false
-		}
-	},
+// CHILD BLOCK: Event Item using block.json metadata
+registerBlockType(metadata.name, {
 	edit: ({ attributes, setAttributes, clientId }) => {
 		const {
 			evtBlockId,
@@ -80,15 +30,22 @@ registerBlockType('evt/event-item', {
 			mediaBlock
 		} = attributes;
 
-		// Generate unique block ID if not present
-		useEffect(() => {
-			if (!evtBlockId) {
-				const uniqueId = clientId.substring(0, 8);
-				setAttributes({ evtBlockId: uniqueId });
-			}
-		}, []);
+	// Generate unique block ID if not present
+	useEffect(() => {
+		if (!evtBlockId) {
+			const uniqueId = clientId.substring(0, 8);
+			setAttributes({ evtBlockId: uniqueId });
+		}
+	}, []);
 
-		// Inject CSS in editor (only for event item's own styles)
+	// Set current date if eventDate is empty (for new events)
+	useEffect(() => {
+		if (!eventDate && !isDefault) {
+			setAttributes({ eventDate: getCurrentDate() });
+		}
+	}, []);
+
+	// Inject CSS in editor (only for event item's own styles)
 		useEffect(() => {
 			if (!evtBlockId) return;
 

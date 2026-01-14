@@ -65,8 +65,8 @@
 			"text": true
 		}
 	},
-	"editorScript": "file:../../build/event-date-badge/index.js",
-	"editorStyle": "file:../../editor.css",
-	"style": "file:../../style.css",
+	"editorScript": "evt-events-blocks",
+	"editorStyle": "evt-events-editor",
+	"style": "evt-events-style",
 	"render": "file:./render.php"
 }

@@ -1,24 +1,16 @@
 /**
  * Events Grid Block (Parent Container)
- * WordPress Block Standard: Separate entry point
+ * WordPress Block Standard: Import metadata from block.json
  */
 import { registerBlockType } from '@wordpress/blocks';
 import { InnerBlocks, InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import { PanelBody, __experimentalNumberControl as NumberControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { getDefaultImages } from '../shared/helpers';
+import metadata from '../../blocks/events-grid/block.json';
 
-// Register Events Grid Block
-registerBlockType('evt/events-grid', {
-	title: __('Events', 'events'),
-	icon: 'grid-view',
-	category: 'widgets',
-	attributes: {
-		columns: {
-			type: 'number',
-			default: 2
-		}
-	},
+// Register Events Grid Block using block.json metadata
+registerBlockType(metadata.name, {
 	edit: ({ attributes, setAttributes }) => {
 		const { columns } = attributes;
 		const blockProps = useBlockProps({

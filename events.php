@@ -55,25 +55,54 @@ final class evt_Events_Block {
 	
 	/**
 	 * Enqueue shared assets (WordPress Standard)
-	 * block.json handles individual block scripts automatically
+	 * Single build file registers all blocks
 	 */
 	public function evt_enqueue_assets() {
-		// Pass plugin data to JavaScript (shared across all blocks)
-		add_action( 'enqueue_block_editor_assets', function() {
-			wp_add_inline_script(
-				'wp-blocks',
-				'window.evtPluginData = ' . wp_json_encode( array(
-					'pluginUrl' => EVENTS_URL,
-					'images' => array(
-						'crazyDJ' => EVENTS_URL . 'assets/images/crazy-DJ-experience-santa-cruz.webp',
-						'rockBand' => EVENTS_URL . 'assets/images/cute-girls-rock-band-performance.webp',
-						'foodDistribution' => EVENTS_URL . 'assets/images/free-food-distribution-at-mumbai.webp',
-					)
-				) ),
-				'before'
+		// Register combined block script (all blocks in one file)
+		add_action( 'init', function() {
+			$asset_file = EVENTS_PATH . 'build/index.asset.php';
+			$asset = file_exists( $asset_file ) ? require $asset_file : array(
+				'dependencies' => array(),
+				'version' => EVENTS_VERSION
 			);
 			
-			// Enqueue icon font for editor
+			// Single script file for all blocks
+			wp_register_script(
+				'evt-events-blocks',
+				EVENTS_URL . 'build/index.js',
+				$asset['dependencies'],
+				$asset['version'],
+				true
+			);
+			
+			// Pass plugin data to all blocks
+			wp_localize_script( 'evt-events-blocks', 'evtPluginData', array(
+				'pluginUrl' => EVENTS_URL,
+				'images' => array(
+					'crazyDJ' => EVENTS_URL . 'assets/images/crazy-DJ-experience-santa-cruz.webp',
+					'rockBand' => EVENTS_URL . 'assets/images/cute-girls-rock-band-performance.webp',
+					'foodDistribution' => EVENTS_URL . 'assets/images/free-food-distribution-at-mumbai.webp',
+				)
+			) );
+			
+			// Shared styles
+			wp_register_style(
+				'evt-events-editor',
+				EVENTS_URL . 'editor.css',
+				array(),
+				EVENTS_VERSION
+			);
+			
+			wp_register_style(
+				'evt-events-style',
+				EVENTS_URL . 'style.css',
+				array(),
+				EVENTS_VERSION
+			);
+		} );
+		
+		// Enqueue icon font for editor
+		add_action( 'enqueue_block_editor_assets', function() {
 			wp_enqueue_style( 
 				'evt-icons',
 				EVENTS_URL . 'assets/css/evt-icons.css',

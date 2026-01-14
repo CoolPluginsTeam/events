@@ -5,7 +5,7 @@
 	"version": "1.0.0",
 	"title": "Events Grid",
 	"category": "widgets",
-	"icon": "calendar-alt",
+	"icon": "grid-view",
 	"description": "Display multiple events in a responsive grid layout.",
 	"keywords": ["event", "calendar", "grid"],
 	"textdomain": "events",
@@ -24,7 +24,7 @@
 			"padding": true
 		}
 	},
-	"editorScript": "file:../../build/events-grid/index.js",
-	"editorStyle": "file:../../editor.css",
-	"style": "file:../../style.css"
+	"editorScript": "evt-events-blocks",
+	"editorStyle": "evt-events-editor",
+	"style": "evt-events-style"
 }
