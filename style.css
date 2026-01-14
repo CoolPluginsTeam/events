@@ -2,6 +2,20 @@
  * Events Grid Block - Frontend Styles
  * Simplified version using default blocks
  */
+
+/* Icon Font - evticons */
+@font-face {
+    font-family: 'evticons';
+    src: url('assets/font/evticon.eot?52891777');
+    src: url('assets/font/evticon.eot?52891777#iefix') format('embedded-opentype'),
+         url('assets/font/evticon.woff2?52891777') format('woff2'),
+         url('assets/font/evticon.woff?52891777') format('woff'),
+         url('assets/font/evticon.ttf?52891777') format('truetype'),
+         url('assets/font/evticon.svg?52891777#evticons') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
  .evt-front-view.evt-events-grid-container {
     display: grid;
     grid-template-columns: repeat(var(--columns, 2), 1fr);
