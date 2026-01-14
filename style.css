@@ -70,9 +70,13 @@
     margin: 0px;
     padding: 0px;
 }
+.evt-front-view .evt-event-item .evt-event-card {
+    background-color: var(--evt-details-bg, #ffffff);
+}
 .evt-front-view .evt-border-badge {
     border-radius: 6px;
     padding: 3px;
+    border: 1px solid var(--evt-badge-border, #00000040);
 }
 .evt-front-view .evt-event-date-badge {
     padding: 7px 14px;
@@ -81,17 +85,21 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
+    background-color: var(--evt-badge-bg, #2667FF);
+    color: var(--evt-badge-text, #ffffff);
 }
 .evt-front-view .evt-date-weekday {
     font-size: 12px;
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    color: var(--evt-badge-weekday, #000000);
 }
 .evt-front-view .evt-date-day {
     font-size: 21px;
     font-weight: 700;
     line-height: 1;
+    color: var(--evt-badge-text, #ffffff);
 }
 .evt-front-view .evt-date-month {
     font-size: 11px;
@@ -99,6 +107,7 @@
     text-transform: uppercase;
     letter-spacing: 0.5px;
     display: block;
+    color: var(--evt-badge-text, #ffffff);
 }
 .evt-front-view .evt-date-year {
     font-size: 10px;

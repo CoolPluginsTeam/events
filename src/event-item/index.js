@@ -45,35 +45,6 @@ registerBlockType(metadata.name, {
 		}
 	}, []);
 
-	// Inject CSS in editor (only for event item's own styles)
-		useEffect(() => {
-			if (!evtBlockId) return;
-
-			// Remove existing style tag
-			const existingStyle = document.getElementById(`evt-block-style-${evtBlockId}`);
-			if (existingStyle) {
-				existingStyle.remove();
-			}
-
-			// Create new style tag - only for event details background
-			const style = document.createElement('style');
-			style.id = `evt-block-style-${evtBlockId}`;
-			style.innerHTML = `
-				.evt-block-${evtBlockId} .evt-event-details {
-					background-color: ${detailsBackgroundColor};
-				}
-			`;
-			document.head.appendChild(style);
-
-			// Cleanup
-			return () => {
-				const styleToRemove = document.getElementById(`evt-block-style-${evtBlockId}`);
-				if (styleToRemove) {
-					styleToRemove.remove();
-				}
-			};
-		}, [evtBlockId, detailsBackgroundColor]);
-
 		// Get inner blocks reactively to check for image block
 		const hasImageBlock = useSelect((select) => {
 			const blocks = select('core/block-editor').getBlock(clientId)?.innerBlocks || [];
@@ -351,7 +322,9 @@ registerBlockType(metadata.name, {
 								</Button>
 							</div>
 						)}
-						<div className="evt-event-details">
+						<div className="evt-event-details" style={{
+							'--evt-details-bg': detailsBackgroundColor || '#ffffff'
+						}}>
 							{/* Content Blocks - Inside details-inner (image block will be filtered via CSS) */}
 							<div className="evt-event-details-inner">
 								<InnerBlocks
@@ -378,11 +351,15 @@ registerBlockType(metadata.name, {
 	},
 	save: ({ attributes }) => {
 		const {
-			evtBlockId
+			evtBlockId,
+			detailsBackgroundColor
 		} = attributes;
 
 		const blockProps = useBlockProps.save({
-			className: `evt-event-item${evtBlockId ? ` evt-block-${evtBlockId}` : ''}`
+			className: `evt-event-item${evtBlockId ? ` evt-block-${evtBlockId}` : ''}`,
+			style: {
+				'--evt-details-bg': detailsBackgroundColor || '#ffffff'
+			}
 		});
 
 		return (

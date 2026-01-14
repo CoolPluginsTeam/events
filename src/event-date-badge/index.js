@@ -65,49 +65,17 @@ registerBlockType(metadata.name, {
 			}
 		}, [context['evt/eventDate']]);
 
-		// Inject CSS in editor for date badge
-		useEffect(() => {
-			if (!evtBadgeId) return;
-
-			// Remove existing style tag
-			const existingStyle = document.getElementById(`evt-badge-style-${evtBadgeId}`);
-			if (existingStyle) {
-				existingStyle.remove();
-			}
-
-			// Create new style tag
-			const style = document.createElement('style');
-			style.id = `evt-badge-style-${evtBadgeId}`;
-			style.innerHTML = `
-				.evt-badge-${evtBadgeId} .evt-border-badge {
-					border: 1px solid ${borderBadgeColor};
-				}
-				.evt-badge-${evtBadgeId} .evt-event-date-badge {
-					background-color: ${dateBadgeBackgroundColor};
-					color: ${dateBadgeTextColor};
-				}
-				.evt-badge-${evtBadgeId} .evt-date-day,
-				.evt-badge-${evtBadgeId} .evt-date-month {
-					color: ${dateBadgeTextColor};
-				}
-				.evt-badge-${evtBadgeId} .evt-date-weekday {
-					color: ${weekdayColor};
-				}
-			`;
-			document.head.appendChild(style);
-
-			// Cleanup
-			return () => {
-				const styleToRemove = document.getElementById(`evt-badge-style-${evtBadgeId}`);
-				if (styleToRemove) {
-					styleToRemove.remove();
-				}
-			};
-		}, [evtBadgeId, dateBadgeBackgroundColor, dateBadgeTextColor, borderBadgeColor, weekdayColor]);
-
-		const blockProps = useBlockProps({
-			className: `evt-event-date-badge-container${evtBadgeId ? ` evt-badge-${evtBadgeId}` : ''}`
-		});
+	// Use CSS Variables (Custom Properties) - Most reliable approach!
+	// Set colors as CSS variables on the wrapper element
+	const blockProps = useBlockProps({
+		className: `evt-event-date-badge-container${evtBadgeId ? ` evt-badge-${evtBadgeId}` : ''}`,
+		style: {
+			'--evt-badge-bg': dateBadgeBackgroundColor,
+			'--evt-badge-text': dateBadgeTextColor,
+			'--evt-badge-border': borderBadgeColor,
+			'--evt-badge-weekday': weekdayColor
+		}
+	});
 
 		// Parse date for display
 		const parseDate = (dateString) => {
@@ -230,11 +198,21 @@ registerBlockType(metadata.name, {
 			evtBadgeId,
 			eventDate,
 			isDateSet,
-			hideYear
+			hideYear,
+			dateBadgeBackgroundColor,
+			dateBadgeTextColor,
+			borderBadgeColor,
+			weekdayColor
 		} = attributes;
 
 		const blockProps = useBlockProps.save({
-			className: `evt-event-date-badge-container${evtBadgeId ? ` evt-badge-${evtBadgeId}` : ''}`
+			className: `evt-event-date-badge-container${evtBadgeId ? ` evt-badge-${evtBadgeId}` : ''}`,
+			style: {
+				'--evt-badge-bg': dateBadgeBackgroundColor || '#2667FF',
+				'--evt-badge-text': dateBadgeTextColor || '#ffffff',
+				'--evt-badge-border': borderBadgeColor || '#00000040',
+				'--evt-badge-weekday': weekdayColor || '#000000'
+			}
 		});
 
 		// Parse date for display
