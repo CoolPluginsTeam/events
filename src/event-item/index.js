@@ -364,13 +364,11 @@ registerBlockType(metadata.name, {
 
 		return (
 			<div {...blockProps}>
-					<div className="evt-event-details">
 						{/* Content - Inside details-inner */}
 						<div className="evt-event-details-inner">
 							{/* All content blocks including date badge */}
 							<InnerBlocks.Content />
 						</div>
-					</div>
 			</div>
 		);
 	}
