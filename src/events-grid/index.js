@@ -42,21 +42,21 @@ registerBlockType(metadata.name, {
 							['evt/event-item', {
 								eventImage: defaultImages[0],
 								eventImageAlt: 'Crazy DJ Experience Santa Cruz',
-								eventDate: '2026-01-06',
+								eventDate: '0001-01-06',
 								isDefault: true,
 								hasImage: true
 							}],
 							['evt/event-item', {
 								eventImage: defaultImages[1],
 								eventImageAlt: 'Cute Girls Rock Band Performance',
-								eventDate: '2026-04-04',
+								eventDate: '0001-04-04',
 								isDefault: true,
 								hasImage: true
 							}],
 							['evt/event-item', {
 								eventImage: defaultImages[2],
 								eventImageAlt: 'Free Food Distribution At Mumbai',
-								eventDate: '2026-06-08',
+								eventDate: '0001-06-08',
 								isDefault: true,
 								hasImage: true
 							}]

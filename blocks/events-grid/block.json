@@ -3,7 +3,7 @@
 	"apiVersion": 3,
 	"name": "evt/events-grid",
 	"version": "1.0.0",
-	"title": "Events Grid",
+	"title": "Events",
 	"category": "widgets",
 	"icon": "grid-view",
 	"description": "Display multiple events in a responsive grid layout.",
