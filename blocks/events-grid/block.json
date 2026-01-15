@@ -1,7 +1,7 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "evt/events-grid",
+	"name": "evtb/events-grid",
 	"version": "1.0.0",
 	"title": "Events Block",
 	"category": "widgets",
@@ -24,7 +24,7 @@
 			"padding": true
 		}
 	},
-	"editorScript": "evt-events-blocks",
-	"editorStyle": "evt-events-editor",
-	"style": "evt-events-style"
+	"editorScript": "evtb-events-blocks",
+	"editorStyle": "evtb-events-editor",
+	"style": "evtb-events-style"
 }

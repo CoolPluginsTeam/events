@@ -14,7 +14,7 @@ registerBlockType(metadata.name, {
 	edit: ({ attributes, setAttributes }) => {
 		const { columns } = attributes;
 		const blockProps = useBlockProps({
-			className: 'evt-events-grid-container',
+			className: 'evtb-events-grid-container',
 			style: { '--grid-columns': columns }
 		});
 
@@ -30,30 +30,30 @@ registerBlockType(metadata.name, {
 							onChange={(value) => setAttributes({ columns: parseInt(value) || 2 })}
 							min={1}
 							max={3}
-							help={__('Number of columns in the grid (1-3)', 'evt')}
+							help={__('Number of columns in the grid (1-3)', 'evtb')}
 							__next40pxDefaultSize={true}
 						/>
 					</PanelBody>
 				</InspectorControls>
 				<div {...blockProps}>
 					<InnerBlocks
-						allowedBlocks={['evt/event-item']}
+						allowedBlocks={['evtb/event-item']}
 						template={[
-							['evt/event-item', {
+							['evtb/event-item', {
 								eventImage: defaultImages[0],
 								eventImageAlt: 'Crazy DJ Experience Santa Cruz',
 								eventDate: '0001-01-06',
 								isDefault: true,
 								hasImage: true
 							}],
-							['evt/event-item', {
+							['evtb/event-item', {
 								eventImage: defaultImages[1],
 								eventImageAlt: 'Cute Girls Rock Band Performance',
 								eventDate: '0001-04-04',
 								isDefault: true,
 								hasImage: true
 							}],
-							['evt/event-item', {
+							['evtb/event-item', {
 								eventImage: defaultImages[2],
 								eventImageAlt: 'Free Food Distribution At Mumbai',
 								eventDate: '0001-06-08',
@@ -70,7 +70,7 @@ registerBlockType(metadata.name, {
 	save: ({ attributes }) => {
 		const { columns } = attributes;
 		const blockProps = useBlockProps.save({
-			className: 'evt-events-grid-container evt-front-view',
+			className: 'evtb-events-grid-container evtb-front-view',
 			style: { '--columns': columns }
 		});
 

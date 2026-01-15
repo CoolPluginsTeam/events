@@ -23,9 +23,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Remove wrapper divs by class name
  */
-if ( ! function_exists( 'evt_remove_wrapper_divs' ) ) {
-	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- Function is prefixed with 'evt_'
-	function evt_remove_wrapper_divs( $html, $class_name ) {
+if ( ! function_exists( 'evtb_remove_wrapper_divs' ) ) {
+	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- Function is prefixed with 'evtb_'
+	function evtb_remove_wrapper_divs( $html, $class_name ) {
 		if ( strpos( $html, $class_name ) === false ) {
 			return $html;
 		}
@@ -34,7 +34,7 @@ if ( ! function_exists( 'evt_remove_wrapper_divs' ) ) {
 		$div_start = strrpos( substr( $html, 0, $pos ), '<div' );
 		
 		if ( $div_start !== false ) {
-			$div_end = evt_find_closing_tag( $html, $div_start, 'div' );
+			$div_end = evtb_find_closing_tag( $html, $div_start, 'div' );
 			if ( $div_end !== false ) {
 				$html = substr_replace( $html, '', $div_start, $div_end - $div_start );
 			}
@@ -47,9 +47,9 @@ if ( ! function_exists( 'evt_remove_wrapper_divs' ) ) {
 /**
  * Remove empty buttons blocks
  */
-if ( ! function_exists( 'evt_remove_empty_buttons' ) ) {
-	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- Function is prefixed with 'evt_'
-	function evt_remove_empty_buttons( $html ) {
+if ( ! function_exists( 'evtb_remove_empty_buttons' ) ) {
+	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- Function is prefixed with 'evtb_'
+	function evtb_remove_empty_buttons( $html ) {
 		if ( strpos( $html, 'href=""' ) === false && strpos( $html, 'href="#"' ) === false ) {
 			return $html;
 		}
@@ -63,7 +63,7 @@ if ( ! function_exists( 'evt_remove_empty_buttons' ) ) {
 				continue;
 			}
 			
-			$div_end = evt_find_closing_tag( $html, $div_start, 'div' );
+			$div_end = evtb_find_closing_tag( $html, $div_start, 'div' );
 			if ( $div_end === false ) {
 				$offset = $btn_pos + 1;
 				continue;
@@ -87,9 +87,9 @@ if ( ! function_exists( 'evt_remove_empty_buttons' ) ) {
 /**
  * Remove empty elements by class name
  */
-if ( ! function_exists( 'evt_remove_empty_elements' ) ) {
-	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- Function is prefixed with 'evt_'
-	function evt_remove_empty_elements( $html, $class_name ) {
+if ( ! function_exists( 'evtb_remove_empty_elements' ) ) {
+	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- Function is prefixed with 'evtb_'
+	function evtb_remove_empty_elements( $html, $class_name ) {
 		$offset = 0;
 		
 		while ( ( $pos = strpos( $html, $class_name, $offset ) ) !== false ) {
@@ -133,9 +133,9 @@ if ( ! function_exists( 'evt_remove_empty_elements' ) ) {
 /**
  * Find closing tag position
  */
-if ( ! function_exists( 'evt_find_closing_tag' ) ) {
-	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- Function is prefixed with 'evt_'
-	function evt_find_closing_tag( $html, $start_pos, $tag_name ) {
+if ( ! function_exists( 'evtb_find_closing_tag' ) ) {
+	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- Function is prefixed with 'evtb_'
+	function evtb_find_closing_tag( $html, $start_pos, $tag_name ) {
 		$depth = 1;
 		$pos = strpos( $html, '>', $start_pos ) + 1;
 		$open_tag = '<' . $tag_name;
@@ -167,60 +167,60 @@ if ( ! function_exists( 'evt_find_closing_tag' ) ) {
 // ============================
 
 // Get block attributes
-$evt_block_id = isset( $attributes['evtBlockId'] ) ? esc_attr( $attributes['evtBlockId'] ) : '';
-$evt_details_bg = isset( $attributes['detailsBackgroundColor'] ) ? esc_attr( $attributes['detailsBackgroundColor'] ) : '#ffffff';
+$evtb_block_id = isset( $attributes['evtbBlockId'] ) ? esc_attr( $attributes['evtbBlockId'] ) : '';
+$evtb_details_bg = isset( $attributes['detailsBackgroundColor'] ) ? esc_attr( $attributes['detailsBackgroundColor'] ) : '#ffffff';
 
 // Process content
-$evt_processed_content = $content;
-$evt_image_html = '';
+$evtb_processed_content = $content;
+$evtb_image_html = '';
 
 // Only process if content exists
-if ( ! empty( $evt_processed_content ) ) {
+if ( ! empty( $evtb_processed_content ) ) {
 	
 	// Step 1: Extract image (simple string search)
-	$figure_start = strpos( $evt_processed_content, '<figure' );
-	if ( $figure_start !== false && strpos( $evt_processed_content, 'wp-block-image', $figure_start ) !== false ) {
-		$figure_end = strpos( $evt_processed_content, '</figure>', $figure_start );
+	$figure_start = strpos( $evtb_processed_content, '<figure' );
+	if ( $figure_start !== false && strpos( $evtb_processed_content, 'wp-block-image', $figure_start ) !== false ) {
+		$figure_end = strpos( $evtb_processed_content, '</figure>', $figure_start );
 		if ( $figure_end !== false ) {
-			$evt_image_html = substr( $evt_processed_content, $figure_start, $figure_end - $figure_start + 9 );
+			$evtb_image_html = substr( $evtb_processed_content, $figure_start, $figure_end - $figure_start + 9 );
 			// Remove from content
-			$evt_processed_content = substr_replace( $evt_processed_content, '', $figure_start, $figure_end - $figure_start + 9 );
+			$evtb_processed_content = substr_replace( $evtb_processed_content, '', $figure_start, $figure_end - $figure_start + 9 );
 		}
 	}
 	
 	// Step 2: Remove image wrapper groups
-	$evt_processed_content = evt_remove_wrapper_divs( $evt_processed_content, 'evt-event-image-wrap' );
+	$evtb_processed_content = evtb_remove_wrapper_divs( $evtb_processed_content, 'evtb-event-image-wrap' );
 	
 	// Step 3: Remove buttons with empty href
-	$evt_processed_content = evt_remove_empty_buttons( $evt_processed_content );
+	$evtb_processed_content = evtb_remove_empty_buttons( $evtb_processed_content );
 	
 	// Step 4: Remove empty content elements
 	$empty_classes = array(
-		'evt-event-title',
-		'evt-event-time',
-		'evt-event-location',
-		'evt-event-description',
-		'evt-event-price',
-		'evt-price-read-more'
+		'evtb-event-title',
+		'evtb-event-time',
+		'evtb-event-location',
+		'evtb-event-description',
+		'evtb-event-price',
+		'evtb-price-read-more'
 	);
 	
 	foreach ( $empty_classes as $class ) {
-		$evt_processed_content = evt_remove_empty_elements( $evt_processed_content, $class );
+		$evtb_processed_content = evtb_remove_empty_elements( $evtb_processed_content, $class );
 	}
 }
 
 // Generate wrapper attributes
 $wrapper_attributes = get_block_wrapper_attributes( array(
-	'class' => 'evt-event-item' . ( $evt_block_id ? ' evt-block-' . $evt_block_id : '' ),
+	'class' => 'evtb-event-item' . ( $evtb_block_id ? ' evtb-block-' . $evtb_block_id : '' ),
 ) );
 
 // Inject block-specific CSS
-$evt_block_css = '';
-if ( $evt_block_id ) {
-	$evt_block_css = sprintf(
-		'<style>.evt-block-%s .evt-event-details { background-color: %s; }</style>',
-		$evt_block_id,
-		$evt_details_bg
+$evtb_block_css = '';
+if ( $evtb_block_id ) {
+	$evtb_block_css = sprintf(
+		'<style>.evtb-block-%s .evtb-event-details { background-color: %s; }</style>',
+		$evtb_block_id,
+		$evtb_details_bg
 	);
 }
 
@@ -228,23 +228,23 @@ if ( $evt_block_id ) {
 ?>
 <?php 
 // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Already escaped via sprintf with esc_attr()
-echo $evt_block_css; 
+echo $evtb_block_css; 
 ?>
 <div <?php 
 // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Safe output from get_block_wrapper_attributes()
 echo $wrapper_attributes; 
 ?>>
-	<div class="evt-event-card">
-		<?php if ( $evt_image_html ) : ?>
-			<div class="evt-event-image"><?php 
+	<div class="evtb-event-card">
+		<?php if ( $evtb_image_html ) : ?>
+			<div class="evtb-event-image"><?php 
 			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Safe HTML from WordPress InnerBlocks
-			echo $evt_image_html; 
+			echo $evtb_image_html; 
 			?></div>
 		<?php endif; ?>
-		<div class="evt-event-details">
+		<div class="evtb-event-details">
 			<?php 
 			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Safe HTML from WordPress InnerBlocks
-			echo $evt_processed_content; 
+			echo $evtb_processed_content; 
 			?>
 		</div>
 	</div>

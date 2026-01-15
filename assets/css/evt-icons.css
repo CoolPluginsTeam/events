@@ -1,11 +1,11 @@
 @font-face {
-  font-family: 'evticons';
-  src: url('../font/evticon.eot?52891777');
-  src: url('../font/evticon.eot?52891777#iefix') format('embedded-opentype'),
-       url('../font/evticon.woff2?52891777') format('woff2'),
-       url('../font/evticon.woff?52891777') format('woff'),
-       url('../font/evticon.ttf?52891777') format('truetype'),
-       url('../font/evticon.svg?52891777#evticons') format('svg');
+  font-family: 'evtbicons';
+  src: url('../font/evtbicon.eot?52891777');
+  src: url('../font/evtbicon.eot?52891777#iefix') format('embedded-opentype'),
+       url('../font/evtbicon.woff2?52891777') format('woff2'),
+       url('../font/evtbicon.woff?52891777') format('woff'),
+       url('../font/evtbicon.ttf?52891777') format('truetype'),
+       url('../font/evtbicon.svg?52891777#evtbicons') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -14,13 +14,13 @@
 /*
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
-    font-family: 'evticons';
-    src: url('../font/evticon.svg?52891777#evticons') format('svg');
+    font-family: 'evtbicons';
+    src: url('../font/evtbicon.svg?52891777#evtbicons') format('svg');
   }
 }
 */
-[class$="icon-evt"]:before, [class*="icon-evt "]:before {
-  font-family: "evticons";
+[class$="icon-evtb"]:before, [class*="icon-evtb "]:before {
+  font-family: "evtbicons";
   font-style: normal;
   font-weight: normal;
   speak: never;
@@ -54,11 +54,11 @@
   /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
 }
 
-.usericon-evt:before { content: '\e800'; } /* '' */
-.locationicon-evt:before { content: '\e801'; } /* '' */
-.calendaricon-evt:before { content: '\e802'; } /* '' */
-.clockicon-evt:before { content: '\e803'; } /* '' */
-.clock-circledicon-evt:before { content: '\e804'; } /* '' */
-.mailicon-evt:before { content: '\e805'; } /* '' */
-.location-1icon-evt:before { content: '\f031'; } /* '' */
-.mail-alticon-evt:before { content: '\f0e0'; } /* '' */
+.usericon-evtb:before { content: '\e800'; } /* '' */
+.locationicon-evtb:before { content: '\e801'; } /* '' */
+.calendaricon-evtb:before { content: '\e802'; } /* '' */
+.clockicon-evtb:before { content: '\e803'; } /* '' */
+.clock-circledicon-evtb:before { content: '\e804'; } /* '' */
+.mailicon-evtb:before { content: '\e805'; } /* '' */
+.location-1icon-evtb:before { content: '\f031'; } /* '' */
+.mail-alticon-evtb:before { content: '\f0e0'; } /* '' */

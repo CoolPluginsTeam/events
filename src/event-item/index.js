@@ -18,7 +18,7 @@ import metadata from '../../blocks/event-item/block.json';
 registerBlockType(metadata.name, {
 	edit: ({ attributes, setAttributes, clientId }) => {
 		const {
-			evtBlockId,
+			evtbBlockId,
 			eventImage,
 			eventImageAlt,
 			eventDate,
@@ -32,9 +32,9 @@ registerBlockType(metadata.name, {
 
 	// Generate unique block ID if not present
 	useEffect(() => {
-		if (!evtBlockId) {
+		if (!evtbBlockId) {
 			const uniqueId = clientId.substring(0, 8);
-			setAttributes({ evtBlockId: uniqueId });
+			setAttributes({ evtbBlockId: uniqueId });
 		}
 	}, []);
 
@@ -56,7 +56,7 @@ registerBlockType(metadata.name, {
 			// Check inside group wrappers
 			const imageGroup = blocks.find(block => 
 				block.name === 'core/group' && 
-				block.attributes?.className?.includes('evt-event-image-wrap')
+				block.attributes?.className?.includes('evtb-event-image-wrap')
 			);
 			
 			if (imageGroup && imageGroup.innerBlocks) {
@@ -76,7 +76,7 @@ registerBlockType(metadata.name, {
 				// Try to find image group first
 				const imageGroupBlock = currentBlocks.find(block => 
 					block.name === 'core/group' && 
-					block.attributes?.className?.includes('evt-event-image-wrap')
+					block.attributes?.className?.includes('evtb-event-image-wrap')
 				);
 				
 				if (imageGroupBlock) {
@@ -99,10 +99,10 @@ registerBlockType(metadata.name, {
 			} else {
 				// ADD: Create new image block
 				const insertedBlock = createBlock('core/group', {
-					className: 'evt-event-image-wrap'
+					className: 'evtb-event-image-wrap'
 				}, [
 					createBlock('core/image', {
-						className: 'evt-event-image-block'
+						className: 'evtb-event-image-block'
 					})
 				]);
 				
@@ -121,7 +121,7 @@ registerBlockType(metadata.name, {
 		};
 
 		const blockProps = useBlockProps({
-			className: `evt-event-item${evtBlockId ? ` evt-block-${evtBlockId}` : ''}`
+			className: `evtb-event-item${evtbBlockId ? ` evtb-block-${evtbBlockId}` : ''}`
 		});
 
 		// Default event data (for first 3 events)
@@ -167,59 +167,59 @@ registerBlockType(metadata.name, {
 		// Order: Image, Date Badge, Time, Title, Location, Price, Read More
 		const TEMPLATE = isDefault && defaultContent ? [
 			// IMAGE GROUP
-			['core/group', { className: 'evt-event-image-wrap' }, [
+			['core/group', { className: 'evtb-event-image-wrap' }, [
 				['core/image', {
 				  url: eventImage,
 				  alt: eventImageAlt,
-				  className: 'evt-event-image-block'
+				  className: 'evtb-event-image-block'
 				}]
 			]],
-		['core/group', { className: 'evt-card-details' }, [
+		['core/group', { className: 'evtb-card-details' }, [
 			// DATE BADGE
-			['evt/event-date-badge', {
+			['evtb/event-date-badge', {
 				eventDate: eventDate,
 				isDateSet: true
 			}],
 				
 			// DETAILS GROUP
-			['core/group', { className: 'evt-event-detail' }, [
+			['core/group', { className: 'evtb-event-detail' }, [
 			
 				['core/paragraph', {
-				className: 'evt-event-time',
+				className: 'evtb-event-time',
 				content: formattedTime,
-				evtStartTime: eventStartTime,
-				evtEndTime: eventEndTime,
-				evtIsTimeSet: true
+				evtbStartTime: eventStartTime,
+				evtbEndTime: eventEndTime,
+				evtbIsTimeSet: true
 				}],
 				
 				['core/heading', {
 				level: 4,
-				className: 'evt-event-title',
+				className: 'evtb-event-title',
 				content: defaultContent?.title || ''
 				}],
 			
 				['core/paragraph', {
 				placeholder: __('Event Description', 'events'),
-				className: 'evt-event-description'
+				className: 'evtb-event-description'
 				}],
 			
 				['core/paragraph', {
-				className: 'evt-event-location',
+				className: 'evtb-event-location',
 				content: defaultContent?.location || ''
 				}],
 				
 					// PRICE + READ MORE GROUP
-					['core/group', { className: 'evt-price-read-more' }, [
+					['core/group', { className: 'evtb-price-read-more' }, [
 				
 					['core/paragraph', {
-						className: 'evt-event-price',
+						className: 'evtb-event-price',
 						content: defaultContent?.price || ''
 					}],
 				
 					['core/buttons', {}, [
 						['core/button', {
 						text: 'Read More',
-						className: 'evt-event-read-more',
+						className: 'evtb-event-read-more',
 						url: ''
 						}]
 					]]
@@ -228,49 +228,49 @@ registerBlockType(metadata.name, {
 			]]
 		] : [
 			// IMAGE GROUP for new events
-			['core/group', { className: 'evt-event-image-wrap' }, [
+			['core/group', { className: 'evtb-event-image-wrap' }, [
 				['core/image', {
-					className: 'evt-event-image-block'
+					className: 'evtb-event-image-block'
 				}]
 			]],
-		['core/group', { className: 'evt-card-details' }, [
+		['core/group', { className: 'evtb-card-details' }, [
 			// Empty template with only placeholders for new events
-			['evt/event-date-badge', {
+			['evtb/event-date-badge', {
 				eventDate: eventDate,
 				isDateSet: true
 			}],
 			// DETAILS GROUP
-			['core/group', { className: 'evt-event-detail' }, [
+			['core/group', { className: 'evtb-event-detail' }, [
 				['core/paragraph', {
 					placeholder: __('9:00 AM – 5:00 PM', 'events'),
-					className: 'evt-event-time',
-					evtStartTime: eventStartTime,
-					evtEndTime: eventEndTime,
-					evtIsTimeSet: false
+					className: 'evtb-event-time',
+					evtbStartTime: eventStartTime,
+					evtbEndTime: eventEndTime,
+					evtbIsTimeSet: false
 				}],
 					['core/heading', {
 						level: 4,
 						placeholder: __('Event Title', 'events'),
-						className: 'evt-event-title'
+						className: 'evtb-event-title'
 					}],
 					['core/paragraph', {
 						placeholder: __('Event Description', 'events'),
-						className: 'evt-event-description'
+						className: 'evtb-event-description'
 					}],
 					['core/paragraph', {
 						placeholder: __('Event Location', 'events'),
-						className: 'evt-event-location'
+						className: 'evtb-event-location'
 					}],
 					// PRICE + READ MORE GROUP
-					['core/group', { className: 'evt-price-read-more' }, [
+					['core/group', { className: 'evtb-price-read-more' }, [
 						['core/paragraph', {
 							placeholder: __('Event Price', 'events'),
-							className: 'evt-event-price'
+							className: 'evtb-event-price'
 						}],
 						['core/buttons', {}, [
 							['core/button', {
 								text: __('Read More', 'events'),
-								className: 'evt-event-read-more',
+								className: 'evtb-event-read-more',
 								url: ''
 							}]
 						]]
@@ -298,10 +298,10 @@ registerBlockType(metadata.name, {
 				</InspectorControls>
 
 				<div {...blockProps}>
-					<div className="evt-event-card">
+					<div className="evtb-event-card">
 						{/* Add/Remove Image Block Button - Simple logic */}
 						{!hasImageBlock && (
-							<div className="evt-add-image-block">
+							<div className="evtb-add-image-block">
 								<Button 
 									isSmall 
 									isSecondary 
@@ -312,7 +312,7 @@ registerBlockType(metadata.name, {
 							</div>
 						)}
 						{hasImageBlock && (
-							<div className="evt-add-image-block">
+							<div className="evtb-add-image-block">
 								<Button 
 									isSmall 
 									isSecondary 
@@ -322,18 +322,18 @@ registerBlockType(metadata.name, {
 								</Button>
 							</div>
 						)}
-						<div className="evt-event-details" style={{
-							'--evt-details-bg': detailsBackgroundColor || '#ffffff'
+						<div className="evtb-event-details" style={{
+							'--evtb-details-bg': detailsBackgroundColor || '#ffffff'
 						}}>
 							{/* Content Blocks - Inside details-inner (image block will be filtered via CSS) */}
-							<div className="evt-event-details-inner">
+							<div className="evtb-event-details-inner">
 								<InnerBlocks
 									template={TEMPLATE}
 									templateLock={false}
 									allowedBlocks={[
 										'core/group',
 										'core/image',
-										'evt/event-date-badge',
+										'evtb/event-date-badge',
 										'core/heading',
 										'core/paragraph',
 										'core/list',
@@ -351,21 +351,21 @@ registerBlockType(metadata.name, {
 	},
 	save: ({ attributes }) => {
 		const {
-			evtBlockId,
+			evtbBlockId,
 			detailsBackgroundColor
 		} = attributes;
 
 		const blockProps = useBlockProps.save({
-			className: `evt-event-item${evtBlockId ? ` evt-block-${evtBlockId}` : ''}`,
+			className: `evtb-event-item${evtbBlockId ? ` evtb-block-${evtbBlockId}` : ''}`,
 			style: {
-				'--evt-details-bg': detailsBackgroundColor || '#ffffff'
+				'--evtb-details-bg': detailsBackgroundColor || '#ffffff'
 			}
 		});
 
 		return (
 			<div {...blockProps}>
 						{/* Content - Inside details-inner */}
-						<div className="evt-event-details-inner">
+						<div className="evtb-event-details-inner">
 							{/* All content blocks including date badge */}
 							<InnerBlocks.Content />
 						</div>
@@ -381,7 +381,7 @@ registerBlockType(metadata.name, {
 // Add custom attributes to core/paragraph block
 addFilter(
 	'blocks.registerBlockType',
-	'evt/paragraph-time-attributes',
+	'evtb/paragraph-time-attributes',
 	(settings, name) => {
 		if (name !== 'core/paragraph') {
 			return settings;
@@ -391,15 +391,15 @@ addFilter(
 			...settings,
 			attributes: {
 				...settings.attributes,
-				evtStartTime: {
+				evtbStartTime: {
 					type: 'string',
 					default: '09:00'
 				},
-				evtEndTime: {
+				evtbEndTime: {
 					type: 'string',
 					default: '17:00'
 				},
-				evtIsTimeSet: {
+				evtbIsTimeSet: {
 					type: 'boolean',
 					default: false
 				}
@@ -408,27 +408,27 @@ addFilter(
 	}
 );
 
-// Add Time Settings panel to paragraph block with evt-event-time class
+// Add Time Settings panel to paragraph block with evtb-event-time class
 const withTimeSettings = createHigherOrderComponent((BlockEdit) => {
 	return (props) => {
 		const { attributes, setAttributes, name } = props;
 		
-		// Only apply to core/paragraph with evt-event-time class
-		if (name !== 'core/paragraph' || !attributes.className || !attributes.className.includes('evt-event-time')) {
+		// Only apply to core/paragraph with evtb-event-time class
+		if (name !== 'core/paragraph' || !attributes.className || !attributes.className.includes('evtb-event-time')) {
 			return createElement(BlockEdit, props);
 		}
 
-		const { evtStartTime, evtEndTime, evtIsTimeSet } = attributes;
+		const { evtbStartTime, evtbEndTime, evtbIsTimeSet } = attributes;
 
 		// Get parent Event Item context
 		const parentContext = useSelect((select) => {
 			const { getBlockParents, getBlock } = select('core/block-editor');
 			const parentIds = getBlockParents(props.clientId);
 			
-			// Find evt/event-item parent
+			// Find evtb/event-item parent
 			for (let parentId of parentIds) {
 				const parentBlock = getBlock(parentId);
-				if (parentBlock && parentBlock.name === 'evt/event-item') {
+				if (parentBlock && parentBlock.name === 'evtb/event-item') {
 					return {
 						clientId: parentId,
 						startTime: parentBlock.attributes.eventStartTime || '09:00',
@@ -440,14 +440,14 @@ const withTimeSettings = createHigherOrderComponent((BlockEdit) => {
 		}, [props.clientId]);
 
 		// Use parent times or own times
-		const currentStartTime = parentContext?.startTime || evtStartTime;
-		const currentEndTime = parentContext?.endTime || evtEndTime;
+		const currentStartTime = parentContext?.startTime || evtbStartTime;
+		const currentEndTime = parentContext?.endTime || evtbEndTime;
 
 		// Handle time changes
 		const handleStartTimeChange = (newTime) => {
 			setAttributes({ 
-				evtStartTime: newTime,
-				evtIsTimeSet: true
+				evtbStartTime: newTime,
+				evtbIsTimeSet: true
 			});
 			
 			// Update parent Event Item block
@@ -464,8 +464,8 @@ const withTimeSettings = createHigherOrderComponent((BlockEdit) => {
 
 		const handleEndTimeChange = (newTime) => {
 			setAttributes({ 
-				evtEndTime: newTime,
-				evtIsTimeSet: true
+				evtbEndTime: newTime,
+				evtbIsTimeSet: true
 			});
 			
 			// Update parent Event Item block
@@ -488,7 +488,7 @@ const withTimeSettings = createHigherOrderComponent((BlockEdit) => {
 
 		// Sync parent times to paragraph content on mount
 		useEffect(() => {
-			if (parentContext && evtIsTimeSet) {
+			if (parentContext && evtbIsTimeSet) {
 				updateParagraphContent(currentStartTime, currentEndTime);
 			}
 		}, [parentContext?.startTime, parentContext?.endTime]);
@@ -504,11 +504,11 @@ const withTimeSettings = createHigherOrderComponent((BlockEdit) => {
 					PanelBody,
 					{ 
 						title: __('Time Settings', 'events'),
-						className: 'evt-time-settings'
+						className: 'evtb-time-settings'
 					},
 					createElement(
 						'div',
-						{ className: 'evt-start-time-input' },
+						{ className: 'evtb-start-time-input' },
 						createElement('strong', {}, __('Start Time', 'events')),
 						createElement('input', {
 							type: 'time',
@@ -523,7 +523,7 @@ const withTimeSettings = createHigherOrderComponent((BlockEdit) => {
 					),
 					createElement(
 						'div',
-						{ className: 'evt-end-time-input' },
+						{ className: 'evtb-end-time-input' },
 						createElement('strong', {}, __('End Time', 'events')),
 						createElement('input', {
 							type: 'time',
@@ -544,6 +544,6 @@ const withTimeSettings = createHigherOrderComponent((BlockEdit) => {
 
 addFilter(
 	'editor.BlockEdit',
-	'evt/paragraph-time-settings',
+	'evtb/paragraph-time-settings',
 	withTimeSettings
 );

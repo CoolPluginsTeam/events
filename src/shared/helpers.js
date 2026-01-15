@@ -12,11 +12,11 @@ export const getCurrentDate = () => {
 
 // Get default images from plugin data
 export const getDefaultImages = () => {
-	if (window.evtPluginData && window.evtPluginData.images) {
+	if (window.evtbPluginData && window.evtbPluginData.images) {
 		return [
-			window.evtPluginData.images.crazyDJ || '',
-			window.evtPluginData.images.rockBand || '',
-			window.evtPluginData.images.foodDistribution || ''
+			window.evtbPluginData.images.crazyDJ || '',
+			window.evtbPluginData.images.rockBand || '',
+			window.evtbPluginData.images.foodDistribution || ''
 		];
 	}
 	return ['', '', ''];

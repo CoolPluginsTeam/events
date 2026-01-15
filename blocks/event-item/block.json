@@ -1,7 +1,7 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "evt/event-item",
+	"name": "evtb/event-item",
 	"version": "1.0.0",
 	"title": "Event Item",
 	"category": "widgets",
@@ -9,9 +9,9 @@
 	"description": "Individual event card with details.",
 	"keywords": ["event", "card", "item"],
 	"textdomain": "events-block",
-	"parent": ["evt/events-grid"],
+	"parent": ["evtb/events-grid"],
 	"attributes": {
-		"evtBlockId": {
+		"evtbBlockId": {
 			"type": "string",
 			"default": ""
 		},
@@ -53,9 +53,9 @@
 		}
 	},
 	"providesContext": {
-		"evt/eventDate": "eventDate",
-		"evt/eventStartTime": "eventStartTime",
-		"evt/eventEndTime": "eventEndTime"
+		"evtb/eventDate": "eventDate",
+		"evtb/eventStartTime": "eventStartTime",
+		"evtb/eventEndTime": "eventEndTime"
 	},
 	"supports": {
 		"html": false,
@@ -65,8 +65,8 @@
 			"text": false
 		}
 	},
-	"editorScript": "evt-events-blocks",
-	"editorStyle": "evt-events-editor",
-	"style": "evt-events-style",
+	"editorScript": "evtb-events-blocks",
+	"editorStyle": "evtb-events-editor",
+	"style": "evtb-events-style",
 	"render": "file:./render.php"
 }

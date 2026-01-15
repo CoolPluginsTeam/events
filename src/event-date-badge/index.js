@@ -16,10 +16,9 @@ import metadata from '../../blocks/event-date-badge/block.json';
 registerBlockType(metadata.name, {
 	edit: ({ attributes, setAttributes, context, clientId }) => {
 		const {
-			evtBadgeId,
+			evtbBadgeId,
 			eventDate,
 			isDateSet,
-			hideYear,
 			dateBadgeBackgroundColor,
 			dateBadgeTextColor,
 			borderBadgeColor,
@@ -28,30 +27,30 @@ registerBlockType(metadata.name, {
 
 	// Generate unique badge ID if not present
 	useEffect(() => {
-		if (!evtBadgeId) {
+		if (!evtbBadgeId) {
 			const uniqueId = clientId.substring(0, 8);
-			setAttributes({ evtBadgeId: uniqueId });
+			setAttributes({ evtbBadgeId: uniqueId });
 		}
 	}, []);
 
 	// Set current date if eventDate is empty (for new date badges)
 	useEffect(() => {
-		if (!eventDate && !context['evt/eventDate']) {
+		if (!eventDate && !context['evtb/eventDate']) {
 			setAttributes({ eventDate: getCurrentDate() });
 		}
 	}, []);
 
 	// Use parent's date if available
-	const parentDate = context['evt/eventDate'] || eventDate || getCurrentDate();
+	const parentDate = context['evtb/eventDate'] || eventDate || getCurrentDate();
 		
 		// Get parent block ID
 		const parentClientId = useSelect((select) => {
 			const { getBlockParents, getBlock } = select('core/block-editor');
 			const parentIds = getBlockParents(clientId);
-			// Find the evt/event-item parent
+			// Find the evtb/event-item parent
 			for (let parentId of parentIds) {
 				const parentBlock = getBlock(parentId);
-				if (parentBlock && parentBlock.name === 'evt/event-item') {
+				if (parentBlock && parentBlock.name === 'evtb/event-item') {
 					return parentId;
 				}
 			}
@@ -60,20 +59,20 @@ registerBlockType(metadata.name, {
 		
 		// Sync parent values to child attributes
 		useEffect(() => {
-			if (context['evt/eventDate'] && context['evt/eventDate'] !== eventDate) {
-				setAttributes({ eventDate: context['evt/eventDate'] });
+			if (context['evtb/eventDate'] && context['evtb/eventDate'] !== eventDate) {
+				setAttributes({ eventDate: context['evtb/eventDate'] });
 			}
-		}, [context['evt/eventDate']]);
+		}, [context['evtb/eventDate']]);
 
 	// Use CSS Variables (Custom Properties) - Most reliable approach!
 	// Set colors as CSS variables on the wrapper element
 	const blockProps = useBlockProps({
-		className: `evt-event-date-badge-container${evtBadgeId ? ` evt-badge-${evtBadgeId}` : ''}`,
+		className: `evtb-event-date-badge-container${evtbBadgeId ? ` evtb-badge-${evtbBadgeId}` : ''}`,
 		style: {
-			'--evt-badge-bg': dateBadgeBackgroundColor,
-			'--evt-badge-text': dateBadgeTextColor,
-			'--evt-badge-border': borderBadgeColor,
-			'--evt-badge-weekday': weekdayColor
+			'--evtb-badge-bg': dateBadgeBackgroundColor,
+			'--evtb-badge-text': dateBadgeTextColor,
+			'--evtb-badge-border': borderBadgeColor,
+			'--evtb-badge-weekday': weekdayColor
 		}
 	});
 
@@ -116,7 +115,7 @@ registerBlockType(metadata.name, {
 		return (
 			<>
 				<InspectorControls>
-					<PanelBody className="evt-date-settings" title={__('Date Settings', 'events')}>
+					<PanelBody className="evtb-date-settings" title={__('Date Settings', 'events')}>
 						<div style={{ marginBottom: '15px' }}>
 							<strong>{__('Event Date', 'events')}</strong>
 							<DateTimePicker
@@ -179,26 +178,25 @@ registerBlockType(metadata.name, {
 				</InspectorControls>
 
 			<div {...blockProps}>
-				<div className="evt-border-badge">
-					<div className="evt-event-date-badge">
-						<span className="evt-date-day">{dateParts.day}</span>
-						<span className="evt-date-month">{dateParts.month}</span>
-						{!hideYear && dateParts.year !== '0001' && (
-							<span className="evt-date-year">{dateParts.year}</span>
+				<div className="evtb-border-badge">
+					<div className="evtb-event-date-badge">
+						<span className="evtb-date-day">{dateParts.day}</span>
+						<span className="evtb-date-month">{dateParts.month}</span>
+						{dateParts.year !== '0001' && (
+							<span className="evtb-date-year">{dateParts.year}</span>
 						)}
 					</div>
 				</div>
-				<span className="evt-date-weekday">{dateParts.weekday}</span>
+				<span className="evtb-date-weekday">{dateParts.weekday}</span>
 			</div>
 			</>
 		);
 	},
 	save: ({ attributes }) => {
 		const {
-			evtBadgeId,
+			evtbBadgeId,
 			eventDate,
 			isDateSet,
-			hideYear,
 			dateBadgeBackgroundColor,
 			dateBadgeTextColor,
 			borderBadgeColor,
@@ -206,12 +204,12 @@ registerBlockType(metadata.name, {
 		} = attributes;
 
 		const blockProps = useBlockProps.save({
-			className: `evt-event-date-badge-container${evtBadgeId ? ` evt-badge-${evtBadgeId}` : ''}`,
+			className: `evtb-event-date-badge-container${evtbBadgeId ? ` evtb-badge-${evtbBadgeId}` : ''}`,
 			style: {
-				'--evt-badge-bg': dateBadgeBackgroundColor || '#2667FF',
-				'--evt-badge-text': dateBadgeTextColor || '#ffffff',
-				'--evt-badge-border': borderBadgeColor || '#00000040',
-				'--evt-badge-weekday': weekdayColor || '#000000'
+				'--evtb-badge-bg': dateBadgeBackgroundColor || '#2667FF',
+				'--evtb-badge-text': dateBadgeTextColor || '#ffffff',
+				'--evtb-badge-border': borderBadgeColor || '#00000040',
+				'--evtb-badge-weekday': weekdayColor || '#000000'
 			}
 		});
 
@@ -236,16 +234,16 @@ registerBlockType(metadata.name, {
 
 		return (
 			<div {...blockProps}>
-				<div className="evt-border-badge">
-					<div className="evt-event-date-badge">
-						<span className="evt-date-day">{dateParts.day}</span>
-						<span className="evt-date-month">{dateParts.month}</span>
-						{!hideYear && dateParts.year !== '0001' && (
-							<span className="evt-date-year">{dateParts.year}</span>
+				<div className="evtb-border-badge">
+					<div className="evtb-event-date-badge">
+						<span className="evtb-date-day">{dateParts.day}</span>
+						<span className="evtb-date-month">{dateParts.month}</span>
+						{dateParts.year !== '0001' && (
+							<span className="evtb-date-year">{dateParts.year}</span>
 						)}
 					</div>
 				</div>
-				<span className="evt-date-weekday">{dateParts.weekday}</span>
+				<span className="evtb-date-weekday">{dateParts.weekday}</span>
 			</div>
 		);
 	}

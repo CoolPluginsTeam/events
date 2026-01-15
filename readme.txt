@@ -58,5 +58,5 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
-= 1.0 - 15 January 2026 =
+= 1.0 - 16 January 2026 =
 * Initial release
