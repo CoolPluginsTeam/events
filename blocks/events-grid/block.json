@@ -3,12 +3,12 @@
 	"apiVersion": 3,
 	"name": "evt/events-grid",
 	"version": "1.0.0",
-	"title": "Events",
+	"title": "Events Block",
 	"category": "widgets",
 	"icon": "grid-view",
 	"description": "Display multiple events in a responsive grid layout.",
-	"keywords": ["event", "calendar", "grid"],
-	"textdomain": "events",
+	"keywords": ["event", "events block", "grid"],
+	"textdomain": "events-block",
 	"attributes": {
 		"columns": {
 			"type": "number",

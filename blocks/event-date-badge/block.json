@@ -7,8 +7,8 @@
 	"category": "widgets",
 	"icon": "clock",
 	"description": "Display event date in a styled badge.",
-	"keywords": ["date", "badge", "calendar"],
-	"textdomain": "events",
+	"keywords": ["date", "event", "event date"],
+	"textdomain": "events-block",
 	"parent": ["evt/event-item"],
 	"attributes": {
 		"evtBadgeId": {

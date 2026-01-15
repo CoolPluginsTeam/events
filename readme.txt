@@ -1,4 +1,4 @@
-=== Events ===
+=== Events block ===
 Contributors:coolplugins,narinder-singh,satindersingh
 Tags: block, event, events block, events, gutenberg
 Tested up to: 6.9
@@ -12,7 +12,7 @@ Create and display a dedicated Event block directly inside Gutenberg.
 
 == Description ==
 
-The **Events** is a powerful plugin that allows you to easily add and display **Events Grid Block** using a dedicated Gutenberg block. 
+The **Events block** is a powerful plugin that allows you to easily add and display **Events block** using a dedicated Gutenberg block. 
 
 Simply insert the Events block, fill in the event details, and your event will appear instantly in a grid layout, without using any shortcodes or complex settings.
 
@@ -30,10 +30,10 @@ Simply insert the Events block, fill in the event details, and your event will a
 
 == Installation ==
 - Go to **Plugins > Add New** in your WordPress admin area.
-- Search for **"Events"**.
+- Search for **"Events block"**.
 - Install & Activate plugin.
 - Next, create or edit a **page/post** where you want to show an event.
-- Click the **+ Add Block** button and search for **"Event"**.
+- Click the **+ Add Block** button and search for **"Events block"**.
 - Add the block and enter your event details.
 
 == Frequently Asked Questions ==

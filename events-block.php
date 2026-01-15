@@ -1,13 +1,13 @@
 <?php
 /**
- * Plugin Name: Events
+ * Plugin Name: Events Block
  * Description: Events Gutenberg Block to Create Events Grid In Block Editor.
  * Author:      Cool Plugins
  * Author URI:  https://coolplugins.net/?utm_source=evt_plugin&utm_medium=inside&utm_campaign=author_page&utm_content=plugins_list
  * Version:    1.0
  * License:     GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain: events
+ * Text Domain: events-block
  */
 
  // Exit if accessed directly.
@@ -20,7 +20,7 @@ define( 'EVENTS_PATH', plugin_dir_path( EVENTS_FILE ) );
 define( 'EVENTS_URL', plugin_dir_url( EVENTS_FILE ) );
 
 
-final class evt_Events_Block {
+final class EVTB_Events_Block {
 
 	/**
 	 * Plugin instance.
@@ -169,7 +169,7 @@ final class evt_Events_Block {
 }
 
 // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- Function is prefixed with 'evt_'
-function evt_Events_Block() {
-	return evt_Events_Block::get_instance();
+function EVTB_Events_Block() {
+	return EVTB_Events_Block::get_instance();
 }
-evt_Events_Block();
+EVTB_Events_Block();
