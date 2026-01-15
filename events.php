@@ -4,8 +4,8 @@
  * Description: Events Gutenberg Block to Create Events Grid In Block Editor.
  * Author:      Cool Plugins
  * Author URI:  https://coolplugins.net/?utm_source=evt_plugin&utm_medium=inside&utm_campaign=author_page&utm_content=plugins_list
- * Version:     1.0
- * License:     GPL2+
+ * Version:    1.0
+ * License:     GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain: events
  */
@@ -14,7 +14,7 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-define( 'EVENTS_VERSION', '1.0.0' );
+define( 'EVENTS_VERSION', '1.0' );
 define( 'EVENTS_FILE', __FILE__ );
 define( 'EVENTS_PATH', plugin_dir_path( EVENTS_FILE ) );
 define( 'EVENTS_URL', plugin_dir_url( EVENTS_FILE ) );
