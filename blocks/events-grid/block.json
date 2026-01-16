@@ -7,18 +7,31 @@
 	"category": "widgets",
 	"icon": "grid-view",
 	"description": "Display multiple events in a responsive grid layout.",
-	"keywords": ["event", "events block", "grid"],
+	"keywords": [
+		"event",
+		"events block",
+		"grid"
+	],
 	"textdomain": "events-block",
 	"attributes": {
 		"columns": {
 			"type": "number",
 			"default": 2
+		},
+		"hideYear": {
+			"type": "boolean",
+			"default": true
 		}
 	},
-	"providesContext": {},
+	"providesContext": {
+		"evtb/hideYear": "hideYear"
+	},
 	"supports": {
 		"html": false,
-		"align": ["wide", "full"],
+		"align": [
+			"wide",
+			"full"
+		],
 		"spacing": {
 			"margin": true,
 			"padding": true

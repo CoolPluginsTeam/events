@@ -30,40 +30,40 @@ registerBlockType(metadata.name, {
 			mediaBlock
 		} = attributes;
 
-	// Generate unique block ID if not present
-	useEffect(() => {
-		if (!evtbBlockId) {
-			const uniqueId = clientId.substring(0, 8);
-			setAttributes({ evtbBlockId: uniqueId });
-		}
-	}, []);
+		// Generate unique block ID if not present
+		useEffect(() => {
+			if (!evtbBlockId) {
+				const uniqueId = clientId.substring(0, 8);
+				setAttributes({ evtbBlockId: uniqueId });
+			}
+		}, []);
 
-	// Set current date if eventDate is empty (for new events)
-	useEffect(() => {
-		if (!eventDate && !isDefault) {
-			setAttributes({ eventDate: getCurrentDate() });
-		}
-	}, []);
+		// Set current date if eventDate is empty (for new events)
+		useEffect(() => {
+			if (!eventDate && !isDefault) {
+				setAttributes({ eventDate: getCurrentDate() });
+			}
+		}, []);
 
 		// Get inner blocks reactively to check for image block
 		const hasImageBlock = useSelect((select) => {
 			const blocks = select('core/block-editor').getBlock(clientId)?.innerBlocks || [];
-			
+
 			// Check for direct image block
 			const directImage = blocks.find(block => block.name === 'core/image');
 			if (directImage) return true;
-			
+
 			// Check inside group wrappers
-			const imageGroup = blocks.find(block => 
-				block.name === 'core/group' && 
+			const imageGroup = blocks.find(block =>
+				block.name === 'core/group' &&
 				block.attributes?.className?.includes('evtb-event-image-wrap')
 			);
-			
+
 			if (imageGroup && imageGroup.innerBlocks) {
 				const nestedImage = imageGroup.innerBlocks.find(block => block.name === 'core/image');
 				if (nestedImage) return true;
 			}
-			
+
 			return false;
 		}, [clientId]);
 
@@ -72,13 +72,13 @@ registerBlockType(metadata.name, {
 			if (!shouldAddImage) {
 				// REMOVE: Find and remove image block/group
 				const currentBlocks = select('core/block-editor').getBlock(clientId)?.innerBlocks || [];
-				
+
 				// Try to find image group first
-				const imageGroupBlock = currentBlocks.find(block => 
-					block.name === 'core/group' && 
+				const imageGroupBlock = currentBlocks.find(block =>
+					block.name === 'core/group' &&
 					block.attributes?.className?.includes('evtb-event-image-wrap')
 				);
-				
+
 				if (imageGroupBlock) {
 					dispatch('core/block-editor').removeBlock(imageGroupBlock.clientId);
 				} else {
@@ -88,13 +88,13 @@ registerBlockType(metadata.name, {
 						dispatch('core/block-editor').removeBlock(directImageBlock.clientId);
 					}
 				}
-				
+
 				// Clear attributes immediately
-				setAttributes({ 
-					mediaBlock: false, 
-					eventImage: '', 
-					eventImageAlt: '', 
-					hasImage: false 
+				setAttributes({
+					mediaBlock: false,
+					eventImage: '',
+					eventImageAlt: '',
+					hasImage: false
 				});
 			} else {
 				// ADD: Create new image block
@@ -105,10 +105,10 @@ registerBlockType(metadata.name, {
 						className: 'evtb-event-image-block'
 					})
 				]);
-				
+
 				dispatch('core/block-editor').insertBlocks(insertedBlock, 0, clientId);
 				setAttributes({ mediaBlock: true, hasImage: true });
-				
+
 				// Auto-select the image block
 				setTimeout(() => {
 					const blocks = select('core/block-editor').getBlock(clientId)?.innerBlocks || [];
@@ -149,17 +149,17 @@ registerBlockType(metadata.name, {
 		// Get default data if this is a default event
 		const getDefaultContent = () => {
 			if (!isDefault) return null;
-			
+
 			// Try to match based on image alt text
 			if (eventImageAlt.includes('DJ')) return defaultEventData[0];
 			if (eventImageAlt.includes('Rock')) return defaultEventData[1];
 			if (eventImageAlt.includes('Food')) return defaultEventData[2];
-			
+
 			return null;
 		};
 
 		const defaultContent = getDefaultContent();
-		
+
 		// Format time display
 		const formattedTime = `${formatTime12Hour(eventStartTime)} – ${formatTime12Hour(eventEndTime)}`;
 
@@ -169,60 +169,60 @@ registerBlockType(metadata.name, {
 			// IMAGE GROUP
 			['core/group', { className: 'evtb-event-image-wrap' }, [
 				['core/image', {
-				  url: eventImage,
-				  alt: eventImageAlt,
-				  className: 'evtb-event-image-block'
+					url: eventImage,
+					alt: eventImageAlt,
+					className: 'evtb-event-image-block'
 				}]
 			]],
-		['core/group', { className: 'evtb-card-details' }, [
-			// DATE BADGE
-			['evtb/event-date-badge', {
-				eventDate: eventDate,
-				isDateSet: true
-			}],
-				
-			// DETAILS GROUP
-			['core/group', { className: 'evtb-event-detail' }, [
-			
-				['core/paragraph', {
-				className: 'evtb-event-time',
-				content: formattedTime,
-				evtbStartTime: eventStartTime,
-				evtbEndTime: eventEndTime,
-				evtbIsTimeSet: true
+			['core/group', { className: 'evtb-card-details' }, [
+				// DATE BADGE
+				['evtb/event-date-badge', {
+					eventDate: eventDate,
+					isDateSet: true
 				}],
-				
-				['core/heading', {
-				level: 4,
-				className: 'evtb-event-title',
-				content: defaultContent?.title || ''
-				}],
-			
-				['core/paragraph', {
-				placeholder: __('Event Description', 'events'),
-				className: 'evtb-event-description'
-				}],
-			
-				['core/paragraph', {
-				className: 'evtb-event-location',
-				content: defaultContent?.location || ''
-				}],
-				
+
+				// DETAILS GROUP
+				['core/group', { className: 'evtb-event-detail' }, [
+
+					['core/paragraph', {
+						className: 'evtb-event-time',
+						content: formattedTime,
+						evtbStartTime: eventStartTime,
+						evtbEndTime: eventEndTime,
+						evtbIsTimeSet: true
+					}],
+
+					['core/heading', {
+						level: 4,
+						className: 'evtb-event-title',
+						content: defaultContent?.title || ''
+					}],
+
+					['core/paragraph', {
+						placeholder: __('Event Description', 'events'),
+						className: 'evtb-event-description'
+					}],
+
+					['core/paragraph', {
+						className: 'evtb-event-location',
+						content: defaultContent?.location || ''
+					}],
+
 					// PRICE + READ MORE GROUP
 					['core/group', { className: 'evtb-price-read-more' }, [
-				
-					['core/paragraph', {
-						className: 'evtb-event-price',
-						content: defaultContent?.price || ''
-					}],
-				
-					['core/buttons', {}, [
-						['core/button', {
-						text: 'Read More',
-						className: 'evtb-event-read-more',
-						url: ''
-						}]
-					]]
+
+						['core/paragraph', {
+							className: 'evtb-event-price',
+							content: defaultContent?.price || ''
+						}],
+
+						['core/buttons', {}, [
+							['core/button', {
+								text: 'Read More',
+								className: 'evtb-event-read-more',
+								url: ''
+							}]
+						]]
 					]]
 				]]
 			]]
@@ -233,21 +233,21 @@ registerBlockType(metadata.name, {
 					className: 'evtb-event-image-block'
 				}]
 			]],
-		['core/group', { className: 'evtb-card-details' }, [
-			// Empty template with only placeholders for new events
-			['evtb/event-date-badge', {
-				eventDate: eventDate,
-				isDateSet: true
-			}],
-			// DETAILS GROUP
-			['core/group', { className: 'evtb-event-detail' }, [
-				['core/paragraph', {
-					placeholder: __('9:00 AM – 5:00 PM', 'events'),
-					className: 'evtb-event-time',
-					evtbStartTime: eventStartTime,
-					evtbEndTime: eventEndTime,
-					evtbIsTimeSet: false
+			['core/group', { className: 'evtb-card-details' }, [
+				// Empty template with only placeholders for new events
+				['evtb/event-date-badge', {
+					eventDate: eventDate,
+					isDateSet: true
 				}],
+				// DETAILS GROUP
+				['core/group', { className: 'evtb-event-detail' }, [
+					['core/paragraph', {
+						placeholder: __('9:00 AM – 5:00 PM', 'events'),
+						className: 'evtb-event-time',
+						evtbStartTime: eventStartTime,
+						evtbEndTime: eventEndTime,
+						evtbIsTimeSet: false
+					}],
 					['core/heading', {
 						level: 4,
 						placeholder: __('Event Title', 'events'),
@@ -276,7 +276,7 @@ registerBlockType(metadata.name, {
 						]]
 					]]
 				]]
-	        ]]
+			]]
 		];
 
 		return (
@@ -302,9 +302,9 @@ registerBlockType(metadata.name, {
 						{/* Add/Remove Image Block Button - Simple logic */}
 						{!hasImageBlock && (
 							<div className="evtb-add-image-block">
-								<Button 
-									isSmall 
-									isSecondary 
+								<Button
+									isSmall
+									isSecondary
 									onClick={() => innerBlockTemplate(true)}
 								>
 									{__('Add Image Block', 'events')}
@@ -313,9 +313,9 @@ registerBlockType(metadata.name, {
 						)}
 						{hasImageBlock && (
 							<div className="evtb-add-image-block">
-								<Button 
-									isSmall 
-									isSecondary 
+								<Button
+									isSmall
+									isSecondary
 									onClick={() => innerBlockTemplate(false)}
 								>
 									{__('Remove Image Block', 'events')}
@@ -364,11 +364,15 @@ registerBlockType(metadata.name, {
 
 		return (
 			<div {...blockProps}>
+				<div className="evtb-event-card">
+					<div className="evtb-event-details">
 						{/* Content - Inside details-inner */}
 						<div className="evtb-event-details-inner">
 							{/* All content blocks including date badge */}
 							<InnerBlocks.Content />
 						</div>
+					</div>
+				</div>
 			</div>
 		);
 	}
@@ -412,7 +416,7 @@ addFilter(
 const withTimeSettings = createHigherOrderComponent((BlockEdit) => {
 	return (props) => {
 		const { attributes, setAttributes, name } = props;
-		
+
 		// Only apply to core/paragraph with evtb-event-time class
 		if (name !== 'core/paragraph' || !attributes.className || !attributes.className.includes('evtb-event-time')) {
 			return createElement(BlockEdit, props);
@@ -424,7 +428,7 @@ const withTimeSettings = createHigherOrderComponent((BlockEdit) => {
 		const parentContext = useSelect((select) => {
 			const { getBlockParents, getBlock } = select('core/block-editor');
 			const parentIds = getBlockParents(props.clientId);
-			
+
 			// Find evtb/event-item parent
 			for (let parentId of parentIds) {
 				const parentBlock = getBlock(parentId);
@@ -445,11 +449,11 @@ const withTimeSettings = createHigherOrderComponent((BlockEdit) => {
 
 		// Handle time changes
 		const handleStartTimeChange = (newTime) => {
-			setAttributes({ 
+			setAttributes({
 				evtbStartTime: newTime,
 				evtbIsTimeSet: true
 			});
-			
+
 			// Update parent Event Item block
 			if (parentContext) {
 				dispatch('core/block-editor').updateBlockAttributes(
@@ -457,17 +461,17 @@ const withTimeSettings = createHigherOrderComponent((BlockEdit) => {
 					{ eventStartTime: newTime }
 				);
 			}
-			
+
 			// Update paragraph content
 			updateParagraphContent(newTime, currentEndTime);
 		};
 
 		const handleEndTimeChange = (newTime) => {
-			setAttributes({ 
+			setAttributes({
 				evtbEndTime: newTime,
 				evtbIsTimeSet: true
 			});
-			
+
 			// Update parent Event Item block
 			if (parentContext) {
 				dispatch('core/block-editor').updateBlockAttributes(
@@ -475,7 +479,7 @@ const withTimeSettings = createHigherOrderComponent((BlockEdit) => {
 					{ eventEndTime: newTime }
 				);
 			}
-			
+
 			// Update paragraph content
 			updateParagraphContent(currentStartTime, newTime);
 		};
@@ -502,7 +506,7 @@ const withTimeSettings = createHigherOrderComponent((BlockEdit) => {
 				{},
 				createElement(
 					PanelBody,
-					{ 
+					{
 						title: __('Time Settings', 'events'),
 						className: 'evtb-time-settings'
 					},

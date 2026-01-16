@@ -1,4 +1,4 @@
-=== Events block ===
+=== Events Block ===
 Contributors:coolplugins,narinder-singh,satindersingh
 Tags: block, event, events block, events, gutenberg
 Tested up to: 6.9

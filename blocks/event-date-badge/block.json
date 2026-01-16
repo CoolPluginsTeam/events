@@ -7,9 +7,15 @@
 	"category": "widgets",
 	"icon": "clock",
 	"description": "Display event date in a styled badge.",
-	"keywords": ["date", "event", "event date"],
+	"keywords": [
+		"date",
+		"event",
+		"event date"
+	],
 	"textdomain": "events-block",
-	"parent": ["evtb/event-item"],
+	"parent": [
+		"evtb/event-item"
+	],
 	"attributes": {
 		"evtbBadgeId": {
 			"type": "string",
@@ -50,9 +56,16 @@
 		"weekdayColor": {
 			"type": "string",
 			"default": "#000000"
+		},
+		"hideYear": {
+			"type": "boolean",
+			"default": true
 		}
 	},
-	"usesContext": ["evtb/eventDate"],
+	"usesContext": [
+		"evtb/eventDate",
+		"evtb/hideYear"
+	],
 	"supports": {
 		"html": false,
 		"reusable": false,

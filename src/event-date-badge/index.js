@@ -4,7 +4,7 @@
  */
 import { registerBlockType } from '@wordpress/blocks';
 import { InspectorControls, useBlockProps, ColorPalette } from '@wordpress/block-editor';
-import { PanelBody, PanelRow, DateTimePicker } from '@wordpress/components';
+import { PanelBody, PanelRow, DateTimePicker, ToggleControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { dateI18n } from '@wordpress/date';
 import { useEffect } from '@wordpress/element';
@@ -22,27 +22,28 @@ registerBlockType(metadata.name, {
 			dateBadgeBackgroundColor,
 			dateBadgeTextColor,
 			borderBadgeColor,
-			weekdayColor
+			weekdayColor,
+			hideYear
 		} = attributes;
 
-	// Generate unique badge ID if not present
-	useEffect(() => {
-		if (!evtbBadgeId) {
-			const uniqueId = clientId.substring(0, 8);
-			setAttributes({ evtbBadgeId: uniqueId });
-		}
-	}, []);
+		// Generate unique badge ID if not present
+		useEffect(() => {
+			if (!evtbBadgeId) {
+				const uniqueId = clientId.substring(0, 8);
+				setAttributes({ evtbBadgeId: uniqueId });
+			}
+		}, []);
 
-	// Set current date if eventDate is empty (for new date badges)
-	useEffect(() => {
-		if (!eventDate && !context['evtb/eventDate']) {
-			setAttributes({ eventDate: getCurrentDate() });
-		}
-	}, []);
+		// Set current date if eventDate is empty (for new date badges)
+		useEffect(() => {
+			if (!eventDate && !context['evtb/eventDate']) {
+				setAttributes({ eventDate: getCurrentDate() });
+			}
+		}, []);
 
-	// Use parent's date if available
-	const parentDate = context['evtb/eventDate'] || eventDate || getCurrentDate();
-		
+		// Use parent's date if available
+		const parentDate = context['evtb/eventDate'] || eventDate || getCurrentDate();
+
 		// Get parent block ID
 		const parentClientId = useSelect((select) => {
 			const { getBlockParents, getBlock } = select('core/block-editor');
@@ -56,7 +57,7 @@ registerBlockType(metadata.name, {
 			}
 			return null;
 		}, [clientId]);
-		
+
 		// Sync parent values to child attributes
 		useEffect(() => {
 			if (context['evtb/eventDate'] && context['evtb/eventDate'] !== eventDate) {
@@ -64,22 +65,29 @@ registerBlockType(metadata.name, {
 			}
 		}, [context['evtb/eventDate']]);
 
-	// Use CSS Variables (Custom Properties) - Most reliable approach!
-	// Set colors as CSS variables on the wrapper element
-	const blockProps = useBlockProps({
-		className: `evtb-event-date-badge-container${evtbBadgeId ? ` evtb-badge-${evtbBadgeId}` : ''}`,
-		style: {
-			'--evtb-badge-bg': dateBadgeBackgroundColor,
-			'--evtb-badge-text': dateBadgeTextColor,
-			'--evtb-badge-border': borderBadgeColor,
-			'--evtb-badge-weekday': weekdayColor
-		}
-	});
+		// Sync hideYear from global context
+		useEffect(() => {
+			if (context['evtb/hideYear'] !== undefined && context['evtb/hideYear'] !== hideYear) {
+				setAttributes({ hideYear: context['evtb/hideYear'] });
+			}
+		}, [context['evtb/hideYear']]);
+
+		// Use CSS Variables (Custom Properties) - Most reliable approach!
+		// Set colors as CSS variables on the wrapper element
+		const blockProps = useBlockProps({
+			className: `evtb-event-date-badge-container${evtbBadgeId ? ` evtb-badge-${evtbBadgeId}` : ''}`,
+			style: {
+				'--evtb-badge-bg': dateBadgeBackgroundColor,
+				'--evtb-badge-text': dateBadgeTextColor,
+				'--evtb-badge-border': borderBadgeColor,
+				'--evtb-badge-weekday': weekdayColor
+			}
+		});
 
 		// Parse date for display
 		const parseDate = (dateString) => {
 			if (!dateString) return { day: '01', month: 'Jan', year: '0001', weekday: 'MON' };
-			
+
 			try {
 				const date = new Date(dateString);
 				return {
@@ -98,11 +106,11 @@ registerBlockType(metadata.name, {
 		// Handle date change - update both child and parent
 		const handleDateChange = (newDate) => {
 			// Update child attribute and mark as date set by user
-			setAttributes({ 
+			setAttributes({
 				eventDate: newDate,
 				isDateSet: true
 			});
-			
+
 			// Update parent Event Item block's eventDate
 			if (parentClientId) {
 				dispatch('core/block-editor').updateBlockAttributes(
@@ -118,15 +126,20 @@ registerBlockType(metadata.name, {
 					<PanelBody className="evtb-date-settings" title={__('Date Settings', 'events')}>
 						<div style={{ marginBottom: '15px' }}>
 							<strong>{__('Event Date', 'events')}</strong>
+							<div style={{ margin: '10px 0' }}>
+								<ToggleControl
+									label={__('Hide Year', 'events')}
+									checked={hideYear}
+									onChange={(value) => setAttributes({ hideYear: value })}
+									help={__('Toggle to hide or show the year in the date badge', 'events')}
+								/>
+							</div>
 							<DateTimePicker
 								currentDate={parentDate}
 								onChange={handleDateChange}
 								is12Hour={true}
 							/>
 						</div>
-						<p style={{ fontSize: '13px', color: '#FF0000', marginBottom: '10px' }}>
-							<strong>{__('Note:', 'events')}</strong> {__('To hide the year, simply set the year value to 0001 in the year section.', 'events')}
-						</p>
 					</PanelBody>
 
 					<PanelBody title={__('Date Colors', 'events')} initialOpen={false}>
@@ -177,18 +190,18 @@ registerBlockType(metadata.name, {
 					</PanelBody>
 				</InspectorControls>
 
-			<div {...blockProps}>
-				<div className="evtb-border-badge">
-					<div className="evtb-event-date-badge">
-						<span className="evtb-date-day">{dateParts.day}</span>
-						<span className="evtb-date-month">{dateParts.month}</span>
-						{dateParts.year !== '0001' && (
-							<span className="evtb-date-year">{dateParts.year}</span>
-						)}
+				<div {...blockProps}>
+					<div className="evtb-border-badge">
+						<div className="evtb-event-date-badge">
+							<span className="evtb-date-day">{dateParts.day}</span>
+							<span className="evtb-date-month">{dateParts.month}</span>
+							{!hideYear && dateParts.year !== '0001' && (
+								<span className="evtb-date-year">{dateParts.year}</span>
+							)}
+						</div>
 					</div>
+					<span className="evtb-date-weekday">{dateParts.weekday}</span>
 				</div>
-				<span className="evtb-date-weekday">{dateParts.weekday}</span>
-			</div>
 			</>
 		);
 	},
@@ -200,7 +213,8 @@ registerBlockType(metadata.name, {
 			dateBadgeBackgroundColor,
 			dateBadgeTextColor,
 			borderBadgeColor,
-			weekdayColor
+			weekdayColor,
+			hideYear
 		} = attributes;
 
 		const blockProps = useBlockProps.save({
@@ -216,7 +230,7 @@ registerBlockType(metadata.name, {
 		// Parse date for display
 		const parseDate = (dateString) => {
 			if (!dateString) return { day: '01', month: 'Jan', year: '0001', weekday: 'MON' };
-			
+
 			try {
 				const date = new Date(dateString);
 				return {
@@ -238,7 +252,7 @@ registerBlockType(metadata.name, {
 					<div className="evtb-event-date-badge">
 						<span className="evtb-date-day">{dateParts.day}</span>
 						<span className="evtb-date-month">{dateParts.month}</span>
-						{dateParts.year !== '0001' && (
+						{!hideYear && (
 							<span className="evtb-date-year">{dateParts.year}</span>
 						)}
 					</div>

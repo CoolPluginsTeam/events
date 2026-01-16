@@ -3,21 +3,22 @@
     font-family: 'evtbicons';
     src: url('assets/font/evtbicon.eot?52891777');
     src: url('assets/font/evtbicon.eot?52891777#iefix') format('embedded-opentype'),
-         url('assets/font/evtbicon.woff2?52891777') format('woff2'),
-         url('assets/font/evtbicon.woff?52891777') format('woff'),
-         url('assets/font/evtbicon.ttf?52891777') format('truetype'),
-         url('assets/font/evtbicon.svg?52891777#evtbicons') format('svg');
+        url('assets/font/evtbicon.woff2?52891777') format('woff2'),
+        url('assets/font/evtbicon.woff?52891777') format('woff'),
+        url('assets/font/evtbicon.ttf?52891777') format('truetype'),
+        url('assets/font/evtbicon.svg?52891777#evtbicons') format('svg');
     font-weight: normal;
     font-style: normal;
 }
 
 /* Ensure the editor's internal 'block-editor-block-list__layout' doesn't break grid */
-.evtb-events-grid-container > .block-editor-inner-blocks > .block-editor-block-list__layout {
+.evtb-events-grid-container>.block-editor-inner-blocks>.block-editor-block-list__layout {
     display: grid;
     grid-template-columns: repeat(var(--grid-columns, 2), 1fr);
     gap: 25px;
     padding: 10px;
 }
+
 /* ****CARD*** */
 .editor-styles-wrapper .evtb-event-card {
     position: relative;
@@ -25,11 +26,13 @@
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
+
 .editor-styles-wrapper .evtb-event-card .evtb-add-image-block {
     border-bottom: 1px solid rgb(221, 221, 221);
     padding: 10px;
     margin-bottom: 10px;
 }
+
 /* Hide appender button inside event items when blocks are deleted */
 .evtb-event-item .block-list-appender,
 .evtb-event-item .block-editor-button-block-appender,
@@ -47,9 +50,16 @@
 .evtb-event-item .wp-block-buttons .block-editor-button-block-appender {
     display: none !important;
 }
+
+:root :where(.evtb-event-detail.is-layout-flow)>* {
+    margin-block-start: 0px !important;
+    margin-block-end: 0px !important;
+}
+
 .editor-styles-wrapper .block-editor-block-list__block {
     margin: 0px !important;
 }
+
 .editor-styles-wrapper .evtb-event-date-badge-container {
     display: flex;
     flex-direction: column;
@@ -57,17 +67,20 @@
     gap: 1px;
     margin: 0px;
 }
-.editor-styles-wrapper .evtb-card-details{
+
+.editor-styles-wrapper .evtb-card-details {
     display: flex;
-    padding: 8px;
+    padding: 10px;
     pointer-events: none;
-    gap: 10px;
+    gap: 15px;
 }
-.editor-styles-wrapper .evtb-card-details .wp-block-group__inner-container{
+
+.editor-styles-wrapper .evtb-card-details .wp-block-group__inner-container {
     display: flex;
-    gap: 10px;
+    gap: 15px;
 }
-.editor-styles-wrapper .evtb-event-card .evtb-event-detail{
+
+.editor-styles-wrapper .evtb-event-card .evtb-event-detail {
     display: flex;
     flex-direction: column;
     gap: 5px;
@@ -75,9 +88,11 @@
     pointer-events: none;
     cursor: none;
 }
-.editor-styles-wrapper .evtb-event-card .evtb-event-detail .wp-block-group__inner-container{
+
+.editor-styles-wrapper .evtb-event-card .evtb-event-detail .wp-block-group__inner-container {
     display: block;
 }
+
 .editor-styles-wrapper .evtb-event-item .evtb-event-details {
     background-color: var(--evtb-details-bg, #ffffff);
 }
@@ -87,6 +102,7 @@
     padding: 3px;
     border: 1px solid var(--evtb-badge-border, #00000040);
 }
+
 .editor-styles-wrapper .evtb-event-date-badge {
     padding: 7px 14px;
     border-radius: 4px;
@@ -97,6 +113,7 @@
     background-color: var(--evtb-badge-bg, #2667FF);
     color: var(--evtb-badge-text, #ffffff);
 }
+
 .editor-styles-wrapper .evtb-date-weekday {
     font-size: 12px;
     font-weight: 500;
@@ -104,12 +121,14 @@
     letter-spacing: 0.5px;
     color: var(--evtb-badge-weekday, #000000);
 }
+
 .editor-styles-wrapper .evtb-date-day {
     font-size: 21px;
     font-weight: 700;
     line-height: 1;
     color: var(--evtb-badge-text, #ffffff);
 }
+
 .editor-styles-wrapper .evtb-date-month {
     font-size: 11px;
     font-weight: 600;
@@ -118,12 +137,14 @@
     display: block;
     color: var(--evtb-badge-text, #ffffff);
 }
+
 .editor-styles-wrapper .evtb-date-year {
     font-size: 10px;
     font-weight: 500;
     display: block;
     margin-top: 2px;
 }
+
 .editor-styles-wrapper .evtb-event-details-inner .evtb-event-time {
     font-size: 14px;
     display: flex;
@@ -131,6 +152,7 @@
     gap: 1px;
     margin: 0px !important;
 }
+
 .editor-styles-wrapper .evtb-event-details-inner .evtb-event-time:before {
     content: '\e803';
     font-family: 'evtbicons';
@@ -139,18 +161,22 @@
     display: inline-block;
     margin-right: 5px;
 }
+
 .editor-styles-wrapper .evtb-event-details-inner .evtb-event-title {
     font-size: 18px;
     font-weight: 500;
 }
+
 .editor-styles-wrapper .evtb-event-details-inner .evtb-event-location {
     font-size: 15px;
     font-weight: 400;
 }
+
 .editor-styles-wrapper .evtb-event-details-inner .evtb-price-read-more p {
     font-size: 15px;
     font-weight: 600;
 }
+
 .editor-styles-wrapper .evtb-event-details-inner .evtb-price-read-more {
     display: flex;
     align-items: center;
@@ -158,6 +184,7 @@
     pointer-events: none;
     cursor: none;
 }
+
 .editor-styles-wrapper .evtb-event-details-inner .evtb-price-read-more .wp-block-group__inner-container {
     display: flex;
     align-items: center;
@@ -165,43 +192,53 @@
     pointer-events: none;
     cursor: none;
 }
+
 .editor-styles-wrapper .evtb-price-read-more .evtb-event-read-more div {
     padding: 9px 16px;
     line-height: 14px;
     font-size: 14px;
 }
+
 .editor-styles-wrapper .evtb-event-image-wrap {
     width: 100%;
     position: relative;
 }
+
 .editor-styles-wrapper .evtb-event-image-wrap figure {
     margin: 0;
 }
-.editor-styles-wrapper .evtb-event-image-wrap figure img{
+
+.editor-styles-wrapper .evtb-event-image-wrap figure img {
     width: 100%;
+    display: block;
 }
+
 /* Let WordPress image block handle its own dimensions in editor */
 .editor-styles-wrapper .evtb-event-image-wrap .wp-block-image {
     margin: 0;
 }
+
 .editor-styles-wrapper .evtb-events-grid-container .evtb-event-image-block .components-placeholder {
     min-height: 200px;
     padding: 7px;
     gap: 5px;
     box-shadow: inset 0 0 0 1px #d9d9d9;
 }
+
 /* Support for aspect ratio when set by WordPress in editor */
 .editor-styles-wrapper .evtb-event-image-wrap figure[style*="aspect-ratio"] {
     overflow: hidden;
 }
+
 /* BLOCK APPENDER & INSERTER */
 
-.editor-styles-wrapper .evtb-events-grid-container .block-editor-block-list__layout > .block-list-appender {
+.editor-styles-wrapper .evtb-events-grid-container .block-editor-block-list__layout>.block-list-appender {
     display: grid;
     grid-column: auto;
     position: relative !important;
     width: 100%;
 }
+
 .editor-styles-wrapper .evtb-events-grid-container .block-editor-button-block-appender {
     width: 100%;
     height: 100%;
@@ -209,11 +246,13 @@
     box-shadow: none;
     border-radius: 8px;
 }
+
 .editor-styles-wrapper .evtb-events-grid-container .block-editor-button-block-appender svg {
     width: 45px;
     height: 45px;
     fill: #abaff5;
 }
+
 .editor-styles-wrapper .evtb-events-grid-container .block-editor-button-block-appender::after {
     content: 'Add Event';
     color: #abaff5;
@@ -221,31 +260,38 @@
     font-weight: 600;
     letter-spacing: 0.5px;
 }
-.evtb-date-settings .components-datetime__time > fieldset:first-of-type {
+
+.evtb-date-settings .components-datetime__time>fieldset:first-of-type {
     display: none;
 }
-.evtb-start-time-input, .evtb-end-time-input {
+
+.evtb-start-time-input,
+.evtb-end-time-input {
     margin-bottom: 15px;
 }
-.evtb-start-time-input input, .evtb-end-time-input input {
+
+.evtb-start-time-input input,
+.evtb-end-time-input input {
     width: 100%;
-	padding: 8px;
-	margin-top: 8px;
-	border: 1px solid #ddd; 
-	border-radius: 4px;
-	cursor: pointer !important;
+    padding: 8px;
+    margin-top: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer !important;
 }
-.evtb-date-settings .components-datetime__time .components-datetime__time-wrapper .components-datetime__time-field{
+
+.evtb-date-settings .components-datetime__time .components-datetime__time-wrapper .components-datetime__time-field {
     margin-bottom: 0px;
 }
+
 @media (max-width: 1024px) {
-    .evtb-events-grid-container > .block-editor-inner-blocks > .block-editor-block-list__layout {
+    .evtb-events-grid-container>.block-editor-inner-blocks>.block-editor-block-list__layout {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
 @media (max-width: 600px) {
-    .evtb-events-grid-container > .block-editor-inner-blocks > .block-editor-block-list__layout {
+    .evtb-events-grid-container>.block-editor-inner-blocks>.block-editor-block-list__layout {
         grid-template-columns: 1fr;
     }
 }

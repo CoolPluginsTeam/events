@@ -4,7 +4,7 @@
  */
 import { registerBlockType } from '@wordpress/blocks';
 import { InnerBlocks, InspectorControls, useBlockProps } from '@wordpress/block-editor';
-import { PanelBody, __experimentalNumberControl as NumberControl } from '@wordpress/components';
+import { PanelBody, ToggleControl, __experimentalNumberControl as NumberControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { getDefaultImages } from '../shared/helpers';
 import metadata from '../../blocks/events-grid/block.json';
@@ -12,7 +12,7 @@ import metadata from '../../blocks/events-grid/block.json';
 // Register Events Grid Block using block.json metadata
 registerBlockType(metadata.name, {
 	edit: ({ attributes, setAttributes }) => {
-		const { columns } = attributes;
+		const { columns, hideYear } = attributes;
 		const blockProps = useBlockProps({
 			className: 'evtb-events-grid-container',
 			style: { '--grid-columns': columns }
@@ -33,6 +33,12 @@ registerBlockType(metadata.name, {
 							help={__('Number of columns in the grid (1-3)', 'evtb')}
 							__next40pxDefaultSize={true}
 						/>
+						<ToggleControl
+							label={__('Hide Year (All Events)', 'events')}
+							checked={hideYear}
+							onChange={(value) => setAttributes({ hideYear: value })}
+							help={__('Toggle to hide or show the year in all event date badges', 'events')}
+						/>
 					</PanelBody>
 				</InspectorControls>
 				<div {...blockProps}>
@@ -42,21 +48,21 @@ registerBlockType(metadata.name, {
 							['evtb/event-item', {
 								eventImage: defaultImages[0],
 								eventImageAlt: 'Crazy DJ Experience Santa Cruz',
-								eventDate: '0001-01-06',
+								eventDate: '2026-01-06',
 								isDefault: true,
 								hasImage: true
 							}],
 							['evtb/event-item', {
 								eventImage: defaultImages[1],
 								eventImageAlt: 'Cute Girls Rock Band Performance',
-								eventDate: '0001-04-04',
+								eventDate: '2026-04-04',
 								isDefault: true,
 								hasImage: true
 							}],
 							['evtb/event-item', {
 								eventImage: defaultImages[2],
 								eventImageAlt: 'Free Food Distribution At Mumbai',
-								eventDate: '0001-06-08',
+								eventDate: '2026-06-08',
 								isDefault: true,
 								hasImage: true
 							}]
