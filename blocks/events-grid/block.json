@@ -21,10 +21,15 @@
 		"hideYear": {
 			"type": "boolean",
 			"default": true
+		},
+		"hidePastEvents": {
+			"type": "boolean",
+			"default": false
 		}
 	},
 	"providesContext": {
-		"evtb/hideYear": "hideYear"
+		"evtb/hideYear": "hideYear",
+		"evtb/hidePastEvents": "hidePastEvents"
 	},
 	"supports": {
 		"html": false,

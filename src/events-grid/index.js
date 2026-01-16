@@ -12,7 +12,7 @@ import metadata from '../../blocks/events-grid/block.json';
 // Register Events Grid Block using block.json metadata
 registerBlockType(metadata.name, {
 	edit: ({ attributes, setAttributes }) => {
-		const { columns, hideYear } = attributes;
+		const { columns, hideYear, hidePastEvents } = attributes;
 		const blockProps = useBlockProps({
 			className: 'evtb-events-grid-container',
 			style: { '--grid-columns': columns }
@@ -38,6 +38,12 @@ registerBlockType(metadata.name, {
 							checked={hideYear}
 							onChange={(value) => setAttributes({ hideYear: value })}
 							help={__('Toggle to hide or show the year in all event date badges', 'events')}
+						/>
+						<ToggleControl
+							label={__('Hide Past Events', 'events')}
+							checked={hidePastEvents}
+							onChange={(value) => setAttributes({ hidePastEvents: value })}
+							help={__('Automatically hide events that have passed', 'events')}
 						/>
 					</PanelBody>
 				</InspectorControls>

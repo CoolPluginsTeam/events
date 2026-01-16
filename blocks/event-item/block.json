@@ -7,9 +7,15 @@
 	"category": "widgets",
 	"icon": "plus",
 	"description": "Individual event card with details.",
-	"keywords": ["event", "card", "item"],
+	"keywords": [
+		"event",
+		"card",
+		"item"
+	],
 	"textdomain": "events-block",
-	"parent": ["evtb/events-grid"],
+	"parent": [
+		"evtb/events-grid"
+	],
 	"attributes": {
 		"evtbBlockId": {
 			"type": "string",
@@ -57,6 +63,9 @@
 		"evtb/eventStartTime": "eventStartTime",
 		"evtb/eventEndTime": "eventEndTime"
 	},
+	"usesContext": [
+		"evtb/hidePastEvents"
+	],
 	"supports": {
 		"html": false,
 		"reusable": false,

@@ -16,7 +16,7 @@ import metadata from '../../blocks/event-item/block.json';
 
 // CHILD BLOCK: Event Item using block.json metadata
 registerBlockType(metadata.name, {
-	edit: ({ attributes, setAttributes, clientId }) => {
+	edit: ({ attributes, setAttributes, clientId, context }) => {
 		const {
 			evtbBlockId,
 			eventImage,
@@ -120,8 +120,36 @@ registerBlockType(metadata.name, {
 			}
 		};
 
+
+		// Check if event is past
+		const hidePastEvents = context['evtb/hidePastEvents'];
+		let isPast = false;
+
+		if (hidePastEvents && eventDate) {
+			try {
+				const currentDateTime = new Date();
+				let eventDateTime = new Date(eventDate);
+
+				// Add time if available
+				if (eventEndTime) {
+					const [hours, minutes] = eventEndTime.split(':');
+					eventDateTime.setHours(hours, minutes);
+				} else {
+					// End of day if no time
+					eventDateTime.setHours(23, 59, 59);
+				}
+
+				if (eventDateTime < currentDateTime) {
+					isPast = true;
+				}
+			} catch (e) {
+				// Ignore date parse errors
+			}
+		}
+
 		const blockProps = useBlockProps({
-			className: `evtb-event-item${evtbBlockId ? ` evtb-block-${evtbBlockId}` : ''}`
+			className: `evtb-event-item${evtbBlockId ? ` evtb-block-${evtbBlockId}` : ''}`,
+			style: isPast ? { opacity: 0.6, filter: 'grayscale(1)' } : {}
 		});
 
 		// Default event data (for first 3 events)
