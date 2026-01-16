@@ -16,8 +16,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 // phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 // All variables below are local to this render callback, not global variables
 // Get attributes
-$evtb_badge_id = isset( esc_attr( $attributes['evtbBadgeId'] ) ) ? esc_attr( $attributes['evtbBadgeId'] ) : '';
-$evtb_event_date = isset( esc_attr( $attributes['eventDate'] ) ) ? esc_attr( $attributes['eventDate'] ) : '';
+$evtb_badge_id   = isset( $attributes['evtbBadgeId'] ) ? sanitize_text_field( $attributes['evtbBadgeId'] ) : '';
+$evtb_event_date = isset( $attributes['eventDate'] ) ? sanitize_text_field( $attributes['eventDate'] ) : '';
 
 // If date not set by user, use current date as default (same as editor)
 if ( empty( $evtb_event_date ) ) {
@@ -25,10 +25,10 @@ if ( empty( $evtb_event_date ) ) {
 }
 
 // Get colors
-$evtb_badge_bg = isset( esc_attr( $attributes['dateBadgeBackgroundColor'] ) ) ? esc_attr( $attributes['dateBadgeBackgroundColor'] ) : '#2667FF';
-$evtb_badge_text = isset( esc_attr( $attributes['dateBadgeTextColor'] ) ) ? esc_attr( $attributes['dateBadgeTextColor'] ) : '#ffffff';
-$evtb_border_color = isset( esc_attr( $attributes['borderBadgeColor'] ) ) ? esc_attr( $attributes['borderBadgeColor'] ) : '#00000040';
-$evtb_weekday_color = isset( esc_attr( $attributes['weekdayColor'] ) ) ? esc_attr( $attributes['weekdayColor'] ) : '#000000';
+$evtb_badge_bg = isset( $attributes['dateBadgeBackgroundColor'] ) ? sanitize_text_field( $attributes['dateBadgeBackgroundColor'] ) : '#2667FF';
+$evtb_badge_text = isset( $attributes['dateBadgeTextColor'] ) ? sanitize_text_field( $attributes['dateBadgeTextColor'] ) : '#ffffff';
+$evtb_border_color = isset( $attributes['borderBadgeColor'] ) ? sanitize_text_field( $attributes['borderBadgeColor'] ) : '#00000040';
+$evtb_weekday_color = isset( $attributes['weekdayColor'] ) ? sanitize_text_field( $attributes['weekdayColor'] ) : '#000000';
 
 // Parse date - Always use the date (current or user-set)
 $timestamp = strtotime( $evtb_event_date );
@@ -86,7 +86,7 @@ echo $wrapper_attributes;
 		<div class="evtb-event-date-badge">
 			<span class="evtb-date-day"><?php echo esc_html( $evtb_date_parts['day'] ); ?></span>
 			<span class="evtb-date-month"><?php echo esc_html( $evtb_date_parts['month'] ); ?></span>
-			<?php if ( ! $evtb_hide_year && $evtb_date_parts['year'] !== '0001' ) : ?>
+			<?php if ( $evtb_date_parts['year'] !== '0001' ) : ?>
 				<span class="evtb-date-year"><?php echo esc_html( $evtb_date_parts['year'] ); ?></span>
 			<?php endif; ?>
 		</div>
