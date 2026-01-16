@@ -48,9 +48,9 @@ final class EVTB_Events_Block {
 	 */
 	private function __construct() {
 		$this->evtb_include_files();
-		$this->evtb_enqueue_assets();
 		register_activation_hook( EVENTS_BLOCK_FILE, array( $this, 'evtb_plugin_activate' ) );
 		register_deactivation_hook( EVENTS_BLOCK_FILE, array( $this, 'evtb_plugin_deactivate' ) );
+		add_action( 'init', [ $this, 'evtb_enqueue_assets' ] );
 	}
 	
 	/**
@@ -58,56 +58,29 @@ final class EVTB_Events_Block {
 	 * Single build file registers all blocks
 	 */
 	public function evtb_enqueue_assets() {
-		// Register combined block script (all blocks in one file)
-		add_action( 'init', function() {
-			$asset_file = EVENTS_BLOCK_PATH . 'build/index.asset.php';
-			$asset = file_exists( $asset_file ) ? require $asset_file : array(
-				'dependencies' => array(),
-				'version' => EVENTS_BLOCK_VERSION
-			);
-			
-			// Single script file for all blocks
-			wp_register_script(
-				'evtb-events-blocks',
-				EVENTS_BLOCK_URL . 'build/index.js',
-				$asset['dependencies'],
-				$asset['version'],
-				true
-			);
-			
-			// Pass plugin data to all blocks
-			wp_localize_script( 'evtb-events-blocks', 'evtbPluginData', array(
-				'pluginUrl' => EVENTS_BLOCK_URL,
-				'images' => array(
-					'crazyDJ' => EVENTS_BLOCK_URL . 'assets/images/crazy-DJ-experience-santa-cruz.webp',
-					'rockBand' => EVENTS_BLOCK_URL . 'assets/images/cute-girls-rock-band-performance.webp',
-					'foodDistribution' => EVENTS_BLOCK_URL . 'assets/images/free-food-distribution-at-mumbai.webp',
-				)
-			) );
-			
-		// Shared styles
-		wp_register_style(
-			'evtb-events-editor',
-			EVENTS_BLOCK_URL . 'editor.css',
-			array(),
-			EVENTS_BLOCK_VERSION
+
+		$asset_file = EVENTS_BLOCK_PATH . 'build/index.asset.php';
+		$asset = file_exists( $asset_file ) ? require $asset_file : array(
+			'dependencies' => array(),
+			'version' => EVENTS_BLOCK_VERSION
 		);
-		
-		wp_register_style(
-			'evtb-events-style',
-			EVENTS_BLOCK_URL . 'style.css',
-			array(),
-			EVENTS_BLOCK_VERSION
+	
+		wp_register_script(
+			'evtb-events-blocks',
+			EVENTS_BLOCK_URL . 'build/index.js',
+			$asset['dependencies'],
+			$asset['version'],
+			true
 		);
-		
-		// Register icon font (loaded via block.json)
-		wp_register_style(
-			'evtb-icons',
-			EVENTS_BLOCK_URL . 'assets/css/evtb-icons.css',
-			array(),
-			EVENTS_BLOCK_VERSION
-		);
-	} );
+	
+		wp_localize_script( 'evtb-events-blocks', 'evtbPluginData', array(
+			'pluginUrl' => EVENTS_BLOCK_URL,
+			'images' => array(
+				'crazyDJ' => EVENTS_BLOCK_URL . 'assets/images/crazy-DJ-experience-santa-cruz.webp',
+				'rockBand' => EVENTS_BLOCK_URL . 'assets/images/cute-girls-rock-band-performance.webp',
+				'foodDistribution' => EVENTS_BLOCK_URL . 'assets/images/free-food-distribution-at-mumbai.webp',
+			)
+		) );
 	}
 	
 	/**

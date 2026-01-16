@@ -25,6 +25,6 @@
 		}
 	},
 	"editorScript": "evtb-events-blocks",
-	"editorStyle": ["evtb-events-editor", "evtb-icons"],
-	"style": ["evtb-events-style", "evtb-icons"]
+	"editorStyle": ["file:../../editor.css", "file:../../assets/css/evtb-icons.css"],
+	"style": ["file:../../style.css", "file:../../assets/css/evtb-icons.css"]
 }
