@@ -85,41 +85,29 @@ final class EVTB_Events_Block {
 				)
 			) );
 			
-			// Shared styles
-			wp_register_style(
-				'evtb-events-editor',
-				EVENTS_BLOCK_URL . 'editor.css',
-				array(),
-				EVENTS_BLOCK_VERSION
-			);
-			
-			wp_register_style(
-				'evtb-events-style',
-				EVENTS_BLOCK_URL . 'style.css',
-				array(),
-				EVENTS_BLOCK_VERSION
-			);
-		} );
+		// Shared styles
+		wp_register_style(
+			'evtb-events-editor',
+			EVENTS_BLOCK_URL . 'editor.css',
+			array(),
+			EVENTS_BLOCK_VERSION
+		);
 		
-		// Enqueue icon font for editor
-		add_action( 'enqueue_block_editor_assets', function() {
-			wp_enqueue_style( 
-				'evtb-icons',
-				EVENTS_BLOCK_URL . 'assets/css/evtb-icons.css',
-				array(),
-				EVENTS_BLOCK_VERSION
-			);
-		} );
+		wp_register_style(
+			'evtb-events-style',
+			EVENTS_BLOCK_URL . 'style.css',
+			array(),
+			EVENTS_BLOCK_VERSION
+		);
 		
-		// Enqueue icon font for frontend
-		add_action( 'wp_enqueue_scripts', function() {
-			wp_enqueue_style( 
-				'evtb-icons',
-				EVENTS_BLOCK_URL . 'assets/css/evtb-icons.css',
-				array(),
-				EVENTS_BLOCK_VERSION
-			);
-		} );
+		// Register icon font (loaded via block.json)
+		wp_register_style(
+			'evtb-icons',
+			EVENTS_BLOCK_URL . 'assets/css/evtb-icons.css',
+			array(),
+			EVENTS_BLOCK_VERSION
+		);
+	} );
 	}
 	
 	/**

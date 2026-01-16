@@ -62,7 +62,7 @@
 		}
 	},
 	"editorScript": "evtb-events-blocks",
-	"editorStyle": "evtb-events-editor",
-	"style": "evtb-events-style",
+	"editorStyle": ["evtb-events-editor", "evtb-icons"],
+	"style": ["evtb-events-style", "evtb-icons"],
 	"render": "file:./render.php"
 }
