@@ -127,14 +127,14 @@ final class EVTB_Events_Block {
 	 * Saves plugin version and install dates
 	 */
 	public function evtb_plugin_activate() {
-		update_option( 'events-v', EVENTS_BLOCK_VERSION );
-		update_option( 'events_activation_time', gmdate( 'Y-m-d h:i:s' ) );
+		update_option( 'evtb_version', EVENTS_BLOCK_VERSION );
+		update_option( 'evtb_activation_time', gmdate( 'Y-m-d h:i:s' ) );
 
-		if (!get_option( 'events_initial_save_version' ) ) {
-			add_option( 'events_initial_save_version', EVENTS_BLOCK_VERSION );
+		if (!get_option( 'evtb_initial_save_version' ) ) {
+			add_option( 'evtb_initial_save_version', EVENTS_BLOCK_VERSION );
 		}
-		if(!get_option( 'events-install-date' ) ) {
-			add_option( 'events-install-date', gmdate('Y-m-d h:i:s') );
+		if(!get_option( 'evtb_install_date' ) ) {
+			add_option( 'evtb_install_date', gmdate('Y-m-d h:i:s') );
 		}
 	}
 
