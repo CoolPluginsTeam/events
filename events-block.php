@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Events Blockssss
+ * Plugin Name: Events Block
  * Description: Events Gutenberg Block to Create Events Grid In Block Editor.
  * Author: Cool Plugins
  * Author URI: https://coolplugins.net/
@@ -21,9 +21,27 @@ final class EVTB_Events_Block {
 		return self::$instance;
 	}
 	private function __construct() {
+
+		register_activation_hook( EVENTS_BLOCK_FILE, array( $this, 'evtb_plugin_activate' ) );
 		add_action( 'init', array( $this, 'init' ) );
 		add_action( 'enqueue_block_editor_assets', array( $this, 'editor_assets' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'frontend_assets' ) );
+	}
+	/**
+	 * Plugin Activation Hook
+	 * Saves plugin version and install dates
+	 */
+	public function evtb_plugin_activate() {
+		
+		update_option( 'evtb_version', EVENTS_BLOCK_VERSION );
+		update_option( 'evtb_activation_time', gmdate( 'Y-m-d h:i:s' ) );
+
+		if (!get_option( 'evtb_initial_save_version' ) ) {
+			add_option( 'evtb_initial_save_version', EVENTS_BLOCK_VERSION );
+		}
+		if(!get_option( 'evtb_install_date' ) ) {
+			add_option( 'evtb_install_date', gmdate('Y-m-d h:i:s') );
+		}
 	}
 	public function init() {
 		$asset = file_exists( EVENTS_BLOCK_PATH . 'build/index.asset.php' ) ? require EVENTS_BLOCK_PATH . 'build/index.asset.php' : array( 'dependencies' => array(), 'version' => EVENTS_BLOCK_VERSION );

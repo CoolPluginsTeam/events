@@ -13,7 +13,9 @@ $hide_past = ! empty( $block->context['evtb/hidePastEvents'] );
 $should_render = true;
 
 // Debugging (Remove in production)
-// echo "<!-- DEBUG: HidePast=" . ($hide_past?'YES':'NO') . " Now={$d_now} EventDate={$d_date} EndTime={$d_end} -->";
+$d_date = $attributes['eventDate'] ?? '';
+$d_end = $attributes['eventEndTime'] ?? '';
+$d_now = current_datetime()->format('Y-m-d H:i:s P');
 
 if ( $hide_past ) {
 	$event_date = $attributes['eventDate'] ?? '';
