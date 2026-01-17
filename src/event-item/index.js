@@ -134,6 +134,11 @@ registerBlockType(metadata.name, {
 				if (eventEndTime) {
 					const [hours, minutes] = eventEndTime.split(':');
 					eventDateTime.setHours(hours, minutes);
+
+					// Handle overnight events (End Time < Start Time)
+					if (eventStartTime && eventEndTime < eventStartTime) {
+						eventDateTime.setDate(eventDateTime.getDate() + 1);
+					}
 				} else {
 					// End of day if no time
 					eventDateTime.setHours(23, 59, 59);

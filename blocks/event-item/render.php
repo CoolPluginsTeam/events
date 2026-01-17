@@ -25,11 +25,18 @@ if ( $hide_past ) {
 			$event_date = substr( $event_date, 0, 10 );
 		}
 
+		$start_time = ! empty( $attributes['eventStartTime'] ) ? $attributes['eventStartTime'] : '00:00';
 		$end_time = ! empty( $attributes['eventEndTime'] ) ? $attributes['eventEndTime'] : '23:59:59';
 		$event_dt_str = $event_date . ' ' . $end_time;
 		
 		// Create DateTime object with site's timezone
 		$event_dt = date_create( $event_dt_str, wp_timezone() );
+
+		// Handle overnight events (End Time < Start Time) usually means next day
+		if ( $event_dt && $end_time < $start_time ) {
+			$event_dt->modify( '+1 day' );
+		}
+
 		$now = current_datetime(); // Returns DateTimeImmutable with site's timezone
 		
 		if ( $event_dt && $now && $event_dt < $now ) {
@@ -51,16 +58,10 @@ if ( $should_render ) :
 		echo $wrapper_attributes;
 		?>
 	>
-		<div class="evtb-event-card">
-			<div class="evtb-event-details">
-				<div class="evtb-event-details-inner">
 					<?php
 					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- InnerBlocks content is trusted
 					echo $content;
 					?>
-				</div>
-			</div>
-		</div>
 	</div>
 	<?php
 endif;
