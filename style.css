@@ -21,7 +21,6 @@
     grid-template-columns: repeat(var(--columns, 2), 1fr);
     gap: 30px;
     padding: 10px;
-    justify-items: end;
 }
 
 .wp-block-group.evtb-event-detail.is-layout-flow.wp-block-group-is-layout-flow,
@@ -47,7 +46,7 @@
     margin: 0;
 }
 
-.evtb-front-view .evtb-event-image figure img {
+.evtb-front-view .evtb-event-image-wrap figure img {
     width: 100%;
 }
 

@@ -45,11 +45,19 @@ if ( $should_render ) :
 		'style' => '--evtb-details-bg: ' . esc_attr($bg)
 	));
 	?>
-	<div <?php echo $wrapper_attributes; ?>>
+	<div 
+		<?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- get_block_wrapper_attributes() already escaped by WordPress
+		echo $wrapper_attributes;
+		?>
+	>
 		<div class="evtb-event-card">
 			<div class="evtb-event-details">
 				<div class="evtb-event-details-inner">
-					<?php echo $content; ?>
+					<?php
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- InnerBlocks content is trusted
+					echo $content;
+					?>
 				</div>
 			</div>
 		</div>
