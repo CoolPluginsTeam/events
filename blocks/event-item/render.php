@@ -4,17 +4,14 @@ defined( 'ABSPATH' ) || exit;
 $id = isset( $attributes['evtbBlockId'] ) ? sanitize_key( $attributes['evtbBlockId'] ) : '';
 $bg = isset( $attributes['detailsBackgroundColor'] ) ? sanitize_hex_color( $attributes['detailsBackgroundColor'] ) : '#ffffff';
 
-// Output inline styles with higher specificity
-$css = $id ? '<style>.evtb-front-view .evtb-block-' . esc_html( $id ) . ' .evtb-event-details{background-color:' . esc_attr( $bg ) . ' !important;}</style>' : '';
-echo $css; // phpcs:ignore
-
 // Check for Hide Past Events context
 $hide_past = ! empty( $block->context['evtb/hidePastEvents'] );
 $should_render = true;
 
 // Debugging (Remove in production)
 $d_date = $attributes['eventDate'] ?? '';
-$d_end = $attributes['eventEndTime'] ?? '';
+$start_time = ! empty( $attributes['eventStartTime'] ) ? $attributes['eventStartTime'] : '00:00';
+$end_time = ! empty( $attributes['eventEndTime'] ) ? $attributes['eventEndTime'] : '23:59:59';
 $d_now = current_datetime()->format('Y-m-d H:i:s P');
 
 if ( $hide_past ) {
