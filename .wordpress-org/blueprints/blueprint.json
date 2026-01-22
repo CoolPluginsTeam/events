@@ -17,16 +17,6 @@
         "password": "password"
       },
       {
-        "step": "installPlugin",
-        "pluginData": {
-          "resource": "wordpress.org/plugins",
-          "slug": "events-block"
-        },
-        "options": {
-          "activate": true
-        }
-      },
-      {
         "step": "importWxr",
         "file": {
           "resource": "url",
