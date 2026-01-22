@@ -28,6 +28,14 @@ Simply insert the Events block, fill in the event details, and your event will a
 * Lightweight & Easy to Use.
 * Fully Responsive.
 
+Events Block is a fully open-source plugin. You can view the complete source code on GitHub - https://github.com/CoolPluginsTeam/events-block/
+
+== Screenshots ==
+
+1. Events Grid Block Demo.
+2. Easy to use block settings.
+3. Hide Past Events.
+
 == Installation ==
 - Go to **Plugins > Add New** in your WordPress admin area.
 - Search for **"Events block"**.
@@ -58,5 +66,5 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
-= 1.0 - 17 January 2026 =
+= 1.0 - 22 January 2026 =
 * Initial release
