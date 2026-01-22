@@ -32,10 +32,10 @@ Events Block is a fully open-source plugin. You can view the complete source cod
 
 == Screenshots ==
 
-1. Events Grid Block Demo.
-2. Hide Past Events.
-3. Easy to use block settings.
-4. Hide Year.
+1. Events Grid Block Demo
+2. Hide Past Events
+3. Easy to use block settings
+4. Hide Year
 
 == Installation ==
 - Go to **Plugins > Add New** in your WordPress admin area.
