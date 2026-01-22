@@ -1,0 +1,42 @@
+{
+    "landingPage": "/wp-admin/post.php?post=73&action=edit",
+    "preferredVersions": {
+      "php": "8.2",
+      "wp": "latest"
+    },
+    "phpExtensionBundles": [
+      "kitchen-sink"
+    ],
+    "features": {
+      "networking": true
+    },
+    "steps": [
+      {
+        "step": "login",
+        "username": "admin",
+        "password": "password"
+      },
+      {
+        "step": "installPlugin",
+        "pluginData": {
+          "resource": "wordpress.org/plugins",
+          "slug": "events-block"
+        },
+        "options": {
+          "activate": true
+        }
+      },
+      {
+        "step": "importWxr",
+        "file": {
+          "resource": "url",
+          "url": "https://raw.githubusercontent.com/CoolPluginsTeam/wp-playground-repo/main/event/events-block.xml"
+        }
+      },
+      {
+        "step": "runPHP",
+        "code": "<?php\nob_start();\nrequire_once '/wordpress/wp-load.php';\nob_end_clean();\n\n// Set 'Events Block' as homepage\n$page = get_page_by_title('Events Block Demo');\nif ($page) {\n  update_option('show_on_front', 'page');\n  update_option('page_on_front', $page->ID);\n  echo \"✅ 'Events Block Demo' page set as homepage.\";\n} else {\n  echo \"❌ 'Events Block Demo' page not found.\";\n}"
+      }
+    ]
+  }
+  
