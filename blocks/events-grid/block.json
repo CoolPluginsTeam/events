@@ -1,0 +1,48 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "evtb/events-grid",
+	"version": "1.0.0",
+	"title": "Events Block",
+	"category": "widgets",
+	"icon": "grid-view",
+	"description": "Display multiple events in a responsive grid layout.",
+	"keywords": [
+		"event",
+		"events block",
+		"grid"
+	],
+	"textdomain": "events-block",
+	"attributes": {
+		"columns": {
+			"type": "number",
+			"default": 2
+		},
+		"hideYear": {
+			"type": "boolean",
+			"default": true
+		},
+		"hidePastEvents": {
+			"type": "boolean",
+			"default": false
+		}
+	},
+	"providesContext": {
+		"evtb/hideYear": "hideYear",
+		"evtb/hidePastEvents": "hidePastEvents"
+	},
+	"supports": {
+		"html": false,
+		"align": [
+			"wide",
+			"full"
+		],
+		"spacing": {
+			"margin": true,
+			"padding": true
+		}
+	},
+	"editorScript": "evtb-events-blocks",
+	"editorStyle": "evtb-events-editor",
+	"style": "evtb-events-style"
+}

@@ -1,4 +1,4 @@
-=== Events ===
+=== Events Block ===
 Contributors:coolplugins,narinder-singh,satindersingh
 Tags: block, event, events block, events, gutenberg
 Tested up to: 6.9
@@ -8,31 +8,32 @@ Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Create a dedicated Event card directly inside Gutenberg.
+Create and display a dedicated Event block directly inside Gutenberg.
 
 == Description ==
 
-The **Events** is a powerful plugin that allows you to easily add and display events on your WordPress site using the Gutenberg editor. 
-The plugin adds a dedicated Events Block inside the Gutenberg editor, so you can insert an event card anywhere on your page or post and customize it instantly.
+The **Events block** is a powerful plugin that allows you to easily add and display **Events block** using a dedicated Gutenberg block. 
+
+Simply insert the Events block, fill in the event details, and your event will appear instantly in a grid layout, without using any shortcodes or complex settings.
 
 ### Key Features
 * **Dedicated Events Block:** Provides a ready-to-use event block inside the block editor. Just add it to your page and enter event details.
 * **Add Event Title:** Enter a title for the event to tell users what your event is about.
+* **Event Description:** Write a short or detailed description of your event to explain what it is about.
 * **Event Date Selection:** Select the event date from a simple calendar pop-up.
 * **Event Location:** Add the location or venue of your event in a dedicated field.
-* **Event Description:** Write a short or detailed description of your event to explain what it is about.
-* **Integrate Image:** Make your event card more attractive by uploading an image related to your event.
-* **Labels (When & Where):** Change the "When" and "Where" labels to any text you want.
-* **Customization:** Easily customize the background and text color of your event card according to the website theme.
+* **Integrate Image:** Make your events more attractive by uploading an image related to your event.
+* **Read More Button:** Display a **"Read More"** button on the event block that redirects visitors to a full event page, or any custom link.
+* **Customization:** Easily customize the background and text color of your dedicated event blocks according to the website theme.
 * Lightweight & Easy to Use.
 * Fully Responsive.
 
 == Installation ==
 - Go to **Plugins > Add New** in your WordPress admin area.
-- Search for **"Events"**.
+- Search for **"Events block"**.
 - Install & Activate plugin.
 - Next, create or edit a **page/post** where you want to show an event.
-- Click the **+ Add Block** button and search for **"Event"**.
+- Click the **+ Add Block** button and search for **"Events block"**.
 - Add the block and enter your event details.
 
 == Frequently Asked Questions ==
@@ -49,13 +50,13 @@ No coding is required. The plugin is built for beginners. Just insert the block 
 = Where can I display the event block? =
 You can add it to any page or post inside the Gutenberg editor.
 
-= Can I change the labels "When" and "Where"? =
-Yes. From the block settings on the right side, you can edit the text for both **"When"** and **"Where"** labels as per requirements.
+= Can I link the event to another page or website? =
+Yes. You can use the **Read More** button to link your event to a detailed page, registration form, or any external URL.
 
 = How can I report security bugs? =
-You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities [Report a security vulnerability](https://patchstack.com/database/vdp/template-events-calendar).
+You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team helps validate, triage, and handle any security vulnerabilities [Report a security vulnerability](https://patchstack.com/database/vdp/template-events-calendar).
 
 == Changelog ==
 
-= 1.0 - 05 December 2025 =
+= 1.0 - 17 January 2026 =
 * Initial release
