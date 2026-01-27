@@ -24,7 +24,7 @@ final class EVTB_Events_Block {
 
 		register_activation_hook( EVENTS_BLOCK_FILE, array( $this, 'evtb_plugin_activate' ) );
 		add_action( 'init', array( $this, 'init' ) );
-		add_action( 'enqueue_block_editor_assets', array( $this, 'editor_assets' ) );
+		add_action( 'enqueue_block_editor_assets', array( $this, 'editor_assets' ), 5 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'frontend_assets' ) );
 	}
 	/**
@@ -47,11 +47,22 @@ final class EVTB_Events_Block {
 		// Register assets first (required for block.json)
 		$asset = file_exists( EVENTS_BLOCK_PATH . 'build/index.asset.php' ) ? require EVENTS_BLOCK_PATH . 'build/index.asset.php' : array( 'dependencies' => array(), 'version' => EVENTS_BLOCK_VERSION );
 		
-		// Register script only if build file exists
-		if ( file_exists( EVENTS_BLOCK_PATH . 'build/index.js' ) ) {
-			wp_register_script( 'evtb-events-blocks', EVENTS_BLOCK_URL . 'build/index.js', $asset['dependencies'], $asset['version'], true );
-			wp_localize_script( 'evtb-events-blocks', 'evtbPluginData', array( 'pluginUrl' => EVENTS_BLOCK_URL, 'images' => array( 'crazyDJ' => EVENTS_BLOCK_URL . 'assets/images/crazy-DJ-experience-santa-cruz.webp', 'rockBand' => EVENTS_BLOCK_URL . 'assets/images/cute-girls-rock-band-performance.webp', 'foodDistribution' => EVENTS_BLOCK_URL . 'assets/images/free-food-distribution-at-mumbai.webp' ) ) );
-		}
+		// Block Directory installations may have timing issues, so we register first
+		wp_register_script( 
+			'evtb-events-blocks', 
+			EVENTS_BLOCK_URL . 'build/index.js', 
+			$asset['dependencies'], 
+			EVENTS_BLOCK_VERSION, 
+			true // Load in footer (after dependencies), but we'll enqueue early
+		);
+		wp_localize_script( 'evtb-events-blocks', 'evtbPluginData', array( 
+			'pluginUrl' => EVENTS_BLOCK_URL, 
+			'images' => array( 
+				'crazyDJ' => EVENTS_BLOCK_URL . 'assets/images/crazy-DJ-experience-santa-cruz.webp', 
+				'rockBand' => EVENTS_BLOCK_URL . 'assets/images/cute-girls-rock-band-performance.webp', 
+				'foodDistribution' => EVENTS_BLOCK_URL . 'assets/images/free-food-distribution-at-mumbai.webp' 
+			) 
+		) );
 		
 		// Register styles
 		if ( file_exists( EVENTS_BLOCK_PATH . 'editor.css' ) ) {
@@ -84,6 +95,26 @@ final class EVTB_Events_Block {
 		}
 	}
 	public function editor_assets() {
+		// CRITICAL: Enqueue script with HIGH priority to ensure it loads BEFORE editor initializes
+		// This fixes the Block Directory installation timing issue
+		wp_enqueue_script( 'evtb-events-blocks' );
+		
+		// Add inline script to verify blocks are registered (for debugging)
+		// This helps identify if blocks registered successfully
+		wp_add_inline_script( 'evtb-events-blocks', '
+			// Verify blocks are registered after script loads
+			if ( typeof wp !== "undefined" && wp.blocks ) {
+				wp.domReady( function() {
+					const registeredBlocks = [ "evtb/events-grid", "evtb/event-item", "evtb/event-date-badge" ];
+					registeredBlocks.forEach( function( blockName ) {
+						if ( ! wp.blocks.getBlockType( blockName ) ) {
+							console.warn( "EVTB: Block " + blockName + " not registered yet" );
+						}
+					} );
+				} );
+			}
+		', 'after' );
+		
 		// Icon font will be loaded via block.json, but enqueue here as fallback for editor
 		if ( file_exists( EVENTS_BLOCK_PATH . 'assets/css/evtb-icons.css' ) ) {
 			wp_enqueue_style( 'evtb-icons', EVENTS_BLOCK_URL . 'assets/css/evtb-icons.css', array(), EVENTS_BLOCK_VERSION );
