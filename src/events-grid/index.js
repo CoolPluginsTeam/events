@@ -38,12 +38,14 @@ registerBlockType(metadata.name, {
 							checked={hideYear}
 							onChange={(value) => setAttributes({ hideYear: value })}
 							help={__('Toggle to hide or show the year in all event date badges', 'events')}
+							__nextHasNoMarginBottom={true}
 						/>
 						<ToggleControl
 							label={__('Hide Past Events', 'events')}
 							checked={hidePastEvents}
 							onChange={(value) => setAttributes({ hidePastEvents: value })}
 							help={__('Automatically hide events that have passed', 'events')}
+							__nextHasNoMarginBottom={true}
 						/>
 					</PanelBody>
 				</InspectorControls>

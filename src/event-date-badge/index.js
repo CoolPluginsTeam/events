@@ -132,6 +132,7 @@ registerBlockType(metadata.name, {
 									checked={hideYear}
 									onChange={(value) => setAttributes({ hideYear: value })}
 									help={__('Toggle to hide or show the year in the date badge', 'events')}
+									__nextHasNoMarginBottom={true}
 								/>
 							</div>
 							<DateTimePicker
