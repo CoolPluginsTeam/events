@@ -14,6 +14,7 @@ import metadata from '../../blocks/event-date-badge/block.json';
 
 // Register Event Date Badge Block using block.json metadata
 registerBlockType(metadata.name, {
+	title: __('Event Date Badge', 'events-block'),
 	edit: ({ attributes, setAttributes, context, clientId }) => {
 		const {
 			evtbBadgeId,

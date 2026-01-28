@@ -16,6 +16,7 @@ import metadata from '../../blocks/event-item/block.json';
 
 // CHILD BLOCK: Event Item using block.json metadata
 registerBlockType(metadata.name, {
+	title: __('Event Item', 'events-block'),
 	edit: ({ attributes, setAttributes, clientId, context }) => {
 		const {
 			evtbBlockId,

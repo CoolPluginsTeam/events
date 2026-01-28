@@ -11,6 +11,7 @@ import metadata from '../../blocks/events-grid/block.json';
 
 // Register Events Grid Block using block.json metadata
 registerBlockType(metadata.name, {
+	title: __('Events Grid', 'events-block'),
 	edit: ({ attributes, setAttributes }) => {
 		const { columns, hideYear, hidePastEvents } = attributes;
 		const blockProps = useBlockProps({
@@ -52,29 +53,29 @@ registerBlockType(metadata.name, {
 				<div {...blockProps}>
 					<InnerBlocks
 						allowedBlocks={['evtb/event-item']}
-						// template={[
-						// 	['evtb/event-item', {
-						// 		eventImage: '',
-						// 		eventImageAlt:'',
-						// 		eventDate: '',
-						// 		isDefault: false,
-						// 		hasImage: false
-						// 	}],
-							// ['evtb/event-item', {
-							// 	eventImage: defaultImages[1],
-							// 	eventImageAlt: 'Cute Girls Rock Band Performance',
-							// 	eventDate: '2026-04-04',
-							// 	isDefault: true,
-							// 	hasImage: true
-							// }],
-							// ['evtb/event-item', {
-							// 	eventImage: defaultImages[2],
-							// 	eventImageAlt: 'Free Food Distribution At Mumbai',
-							// 	eventDate: '2026-06-08',
-							// 	isDefault: true,
-							// 	hasImage: true
-							// }]
-						// ]}
+						template={[
+							['evtb/event-item', {
+								eventImage: defaultImages[0],
+								eventImageAlt: 'Crazy DJ Experience Santa Cruz',
+								eventDate: '2026-01-06',
+								isDefault: true,
+								hasImage: true
+							}],
+							['evtb/event-item', {
+								eventImage: defaultImages[1],
+								eventImageAlt: 'Cute Girls Rock Band Performance',
+								eventDate: '2026-04-04',
+								isDefault: true,
+								hasImage: true
+							}],
+							['evtb/event-item', {
+								eventImage: defaultImages[2],
+								eventImageAlt: 'Free Food Distribution At Mumbai',
+								eventDate: '2026-06-08',
+								isDefault: true,
+								hasImage: true
+							}]
+						]}
 						renderAppender={() => <InnerBlocks.ButtonBlockAppender />}
 					/>
 				</div>
