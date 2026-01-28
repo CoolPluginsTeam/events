@@ -45,10 +45,34 @@ final class EVTB_Events_Block {
 	}
 	public function init() {
 		$asset = file_exists( EVENTS_BLOCK_PATH . 'build/index.asset.php' ) ? require EVENTS_BLOCK_PATH . 'build/index.asset.php' : array( 'dependencies' => array(), 'version' => EVENTS_BLOCK_VERSION );
+		
+		// Register script
 		wp_register_script( 'evtb-events-blocks', EVENTS_BLOCK_URL . 'build/index.js', $asset['dependencies'], $asset['version'], true );
-		wp_localize_script( 'evtb-events-blocks', 'evtbPluginData', array( 'pluginUrl' => EVENTS_BLOCK_URL, 'images' => array( 'crazyDJ' => EVENTS_BLOCK_URL . 'assets/images/crazy-DJ-experience-santa-cruz.webp', 'rockBand' => EVENTS_BLOCK_URL . 'assets/images/cute-girls-rock-band-performance.webp', 'foodDistribution' => EVENTS_BLOCK_URL . 'assets/images/free-food-distribution-at-mumbai.webp' ) ) );
+		
+		// Prepare plugin data
+		$plugin_data = array( 
+			'pluginUrl' => EVENTS_BLOCK_URL, 
+			'images' => array( 
+				'crazyDJ' => EVENTS_BLOCK_URL . 'assets/images/crazy-DJ-experience-santa-cruz.webp', 
+				'rockBand' => EVENTS_BLOCK_URL . 'assets/images/cute-girls-rock-band-performance.webp', 
+				'foodDistribution' => EVENTS_BLOCK_URL . 'assets/images/free-food-distribution-at-mumbai.webp' 
+			) 
+		);
+		
+		// Method 1: Localize script (standard WordPress way)
+		wp_localize_script( 'evtb-events-blocks', 'evtbPluginData', $plugin_data );
+		
+		// Method 2: Inline script as fallback (ensures data is always available)
+		wp_add_inline_script(
+			'evtb-events-blocks',
+			'window.evtbPluginData = window.evtbPluginData || ' . wp_json_encode( $plugin_data ) . ';',
+			'before'
+		);
+		
+		// Register styles
 		wp_register_style( 'evtb-events-editor', EVENTS_BLOCK_URL . 'editor.css', array(), EVENTS_BLOCK_VERSION );
 		wp_register_style( 'evtb-events-style', EVENTS_BLOCK_URL . 'style.css', array(), EVENTS_BLOCK_VERSION );
+		
 		$blocks_path = EVENTS_BLOCK_PATH . 'blocks/';
 		// Register each block explicitly to ensure the Block Directory recognizes them
     	register_block_type( $blocks_path . 'events-grid' );

@@ -8,7 +8,7 @@ import { InnerBlocks, InspectorControls, useBlockProps, ColorPalette } from '@wo
 import { PanelBody, PanelRow, Button } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { useEffect, createElement, Fragment } from '@wordpress/element';
-import { dispatch, select, useSelect } from '@wordpress/data';
+import { dispatch, select, useSelect, useDispatch } from '@wordpress/data';
 import { addFilter } from '@wordpress/hooks';
 import { createHigherOrderComponent } from '@wordpress/compose';
 import { getCurrentDate, formatTime12Hour } from '../shared/helpers';
@@ -28,7 +28,8 @@ registerBlockType(metadata.name, {
 			detailsBackgroundColor,
 			isDefault,
 			hasImage,
-			mediaBlock
+			mediaBlock,
+			contentPopulated
 		} = attributes;
 
 		// Generate unique block ID if not present
@@ -196,6 +197,116 @@ registerBlockType(metadata.name, {
 
 		// Format time display
 		const formattedTime = `${formatTime12Hour(eventStartTime)} – ${formatTime12Hour(eventEndTime)}`;
+
+		// Get dispatch functions for inserting/removing blocks
+		const { insertBlocks, removeBlocks } = useDispatch('core/block-editor');
+		
+		// Get current inner blocks
+		const currentInnerBlocks = useSelect(
+			(select) => select('core/block-editor').getBlock(clientId)?.innerBlocks || [],
+			[clientId]
+		);
+
+		// Auto-populate default content if this is a default event and content not yet populated
+		useEffect(() => {
+			
+			// Wait for attributes to be properly set (they might be undefined initially)
+			if (isDefault === undefined || eventImage === undefined) {
+				return;
+			}
+			
+			// Only run if: isDefault=true, contentPopulated=false/undefined, and has eventImage
+			if (isDefault && !contentPopulated && eventImage && insertBlocks && removeBlocks) {
+				const timer = setTimeout(() => {
+					const content = getDefaultContent();
+					
+					if (content) {
+						
+						// First, clear any existing placeholder blocks from template
+						if (currentInnerBlocks.length > 0) {
+							const blockIds = currentInnerBlocks.map(block => block.clientId);
+							removeBlocks(blockIds, false);
+						}
+						
+						// Format time inside setTimeout to ensure it's calculated properly
+						const timeDisplay = `${formatTime12Hour(eventStartTime)} – ${formatTime12Hour(eventEndTime)}`;
+						
+						console.log('🏗️ Creating date badge with:', {
+							eventDate,
+							isDateSet: true
+						});
+						
+						// Create all inner blocks with default data
+						const contentBlocks = [
+							// IMAGE GROUP
+							createBlock('core/group', { className: 'evtb-event-image-wrap' }, [
+								createBlock('core/image', {
+									url: eventImage,
+									alt: eventImageAlt,
+									className: 'evtb-event-image-block'
+								})
+							]),
+							createBlock('core/group', { className: 'evtb-card-details' }, [
+								// DATE BADGE - Pass eventDate explicitly
+								createBlock('evtb/event-date-badge', {
+									eventDate: eventDate,
+									isDateSet: true
+								}),
+								// DETAILS GROUP
+								createBlock('core/group', { className: 'evtb-event-detail' }, [
+									createBlock('core/paragraph', {
+										className: 'evtb-event-time',
+										content: timeDisplay,
+										evtbStartTime: eventStartTime,
+										evtbEndTime: eventEndTime,
+										evtbIsTimeSet: true
+									}),
+									createBlock('core/heading', {
+										level: 4,
+										className: 'evtb-event-title',
+										content: content.title
+									}),
+									createBlock('core/paragraph', {
+										placeholder: __('Event Description', 'events'),
+										className: 'evtb-event-description'
+									}),
+									createBlock('core/paragraph', {
+										className: 'evtb-event-location',
+										content: content.location
+									}),
+									// PRICE + READ MORE GROUP
+									createBlock('core/group', { className: 'evtb-price-read-more' }, [
+										createBlock('core/paragraph', {
+											className: 'evtb-event-price',
+											content: content.price
+										}),
+										createBlock('core/buttons', {}, [
+											createBlock('core/button', {
+												text: 'Read More',
+												className: 'evtb-event-read-more',
+												url: ''
+											})
+										])
+									])
+								])
+							])
+						];
+						
+						// Insert new blocks with actual content
+						try {
+							insertBlocks(contentBlocks, 0, clientId, false);
+							
+							// Mark as populated so this doesn't run again
+							setAttributes({ contentPopulated: true });
+						} catch (error) {
+							console.error('❌ Error inserting blocks:', error);
+						}
+					}
+				}, 150);
+				
+				return () => clearTimeout(timer);
+			}
+		}, [isDefault, contentPopulated, eventImage, eventImageAlt, insertBlocks, removeBlocks]);
 
 		// Template for all blocks including image
 		// Order: Image, Date Badge, Time, Title, Location, Price, Read More

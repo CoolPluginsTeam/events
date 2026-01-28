@@ -44,6 +44,14 @@ registerBlockType(metadata.name, {
 
 		// Use parent's date if available
 		const parentDate = context['evtb/eventDate'] || eventDate || getCurrentDate();
+		
+		// Debug: Check date values
+		console.log('📅 Date Badge Debug:', {
+			eventDate,
+			contextDate: context['evtb/eventDate'],
+			parentDate,
+			isDateSet
+		});
 
 		// Get parent block ID
 		const parentClientId = useSelect((select) => {
@@ -207,60 +215,8 @@ registerBlockType(metadata.name, {
 			</>
 		);
 	},
-	save: ({ attributes }) => {
-		const {
-			evtbBadgeId,
-			eventDate,
-			isDateSet,
-			dateBadgeBackgroundColor,
-			dateBadgeTextColor,
-			borderBadgeColor,
-			weekdayColor,
-			hideYear
-		} = attributes;
-
-		const blockProps = useBlockProps.save({
-			className: `evtb-event-date-badge-container${evtbBadgeId ? ` evtb-badge-${evtbBadgeId}` : ''}`,
-			style: {
-				'--evtb-badge-bg': dateBadgeBackgroundColor || '#2667FF',
-				'--evtb-badge-text': dateBadgeTextColor || '#ffffff',
-				'--evtb-badge-border': borderBadgeColor || '#00000040',
-				'--evtb-badge-weekday': weekdayColor || '#000000'
-			}
-		});
-
-		// Parse date for display
-		const parseDate = (dateString) => {
-			if (!dateString) return { day: '01', month: 'Jan', year: '0001', weekday: 'MON' };
-
-			try {
-				const date = new Date(dateString);
-				return {
-					day: dateI18n('d', date),
-					month: dateI18n('M', date),
-					year: dateI18n('Y', date),
-					weekday: dateI18n('D', date).toUpperCase()
-				};
-			} catch (e) {
-				return { day: '01', month: 'Jan', year: '0001', weekday: 'MON' };
-			}
-		};
-
-		const dateParts = parseDate(eventDate);
-
-		return (
-			<div {...blockProps}>
-				<div className="evtb-border-badge">
-					<div className="evtb-event-date-badge">
-						<span className="evtb-date-day">{dateParts.day}</span>
-						<span className="evtb-date-month">{dateParts.month}</span>
-						{!hideYear && (
-							<span className="evtb-date-year">{dateParts.year}</span>
-						)}
-					</div>
-				</div>
-				<span className="evtb-date-weekday">{dateParts.weekday}</span>
-			</div>
-		);
+	save: () => {
+		return null;
 	}
 });
+// EVENT-DATE-BADGE
