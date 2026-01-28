@@ -11,11 +11,46 @@ import { useEffect, createElement, Fragment } from '@wordpress/element';
 import { dispatch, select, useSelect } from '@wordpress/data';
 import { addFilter } from '@wordpress/hooks';
 import { createHigherOrderComponent } from '@wordpress/compose';
-import { getCurrentDate, formatTime12Hour } from '../shared/helpers';
-import metadata from '../../blocks/event-item/block.json';
+import { getCurrentDate, formatTime12Hour } from '../../shared/helpers';
 
-// CHILD BLOCK: Event Item using block.json metadata
+// Inline metadata from block.json
+const metadata = {
+	name: "evtb/event-item",
+	title: "Event Item",
+	category: "widgets",
+	icon: "plus",
+	description: "Individual event card with details.",
+	keywords: ["event", "card", "item"],
+	textdomain: "events-block",
+	parent: ["evtb/events-grid"],
+	attributes: {
+		evtbBlockId: { type: "string", default: "" },
+		eventImage: { type: "string", default: "" },
+		eventImageAlt: { type: "string", default: "" },
+		eventDate: { type: "string", default: "" },
+		eventStartTime: { type: "string", default: "09:00" },
+		eventEndTime: { type: "string", default: "17:00" },
+		detailsBackgroundColor: { type: "string", default: "#ffffff" },
+		isDefault: { type: "boolean", default: false },
+		hasImage: { type: "boolean", default: false },
+		mediaBlock: { type: "boolean", default: false }
+	},
+	providesContext: {
+		"evtb/eventDate": "eventDate",
+		"evtb/eventStartTime": "eventStartTime",
+		"evtb/eventEndTime": "eventEndTime"
+	},
+	usesContext: ["evtb/hidePastEvents"],
+	supports: {
+		html: false,
+		reusable: false,
+		color: { background: true, text: false }
+	}
+};
+
+// CHILD BLOCK: Event Item using inline metadata
 registerBlockType(metadata.name, {
+	...metadata,
 	edit: ({ attributes, setAttributes, clientId, context }) => {
 		const {
 			evtbBlockId,

@@ -86,9 +86,35 @@ final class EVTB_Events_Block {
 		}
 		
 		// Register child blocks after parent
-		if ( is_dir( $blocks_path . 'event-item' ) && file_exists( $blocks_path . 'event-item/block.json' ) ) {
-			register_block_type( $blocks_path . 'event-item' );
-		}
+		// Manual registration for event-item (no block.json)
+		register_block_type( 'evtb/event-item', array(
+			'render_callback' => function( $attributes, $content, $block ) {
+				ob_start();
+				require EVENTS_BLOCK_PATH . 'blocks/events-grid/event-item/render.php';
+				return ob_get_clean();
+			},
+			'attributes' => array(
+				'evtbBlockId' => array( 'type' => 'string', 'default' => '' ),
+				'eventImage' => array( 'type' => 'string', 'default' => '' ),
+				'eventImageAlt' => array( 'type' => 'string', 'default' => '' ),
+				'eventDate' => array( 'type' => 'string', 'default' => '' ),
+				'eventStartTime' => array( 'type' => 'string', 'default' => '09:00' ),
+				'eventEndTime' => array( 'type' => 'string', 'default' => '17:00' ),
+				'detailsBackgroundColor' => array( 'type' => 'string', 'default' => '#ffffff' ),
+				'isDefault' => array( 'type' => 'boolean', 'default' => false ),
+				'hasImage' => array( 'type' => 'boolean', 'default' => false ),
+				'mediaBlock' => array( 'type' => 'boolean', 'default' => false ),
+			),
+			'uses_context' => array( 'evtb/hidePastEvents' ),
+			'provides_context' => array( 
+				'evtb/eventDate' => 'eventDate',
+				'evtb/eventStartTime' => 'eventStartTime',
+				'evtb/eventEndTime' => 'eventEndTime'
+			),
+			'editor_script' => 'evtb-events-blocks',
+			'editor_style'  => 'evtb-events-editor',
+			'style'         => 'evtb-events-style',
+		) );
 		
 		if ( is_dir( $blocks_path . 'event-date-badge' ) && file_exists( $blocks_path . 'event-date-badge/block.json' ) ) {
 			register_block_type( $blocks_path . 'event-date-badge' );

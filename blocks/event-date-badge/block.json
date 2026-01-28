@@ -14,7 +14,7 @@
 	],
 	"textdomain": "events-block",
 	"parent": [
-		"evtb/event-item"
+		"evtb/events-grid"
 	],
 	"attributes": {
 		"evtbBadgeId": {

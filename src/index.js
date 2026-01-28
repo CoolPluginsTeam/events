@@ -6,5 +6,5 @@
 
 // Import all block registration functions
 import './events-grid';
-import './event-item';
+import './events-grid/event-item';
 import './event-date-badge';
