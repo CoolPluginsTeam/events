@@ -52,14 +52,14 @@ registerBlockType(metadata.name, {
 				<div {...blockProps}>
 					<InnerBlocks
 						allowedBlocks={['evtb/event-item']}
-						template={[
-							['evtb/event-item', {
-								eventImage: '',
-								eventImageAlt:'',
-								eventDate: '',
-								isDefault: false,
-								hasImage: false
-							}],
+						// template={[
+						// 	['evtb/event-item', {
+						// 		eventImage: '',
+						// 		eventImageAlt:'',
+						// 		eventDate: '',
+						// 		isDefault: false,
+						// 		hasImage: false
+						// 	}],
 							// ['evtb/event-item', {
 							// 	eventImage: defaultImages[1],
 							// 	eventImageAlt: 'Cute Girls Rock Band Performance',
@@ -74,7 +74,7 @@ registerBlockType(metadata.name, {
 							// 	isDefault: true,
 							// 	hasImage: true
 							// }]
-						]}
+						// ]}
 						renderAppender={() => <InnerBlocks.ButtonBlockAppender />}
 					/>
 				</div>
