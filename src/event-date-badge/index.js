@@ -27,59 +27,57 @@ registerBlockType(metadata.name, {
 			hideYear
 		} = attributes;
 
-		// Generate unique badge ID if not present
-		useEffect(() => {
-			if (!evtbBadgeId) {
-				const uniqueId = clientId.substring(0, 8);
-				setAttributes({ evtbBadgeId: uniqueId });
-			}
-		}, []);
+	// Generate unique badge ID if not present
+	useEffect(() => {
+		if (!evtbBadgeId) {
+			const uniqueId = clientId.substring(0, 8);
+			setAttributes({ evtbBadgeId: uniqueId });
+		}
+	}, [evtbBadgeId, clientId]);
 
-		// Set current date if eventDate is empty (for new date badges)
-		useEffect(() => {
-			if (!eventDate && !context['evtb/eventDate']) {
-				setAttributes({ eventDate: getCurrentDate() });
-			}
-		}, []);
-
-		// Use parent's date if available
-		const parentDate = context['evtb/eventDate'] || eventDate || getCurrentDate();
+	// Get parent block ID and its attributes directly
+	const parentData = useSelect((select) => {
+		const { getBlockParents, getBlock } = select('core/block-editor');
+		const parentIds = getBlockParents(clientId);
 		
-		// Debug: Check date values
-		console.log('📅 Date Badge Debug:', {
-			eventDate,
-			contextDate: context['evtb/eventDate'],
-			parentDate,
-			isDateSet
-		});
-
-		// Get parent block ID
-		const parentClientId = useSelect((select) => {
-			const { getBlockParents, getBlock } = select('core/block-editor');
-			const parentIds = getBlockParents(clientId);
-			// Find the evtb/event-item parent
-			for (let parentId of parentIds) {
-				const parentBlock = getBlock(parentId);
-				if (parentBlock && parentBlock.name === 'evtb/event-item') {
-					return parentId;
-				}
+		// Find the evtb/event-item parent
+		for (let parentId of parentIds) {
+			const parentBlock = getBlock(parentId);
+			if (parentBlock && parentBlock.name === 'evtb/event-item') {
+				return {
+					clientId: parentId,
+					eventDate: parentBlock.attributes.eventDate
+				};
 			}
-			return null;
-		}, [clientId]);
+		}
+		return null;
+	}, [clientId]);
 
-		// Sync parent values to child attributes
-		useEffect(() => {
-			if (context['evtb/eventDate'] && context['evtb/eventDate'] !== eventDate) {
-				setAttributes({ eventDate: context['evtb/eventDate'] });
-			}
-		}, [context['evtb/eventDate']]);
+	// Determine which date to display
+	// Priority: 1. Own eventDate (if explicitly set), 2. Parent block's eventDate attribute, 3. Context, 4. Current date
+	const displayDate = eventDate || parentData?.eventDate || context['evtb/eventDate'] || getCurrentDate();
 
-		// Sync hideYear from global context
-		useEffect(() => {
-			if (context['evtb/hideYear'] !== undefined && context['evtb/hideYear'] !== hideYear) {
-				setAttributes({ hideYear: context['evtb/hideYear'] });
-			}
-		}, [context['evtb/hideYear']]);
+	// Sync from parent's attribute if own date is not set
+	// This ensures dates from createBlock are properly received
+	useEffect(() => {
+		if (!eventDate && parentData?.eventDate) {
+			setAttributes({ eventDate: parentData.eventDate });
+		}
+	}, [eventDate, parentData?.eventDate]);
+
+	// Fallback: Sync from context if neither own date nor parent attribute has date
+	useEffect(() => {
+		if (!eventDate && !parentData?.eventDate && context['evtb/eventDate']) {
+			setAttributes({ eventDate: context['evtb/eventDate'] });
+		}
+	}, [eventDate, parentData?.eventDate, context['evtb/eventDate']]);
+
+	// Sync hideYear from global context
+	useEffect(() => {
+		if (context['evtb/hideYear'] !== undefined && context['evtb/hideYear'] !== hideYear) {
+			setAttributes({ hideYear: context['evtb/hideYear'] });
+		}
+	}, [context['evtb/hideYear'], hideYear]);
 
 		// Use CSS Variables (Custom Properties) - Most reliable approach!
 		// Set colors as CSS variables on the wrapper element
@@ -110,24 +108,24 @@ registerBlockType(metadata.name, {
 			}
 		};
 
-		const dateParts = parseDate(parentDate);
+	const dateParts = parseDate(displayDate);
 
-		// Handle date change - update both child and parent
-		const handleDateChange = (newDate) => {
-			// Update child attribute and mark as date set by user
-			setAttributes({
-				eventDate: newDate,
-				isDateSet: true
-			});
+	// Handle date change - update both child and parent
+	const handleDateChange = (newDate) => {
+		// Update child attribute and mark as date set by user
+		setAttributes({
+			eventDate: newDate,
+			isDateSet: true
+		});
 
-			// Update parent Event Item block's eventDate
-			if (parentClientId) {
-				dispatch('core/block-editor').updateBlockAttributes(
-					parentClientId,
-					{ eventDate: newDate }
-				);
-			}
-		};
+		// Update parent Event Item block's eventDate
+		if (parentData?.clientId) {
+			dispatch('core/block-editor').updateBlockAttributes(
+				parentData.clientId,
+				{ eventDate: newDate }
+			);
+		}
+	};
 
 		return (
 			<>
@@ -143,12 +141,12 @@ registerBlockType(metadata.name, {
 									help={__('Toggle to hide or show the year in the date badge', 'events')}
 									__nextHasNoMarginBottom={true}
 								/>
-							</div>
-							<DateTimePicker
-								currentDate={parentDate}
-								onChange={handleDateChange}
-								is12Hour={true}
-							/>
+						</div>
+						<DateTimePicker
+							currentDate={displayDate}
+							onChange={handleDateChange}
+							is12Hour={true}
+						/>
 						</div>
 					</PanelBody>
 

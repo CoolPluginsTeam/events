@@ -228,15 +228,10 @@ registerBlockType(metadata.name, {
 							removeBlocks(blockIds, false);
 						}
 						
-						// Format time inside setTimeout to ensure it's calculated properly
-						const timeDisplay = `${formatTime12Hour(eventStartTime)} – ${formatTime12Hour(eventEndTime)}`;
-						
-						console.log('🏗️ Creating date badge with:', {
-							eventDate,
-							isDateSet: true
-						});
-						
-						// Create all inner blocks with default data
+					// Format time inside setTimeout to ensure it's calculated properly
+					const timeDisplay = `${formatTime12Hour(eventStartTime)} – ${formatTime12Hour(eventEndTime)}`;
+					
+					// Create all inner blocks with default data
 						const contentBlocks = [
 							// IMAGE GROUP
 							createBlock('core/group', { className: 'evtb-event-image-wrap' }, [

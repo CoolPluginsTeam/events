@@ -53,12 +53,16 @@
 			"type": "boolean",
 			"default": false
 		},
-		"mediaBlock": {
-			"type": "boolean",
-			"default": false
-		}
+	"mediaBlock": {
+		"type": "boolean",
+		"default": false
 	},
-	"providesContext": {
+	"contentPopulated": {
+		"type": "boolean",
+		"default": false
+	}
+},
+"providesContext": {
 		"evtb/eventDate": "eventDate",
 		"evtb/eventStartTime": "eventStartTime",
 		"evtb/eventEndTime": "eventEndTime"
