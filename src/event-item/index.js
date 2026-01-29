@@ -44,8 +44,8 @@ registerBlockType(metadata.name, {
 			shouldUpdate = true;
 		}
 
-		// Set current date if eventDate is empty (only for new non-default events)
-		if (!eventDate && !isDefault) {
+		// Set current date if eventDate is empty (for all events including default ones)
+		if (!eventDate) {
 			updates.eventDate = getCurrentDate();
 			shouldUpdate = true;
 		}
