@@ -37,59 +37,71 @@ registerBlockType(metadata.name, {
 			pluginData.images.foodDistribution || ''
 		] : ['', '', ''];
 
-		// Auto-populate default events if block is empty (first time insertion)
-		useEffect(() => {
-			if (innerBlocks.length === 0 && defaultImages[0]) {
-				
-				const eventData = [
-					{
-						eventImage: defaultImages[0],
-						eventImageAlt: 'Crazy DJ Experience Santa Cruz',
-						eventDate: '2026-01-06',
-						eventStartTime: '09:00',
-						eventEndTime: '17:00',
-						isDefault: true,
-						hasImage: true
-					},
-					{
-						eventImage: defaultImages[1],
-						eventImageAlt: 'Cute Girls Rock Band Performance',
-						eventDate: '2026-04-04',
-						eventStartTime: '09:00',
-						eventEndTime: '17:00',
-						isDefault: true,
-						hasImage: true
-					},
-					{
-						eventImage: defaultImages[2],
-						eventImageAlt: 'Free Food Distribution At Mumbai',
-						eventDate: '2026-06-08',
-						eventStartTime: '09:00',
-						eventEndTime: '17:00',
-						isDefault: true,
-						hasImage: true
-					}
-				];
-				
-				const defaultEventBlocks = eventData.map(data => createBlock('evtb/event-item', data));
-				
-				try {
-					insertBlocks(defaultEventBlocks, 0, clientId, false);
-					// Force update attributes after insertion (fix for undefined attributes)
-					setTimeout(() => {
-						const updatedInnerBlocks = select('core/block-editor').getBlock(clientId)?.innerBlocks || [];
-						
-						updatedInnerBlocks.forEach((block, index) => {
-							if (eventData[index]) {
-								updateBlockAttributes(block.clientId, eventData[index]);
-							}
-						});
-					}, 100);
-				} catch (error) {
-					console.error('❌ Error inserting blocks:', error);
-				}
+	// Auto-populate default events if block is empty (first time insertion)
+	// Use ref to prevent duplicate insertions
+	const hasPopulated = useMemo(() => false, []);
+	
+	useEffect(() => {
+		// Only run once when block is truly empty and images are available
+		if (innerBlocks.length === 0 && defaultImages[0] && !hasPopulated) {
+			
+		const eventData = [
+			{
+				eventImage: defaultImages[0],
+				eventImageAlt: 'Crazy DJ Experience Santa Cruz',
+				eventDate: '',
+				eventStartTime: '09:00',
+				eventEndTime: '17:00',
+				isDefault: true,
+				hasImage: true,
+				contentPopulated: false
+			},
+			{
+				eventImage: defaultImages[1],
+				eventImageAlt: 'Cute Girls Rock Band Performance',
+				eventDate: '',
+				eventStartTime: '09:00',
+				eventEndTime: '17:00',
+				isDefault: true,
+				hasImage: true,
+				contentPopulated: false
+			},
+			{
+				eventImage: defaultImages[2],
+				eventImageAlt: 'Free Food Distribution At Mumbai',
+				eventDate: '',
+				eventStartTime: '09:00',
+				eventEndTime: '17:00',
+				isDefault: true,
+				hasImage: true,
+				contentPopulated: false
 			}
-		}, [innerBlocks.length, defaultImages[0], insertBlocks, updateBlockAttributes]);
+		];
+			
+			try {
+				const defaultEventBlocks = eventData.map(data => createBlock('evtb/event-item', data));
+				insertBlocks(defaultEventBlocks, 0, clientId, false);
+				
+				// Force update attributes after a short delay to ensure proper initialization
+				setTimeout(() => {
+					const updatedInnerBlocks = select('core/block-editor').getBlock(clientId)?.innerBlocks || [];
+					
+					updatedInnerBlocks.forEach((block, index) => {
+						if (eventData[index] && block) {
+							// Force set all attributes including eventDate
+							updateBlockAttributes(block.clientId, {
+								...eventData[index],
+								// Ensure eventDate is definitely set
+								eventDate: eventData[index].eventDate
+							});
+						}
+					});
+				}, 100);
+			} catch (error) {
+				console.error('❌ Error inserting blocks:', error);
+			}
+		}
+	}, [innerBlocks.length, defaultImages[0]]);
 
 		return (
 			<>
@@ -121,33 +133,33 @@ registerBlockType(metadata.name, {
 					</PanelBody>
 				</InspectorControls>
 				<div {...blockProps}>
-					<InnerBlocks
-						allowedBlocks={['evtb/event-item']}
-						template={[
-							['evtb/event-item', {
-								eventImage: defaultImages[0],
-								eventImageAlt: 'Crazy DJ Experience Santa Cruz',
-								eventDate: '2026-01-06',
-								isDefault: true,
-								hasImage: true
-							}],
-							['evtb/event-item', {
-								eventImage: defaultImages[1],
-								eventImageAlt: 'Cute Girls Rock Band Performance',
-								eventDate: '2026-04-04',
-								isDefault: true,
-								hasImage: true
-							}],
-							['evtb/event-item', {
-								eventImage: defaultImages[2],
-								eventImageAlt: 'Free Food Distribution At Mumbai',
-								eventDate: '2026-06-08',
-								isDefault: true,
-								hasImage: true
-							}]
-						]}
-						renderAppender={() => <InnerBlocks.ButtonBlockAppender />}
-					/>
+				<InnerBlocks
+					allowedBlocks={['evtb/event-item']}
+					template={[
+						['evtb/event-item', {
+							eventImage: defaultImages[0],
+							eventImageAlt: 'Crazy DJ Experience Santa Cruz',
+							eventDate: '',
+							isDefault: true,
+							hasImage: true
+						}],
+						['evtb/event-item', {
+							eventImage: defaultImages[1],
+							eventImageAlt: 'Cute Girls Rock Band Performance',
+							eventDate: '',
+							isDefault: true,
+							hasImage: true
+						}],
+						['evtb/event-item', {
+							eventImage: defaultImages[2],
+							eventImageAlt: 'Free Food Distribution At Mumbai',
+							eventDate: '',
+							isDefault: true,
+							hasImage: true
+						}]
+					]}
+					renderAppender={() => <InnerBlocks.ButtonBlockAppender />}
+				/>
 				</div>
 			</>
 		);

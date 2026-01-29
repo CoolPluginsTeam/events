@@ -44,14 +44,6 @@ registerBlockType(metadata.name, {
 
 		// Use parent's date if available
 		const parentDate = context['evtb/eventDate'] || eventDate || getCurrentDate();
-		
-		// Debug: Check date values
-		console.log('📅 Date Badge Debug:', {
-			eventDate,
-			contextDate: context['evtb/eventDate'],
-			parentDate,
-			isDateSet
-		});
 
 		// Get parent block ID
 		const parentClientId = useSelect((select) => {
@@ -219,4 +211,3 @@ registerBlockType(metadata.name, {
 		return null;
 	}
 });
-// EVENT-DATE-BADGE

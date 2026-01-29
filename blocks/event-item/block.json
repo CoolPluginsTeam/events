@@ -53,18 +53,28 @@
 			"type": "boolean",
 			"default": false
 		},
-		"mediaBlock": {
-			"type": "boolean",
-			"default": false
-		}
+	"mediaBlock": {
+		"type": "boolean",
+		"default": false
 	},
-	"providesContext": {
+	"contentPopulated": {
+		"type": "boolean",
+		"default": false
+	},
+	"hideYear": {
+		"type": "boolean",
+		"default": true
+	}
+},
+"providesContext": {
 		"evtb/eventDate": "eventDate",
 		"evtb/eventStartTime": "eventStartTime",
-		"evtb/eventEndTime": "eventEndTime"
+		"evtb/eventEndTime": "eventEndTime",
+		"evtb/hideYear": "hideYear"
 	},
 	"usesContext": [
-		"evtb/hidePastEvents"
+		"evtb/hidePastEvents",
+		"evtb/hideYear"
 	],
 	"supports": {
 		"html": false,
