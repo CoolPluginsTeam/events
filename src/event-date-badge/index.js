@@ -57,27 +57,48 @@ registerBlockType(metadata.name, {
 	// Priority: 1. Own eventDate (if explicitly set), 2. Parent block's eventDate attribute, 3. Context, 4. Current date
 	const displayDate = eventDate || parentData?.eventDate || context['evtb/eventDate'] || getCurrentDate();
 
-	// Sync from parent's attribute if own date is not set
-	// This ensures dates from createBlock are properly received
+	// console.log('displayDate', displayDate);
+	// console.log('eventDate', eventDate);
+	// console.log('parentData?.eventDate', parentData?.eventDate);
+	// console.log('context[\'evtb/eventDate\']', context['evtb/eventDate']);
+	// console.log('context[\'evtb/hideYear\']', context['evtb/hideYear']);
+	// console.log('hideYear', hideYear);
+	// console.log('context', context);
+	// console.log('clientId', clientId);
+	// console.log('attributes', attributes);
+	// SINGLE useEffect to handle all date syncing - PREVENTS INFINITE LOOPS
 	useEffect(() => {
-		if (!eventDate && parentData?.eventDate) {
-			setAttributes({ eventDate: parentData.eventDate });
-		}
-	}, [eventDate, parentData?.eventDate]);
+		let shouldUpdate = false;
+		let updates = {};
 
-	// Fallback: Sync from context if neither own date nor parent attribute has date
-	useEffect(() => {
-		if (!eventDate && !parentData?.eventDate && context['evtb/eventDate']) {
-			setAttributes({ eventDate: context['evtb/eventDate'] });
+		// Only sync if we don't have a date yet
+		if (!eventDate) {
+			// Priority: parent's attribute first, then context
+			if (parentData?.eventDate && parentData.eventDate !== eventDate) {
+				updates.eventDate = parentData.eventDate;
+				shouldUpdate = true;
+			} else if (!parentData?.eventDate && context['evtb/eventDate'] && context['evtb/eventDate'] !== eventDate) {
+				updates.eventDate = context['evtb/eventDate'];
+				shouldUpdate = true;
+			}
 		}
-	}, [eventDate, parentData?.eventDate, context['evtb/eventDate']]);
 
-	// Sync hideYear from global context
-	useEffect(() => {
-		if (context['evtb/hideYear'] !== undefined && context['evtb/hideYear'] !== hideYear) {
-			setAttributes({ hideYear: context['evtb/hideYear'] });
+		// Sync hideYear from global context (use default from block.json if context is undefined)
+		const contextHideYear = context['evtb/hideYear'];
+		if (contextHideYear !== undefined && contextHideYear !== hideYear) {
+			updates.hideYear = contextHideYear;
+			shouldUpdate = true;
+		} else if (hideYear === undefined) {
+			// Set default from block.json if still undefined
+			updates.hideYear = true;
+			shouldUpdate = true;
 		}
-	}, [context['evtb/hideYear'], hideYear]);
+
+		// Only update if there are actual changes
+		if (shouldUpdate) {
+			setAttributes(updates);
+		}
+	}, [eventDate, parentData?.eventDate, context['evtb/eventDate'], context['evtb/hideYear'], hideYear]);
 
 		// Use CSS Variables (Custom Properties) - Most reliable approach!
 		// Set colors as CSS variables on the wrapper element

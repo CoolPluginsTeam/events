@@ -29,23 +29,39 @@ registerBlockType(metadata.name, {
 			isDefault,
 			hasImage,
 			mediaBlock,
-			contentPopulated
+			contentPopulated,
+			hideYear
 		} = attributes;
 
-		// Generate unique block ID if not present
-		useEffect(() => {
-			if (!evtbBlockId) {
-				const uniqueId = clientId.substring(0, 8);
-				setAttributes({ evtbBlockId: uniqueId });
-			}
-		}, []);
+	// Generate unique block ID and set default date if needed - SINGLE useEffect to prevent issues
+	useEffect(() => {
+		let updates = {};
+		let shouldUpdate = false;
 
-		// Set current date if eventDate is empty (for new events)
-		useEffect(() => {
-			if (!eventDate && !isDefault) {
-				setAttributes({ eventDate: getCurrentDate() });
-			}
-		}, []);
+		// Set unique ID if not present
+		if (!evtbBlockId) {
+			updates.evtbBlockId = clientId.substring(0, 8);
+			shouldUpdate = true;
+		}
+
+		// Set current date if eventDate is empty (only for new non-default events)
+		if (!eventDate && !isDefault) {
+			updates.eventDate = getCurrentDate();
+			shouldUpdate = true;
+		}
+
+		// Sync hideYear from parent context (events-grid)
+		const contextHideYear = context['evtb/hideYear'];
+		if (contextHideYear !== undefined && contextHideYear !== hideYear) {
+			updates.hideYear = contextHideYear;
+			shouldUpdate = true;
+		}
+
+		// Only update if there are changes
+		if (shouldUpdate) {
+			setAttributes(updates);
+		}
+	}, [evtbBlockId, eventDate, isDefault, clientId, hideYear, context]);
 
 		// Get inner blocks reactively to check for image block
 		const hasImageBlock = useSelect((select) => {
@@ -207,217 +223,182 @@ registerBlockType(metadata.name, {
 			[clientId]
 		);
 
-		// Auto-populate default content if this is a default event and content not yet populated
-		useEffect(() => {
+	// Auto-populate default content ONLY for default events
+	// This runs ONLY when isDefault=true and contentPopulated=false
+	useEffect(() => {
+		// Guard: Wait for attributes to be properly initialized
+		if (isDefault === undefined || eventImage === undefined) {
+			return;
+		}
+		
+		// Only run for default events that haven't been populated yet
+		if (!isDefault || contentPopulated) {
+			return;
+		}
+		
+		// Must have eventImage to populate content
+		if (!eventImage) {
+			return;
+		}
+		
+		// Get default content based on event
+		const content = getDefaultContent();
+		if (!content) {
+			return;
+		}
+		
+		// Wait for innerBlocks to be ready (they might be created by template)
+		const timer = setTimeout(() => {
+			const currentBlocks = select('core/block-editor').getBlock(clientId)?.innerBlocks || [];
 			
-			// Wait for attributes to be properly set (they might be undefined initially)
-			if (isDefault === undefined || eventImage === undefined) {
-				return;
-			}
-			
-			// Only run if: isDefault=true, contentPopulated=false/undefined, and has eventImage
-			if (isDefault && !contentPopulated && eventImage && insertBlocks && removeBlocks) {
-				const timer = setTimeout(() => {
-					const content = getDefaultContent();
-					
-					if (content) {
-						
-						// First, clear any existing placeholder blocks from template
-						if (currentInnerBlocks.length > 0) {
-							const blockIds = currentInnerBlocks.map(block => block.clientId);
-							removeBlocks(blockIds, false);
-						}
-						
-					// Format time inside setTimeout to ensure it's calculated properly
-					const timeDisplay = `${formatTime12Hour(eventStartTime)} – ${formatTime12Hour(eventEndTime)}`;
-					
-					// Create all inner blocks with default data
-						const contentBlocks = [
-							// IMAGE GROUP
-							createBlock('core/group', { className: 'evtb-event-image-wrap' }, [
-								createBlock('core/image', {
-									url: eventImage,
-									alt: eventImageAlt,
-									className: 'evtb-event-image-block'
-								})
-							]),
-							createBlock('core/group', { className: 'evtb-card-details' }, [
-								// DATE BADGE - Pass eventDate explicitly
-								createBlock('evtb/event-date-badge', {
-									eventDate: eventDate,
-									isDateSet: true
+			// IMPORTANT: Only populate if blocks exist (created by template)
+			// This prevents double content - we're just updating existing blocks, not creating new ones
+			if (currentBlocks.length > 0 && insertBlocks) {
+				// Clear template placeholder blocks
+				const blockIds = currentBlocks.map(block => block.clientId);
+				removeBlocks(blockIds, false);
+				
+				// Format time for display
+				const timeDisplay = `${formatTime12Hour(eventStartTime)} – ${formatTime12Hour(eventEndTime)}`;
+				
+				// Create content blocks with actual default data
+				const contentBlocks = [
+					// IMAGE GROUP
+					createBlock('core/group', { className: 'evtb-event-image-wrap' }, [
+						createBlock('core/image', {
+							url: eventImage,
+							alt: eventImageAlt,
+							className: 'evtb-event-image-block'
+						})
+					]),
+					// CARD DETAILS GROUP
+					createBlock('core/group', { className: 'evtb-card-details' }, [
+						// DATE BADGE
+						createBlock('evtb/event-date-badge', {
+							eventDate: eventDate,
+							isDateSet: true
+						}),
+						// DETAILS GROUP
+						createBlock('core/group', { className: 'evtb-event-detail' }, [
+							// TIME
+							createBlock('core/paragraph', {
+								className: 'evtb-event-time',
+								content: timeDisplay,
+								evtbStartTime: eventStartTime,
+								evtbEndTime: eventEndTime,
+								evtbIsTimeSet: true
+							}),
+							// TITLE
+							createBlock('core/heading', {
+								level: 4,
+								className: 'evtb-event-title',
+								content: content.title
+							}),
+							// DESCRIPTION (empty, just placeholder)
+							createBlock('core/paragraph', {
+								placeholder: __('Event Description', 'events'),
+								className: 'evtb-event-description'
+							}),
+							// LOCATION
+							createBlock('core/paragraph', {
+								className: 'evtb-event-location',
+								content: content.location
+							}),
+							// PRICE + READ MORE GROUP
+							createBlock('core/group', { className: 'evtb-price-read-more' }, [
+								createBlock('core/paragraph', {
+									className: 'evtb-event-price',
+									content: content.price
 								}),
-								// DETAILS GROUP
-								createBlock('core/group', { className: 'evtb-event-detail' }, [
-									createBlock('core/paragraph', {
-										className: 'evtb-event-time',
-										content: timeDisplay,
-										evtbStartTime: eventStartTime,
-										evtbEndTime: eventEndTime,
-										evtbIsTimeSet: true
-									}),
-									createBlock('core/heading', {
-										level: 4,
-										className: 'evtb-event-title',
-										content: content.title
-									}),
-									createBlock('core/paragraph', {
-										placeholder: __('Event Description', 'events'),
-										className: 'evtb-event-description'
-									}),
-									createBlock('core/paragraph', {
-										className: 'evtb-event-location',
-										content: content.location
-									}),
-									// PRICE + READ MORE GROUP
-									createBlock('core/group', { className: 'evtb-price-read-more' }, [
-										createBlock('core/paragraph', {
-											className: 'evtb-event-price',
-											content: content.price
-										}),
-										createBlock('core/buttons', {}, [
-											createBlock('core/button', {
-												text: 'Read More',
-												className: 'evtb-event-read-more',
-												url: ''
-											})
-										])
-									])
+								createBlock('core/buttons', {}, [
+									createBlock('core/button', {
+										text: 'Read More',
+										className: 'evtb-event-read-more',
+										url: ''
+									})
 								])
 							])
-						];
-						
-						// Insert new blocks with actual content
-						try {
-							insertBlocks(contentBlocks, 0, clientId, false);
-							
-							// Mark as populated so this doesn't run again
-							setAttributes({ contentPopulated: true });
-						} catch (error) {
-							console.error('❌ Error inserting blocks:', error);
-						}
-					}
-				}, 150);
+						])
+					])
+				];
 				
-				return () => clearTimeout(timer);
+				// Insert populated blocks
+				try {
+					insertBlocks(contentBlocks, 0, clientId, false);
+					
+					// Mark as populated to prevent re-running
+					setAttributes({ contentPopulated: true });
+				} catch (error) {
+					console.error('Error populating default content:', error);
+				}
 			}
-		}, [isDefault, contentPopulated, eventImage, eventImageAlt, insertBlocks, removeBlocks]);
+		}, 200); // Small delay to ensure template is ready
+		
+		return () => clearTimeout(timer);
+	}, [isDefault, contentPopulated, eventImage, eventImageAlt, eventDate, eventStartTime, eventEndTime, clientId]);
 
-		// Template for all blocks including image
-		// Order: Image, Date Badge, Time, Title, Location, Price, Read More
-		const TEMPLATE = isDefault && defaultContent ? [
-			// IMAGE GROUP
-			['core/group', { className: 'evtb-event-image-wrap' }, [
-				['core/image', {
-					url: eventImage,
-					alt: eventImageAlt,
-					className: 'evtb-event-image-block'
-				}]
-			]],
-			['core/group', { className: 'evtb-card-details' }, [
-				// DATE BADGE
-				['evtb/event-date-badge', {
-					eventDate: eventDate,
-					isDateSet: true
+	// Template: Creates basic structure with placeholders
+	// For default events, useEffect will populate actual content
+	// For new events, user will fill manually
+	const TEMPLATE = [
+		// IMAGE GROUP
+		['core/group', { className: 'evtb-event-image-wrap' }, [
+			['core/image', {
+				url: isDefault ? eventImage : '',
+				alt: isDefault ? eventImageAlt : '',
+				className: 'evtb-event-image-block'
+			}]
+		]],
+		// CARD DETAILS GROUP
+		['core/group', { className: 'evtb-card-details' }, [
+			// DATE BADGE
+			['evtb/event-date-badge', {
+				eventDate: eventDate || getCurrentDate(),
+				isDateSet: !!eventDate
+			}],
+			// DETAILS GROUP
+			['core/group', { className: 'evtb-event-detail' }, [
+				// TIME
+				['core/paragraph', {
+					placeholder: __('9:00 AM – 5:00 PM', 'events'),
+					className: 'evtb-event-time',
+					evtbStartTime: eventStartTime,
+					evtbEndTime: eventEndTime,
+					evtbIsTimeSet: false
 				}],
-
-				// DETAILS GROUP
-				['core/group', { className: 'evtb-event-detail' }, [
-
+				// TITLE
+				['core/heading', {
+					level: 4,
+					placeholder: __('Event Title', 'events'),
+					className: 'evtb-event-title'
+				}],
+				// DESCRIPTION
+				['core/paragraph', {
+					placeholder: __('Event Description', 'events'),
+					className: 'evtb-event-description'
+				}],
+				// LOCATION
+				['core/paragraph', {
+					placeholder: __('Event Location', 'events'),
+					className: 'evtb-event-location'
+				}],
+				// PRICE + READ MORE GROUP
+				['core/group', { className: 'evtb-price-read-more' }, [
 					['core/paragraph', {
-						className: 'evtb-event-time',
-						content: formattedTime,
-						evtbStartTime: eventStartTime,
-						evtbEndTime: eventEndTime,
-						evtbIsTimeSet: true
+						placeholder: __('Event Price', 'events'),
+						className: 'evtb-event-price'
 					}],
-
-					['core/heading', {
-						level: 4,
-						className: 'evtb-event-title',
-						content: defaultContent?.title || ''
-					}],
-
-					['core/paragraph', {
-						placeholder: __('Event Description', 'events'),
-						className: 'evtb-event-description'
-					}],
-
-					['core/paragraph', {
-						className: 'evtb-event-location',
-						content: defaultContent?.location || ''
-					}],
-
-					// PRICE + READ MORE GROUP
-					['core/group', { className: 'evtb-price-read-more' }, [
-
-						['core/paragraph', {
-							className: 'evtb-event-price',
-							content: defaultContent?.price || ''
-						}],
-
-						['core/buttons', {}, [
-							['core/button', {
-								text: 'Read More',
-								className: 'evtb-event-read-more',
-								url: ''
-							}]
-						]]
+					['core/buttons', {}, [
+						['core/button', {
+							text: __('Read More', 'events'),
+							className: 'evtb-event-read-more',
+							url: ''
+						}]
 					]]
 				]]
 			]]
-		] : [
-			// IMAGE GROUP for new events
-			['core/group', { className: 'evtb-event-image-wrap' }, [
-				['core/image', {
-					className: 'evtb-event-image-block'
-				}]
-			]],
-			['core/group', { className: 'evtb-card-details' }, [
-				// Empty template with only placeholders for new events
-				['evtb/event-date-badge', {
-					eventDate: eventDate,
-					isDateSet: true
-				}],
-				// DETAILS GROUP
-				['core/group', { className: 'evtb-event-detail' }, [
-					['core/paragraph', {
-						placeholder: __('9:00 AM – 5:00 PM', 'events'),
-						className: 'evtb-event-time',
-						evtbStartTime: eventStartTime,
-						evtbEndTime: eventEndTime,
-						evtbIsTimeSet: false
-					}],
-					['core/heading', {
-						level: 4,
-						placeholder: __('Event Title', 'events'),
-						className: 'evtb-event-title'
-					}],
-					['core/paragraph', {
-						placeholder: __('Event Description', 'events'),
-						className: 'evtb-event-description'
-					}],
-					['core/paragraph', {
-						placeholder: __('Event Location', 'events'),
-						className: 'evtb-event-location'
-					}],
-					// PRICE + READ MORE GROUP
-					['core/group', { className: 'evtb-price-read-more' }, [
-						['core/paragraph', {
-							placeholder: __('Event Price', 'events'),
-							className: 'evtb-event-price'
-						}],
-						['core/buttons', {}, [
-							['core/button', {
-								text: __('Read More', 'events'),
-								className: 'evtb-event-read-more',
-								url: ''
-							}]
-						]]
-					]]
-				]]
-			]]
-		];
+		]]
+	];
 
 		return (
 			<>
