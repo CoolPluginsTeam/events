@@ -13,7 +13,7 @@ import metadata from '../../blocks/events-grid/block.json';
 
 // Register Events Grid Block using block.json metadata
 registerBlockType(metadata.name, {
-	title: __('Events Grid', 'events-block'),
+	title: __('Events Block', 'events-block'),
 	edit: ({ attributes, setAttributes, clientId }) => {
 		const { columns, hideYear, hidePastEvents } = attributes;
 		const blockProps = useBlockProps({
